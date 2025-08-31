@@ -5,14 +5,20 @@ export const metadata: Metadata = {
   title: 'Detalhes',
 }
 
-export default function Details() {
+export default async function Details({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}) {
+  const { id } = await params
+
   return (
     <div className='flex flex-1 flex-col'>
       <div className='@container/main flex flex-1 flex-col gap-2'>
         <div className='flex flex-col gap-4 py-4 md:gap-6 md:py-6'>
           <SectionCards />
           <div className='px-4 lg:px-6'>
-            <h2>Details</h2>
+            <h2>Details do aluno de id: {id}</h2>
           </div>
         </div>
       </div>

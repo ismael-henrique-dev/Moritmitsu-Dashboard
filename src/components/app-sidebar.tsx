@@ -3,24 +3,13 @@
 import * as React from 'react'
 import {
   IconBell,
-  IconCamera,
   IconClipboardCheck,
   IconDashboard,
-  IconDatabase,
-  IconFileAi,
-  IconFileDescription,
-  IconFileWord,
-  IconHelp,
-  IconReport,
   IconSchool,
-  IconSearch,
-  IconSettings,
   IconUsers,
 } from '@tabler/icons-react'
 
-import { NavDocuments } from '@/components/nav-documents'
 import { NavMain } from '@/components/nav-main'
-import { NavSecondary } from '@/components/nav-secondary'
 import { NavUser } from '@/components/nav-user'
 import {
   Sidebar,
@@ -32,7 +21,7 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
 import Image from 'next/image'
-import { ClipboardCheck, GraduationCap, Users } from 'lucide-react'
+import Link from 'next/link'
 
 const data = {
   user: {
@@ -65,54 +54,7 @@ const data = {
       title: 'Notificações',
       url: '/dashboard/notifications',
       icon: IconBell,
-    },
-  ],
-  navClouds: [
-    {
-      title: 'Capture',
-      icon: IconCamera,
-      isActive: true,
-      url: '#',
-      items: [
-        {
-          title: 'Active Proposals',
-          url: '#',
-        },
-        {
-          title: 'Archived',
-          url: '#',
-        },
-      ],
-    },
-    {
-      title: 'Proposal',
-      icon: IconFileDescription,
-      url: '#',
-      items: [
-        {
-          title: 'Active Proposals',
-          url: '#',
-        },
-        {
-          title: 'Archived',
-          url: '#',
-        },
-      ],
-    },
-    {
-      title: 'Prompts',
-      icon: IconFileAi,
-      url: '#',
-      items: [
-        {
-          title: 'Active Proposals',
-          url: '#',
-        },
-        {
-          title: 'Archived',
-          url: '#',
-        },
-      ],
+      badge: true,
     },
   ],
 }
@@ -127,7 +69,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className='data-[slot=sidebar-menu-button]:!p-1.5'
             >
-              <a href='#'>
+              <Link href='/dashboard'>
                 <Image
                   src='/morimitsu_logo.png'
                   alt='Image'
@@ -138,7 +80,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <span className='text-base font-semibold'>
                   Morimitsu Dashboard
                 </span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

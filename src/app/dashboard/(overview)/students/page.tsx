@@ -1,5 +1,6 @@
 import { SectionCards } from '@/components/section-cards'
 import { Metadata } from 'next'
+import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Alunos',
@@ -13,6 +14,9 @@ export default function Students() {
           <SectionCards />
           <div className='px-4 lg:px-6'>
             <h2>Alunos asa</h2>
+            <Link href='/dashboard/students/123456/details'>
+              Ir para detalhes do aluno de id: 123456
+            </Link>
           </div>
         </div>
       </div>

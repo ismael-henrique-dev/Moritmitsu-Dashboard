@@ -9,20 +9,49 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '../ui/button'
 import {
+  IconActivity,
   IconCirclePlusFilled,
-  IconDotsVertical,
+  IconKarate,
   IconPencil,
   IconTrash,
-  IconTrashFilled,
-  IconTrashOff,
-  IconTrashX,
+  IconTrendingUp,
 } from '@tabler/icons-react'
-
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import { Progress } from '@/components/ui/progress'
+import { Badge } from '../ui/badge'
+
+// Exemplo de componente para exibir a faixa
+function BeltProgress({
+  belt,
+  degree,
+  currentClasses,
+  requiredClasses,
+}: {
+  belt: string
+  degree: number
+  currentClasses: number
+  requiredClasses: number
+}) {
+  const progress = Math.min((currentClasses / requiredClasses) * 100, 100)
+
+  return (
+    <div className='flex flex-col gap-2 w-full mt-4'>
+      <div className='flex justify-between items-center'>
+        <span className='font-semibold'>
+          {belt} - Grau {degree}
+        </span>
+        <span className='text-sm text-muted-foreground'>
+          {currentClasses}/{requiredClasses} treinos
+        </span>
+      </div>
+      <Progress value={progress} className='h-3' />
+    </div>
+  )
+}
 
 export function StudentDetails() {
   return (
@@ -44,25 +73,12 @@ export function StudentDetails() {
             </span>
           </div>
         </div>
-
-        <div className='space-x-3 h-10'>
-          <Tooltip>
-            <TooltipTrigger>
-              <IconPencil className='ml-auto size-6 cursor-pointer' />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Editar</p>
-            </TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger>
-              <IconTrash className='ml-auto size-6 cursor-pointer' />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Deletar</p>
-            </TooltipContent>
-          </Tooltip>
-        </div>
+        <CardAction>
+          <Badge >
+            <IconActivity />
+            46 treino(s)
+          </Badge>
+        </CardAction>
       </CardHeader>
 
       <CardContent>
@@ -97,14 +113,41 @@ export function StudentDetails() {
             <span>Maria Henrique (Mãe)</span>
           </div>
         </div>
+
+        {/* Componente da Faixa */}
+        <BeltProgress
+          belt='Faixa Branca'
+          degree={3}
+          currentClasses={12}
+          requiredClasses={30}
+        />
       </CardContent>
-      <CardFooter>
+
+      <CardFooter className='flex w-full justify-between items-center'>
         <CardAction>
-          <Button className='bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear w-full'>
+          <Button className='bg-primary text-primary-foreground hover:bg-primary/90 w-full'>
             <IconCirclePlusFilled />
             <span>Graduar Aluno</span>
           </Button>
         </CardAction>
+        <div className='space-x-3 h-10'>
+          <Tooltip>
+            <TooltipTrigger>
+              <IconPencil className='ml-auto size-6 cursor-pointer' />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Editar</p>
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger>
+              <IconTrash className='ml-auto size-6 cursor-pointer' />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Deletar</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
       </CardFooter>
     </Card>
   )

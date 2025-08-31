@@ -1,4 +1,4 @@
-import { SectionCards } from '@/components/section-cards'
+import { StudentList } from '@/components/students/students-list'
 import { Metadata } from 'next'
 import Link from 'next/link'
 
@@ -12,12 +12,11 @@ export default function Students() {
       <div className='@container/main flex flex-1 flex-col gap-2'>
         <div className='flex flex-col gap-4 py-4 md:gap-6 md:py-6'>
           <div className='px-4 lg:px-6'>
-            <h2>Alunos asa</h2>
-            <Link href='/dashboard/students/123456/details'>
+            {/* <Link href='/dashboard/students/123456/details'>
               Ir para detalhes do aluno de id: 123456
-            </Link>
+            </Link> */}
+            <StudentList />
           </div>
-          
         </div>
       </div>
     </div>

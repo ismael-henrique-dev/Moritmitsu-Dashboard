@@ -11,10 +11,8 @@ import { Button } from '../ui/button'
 import {
   IconActivity,
   IconCirclePlusFilled,
-  IconKarate,
   IconPencil,
   IconTrash,
-  IconTrendingUp,
 } from '@tabler/icons-react'
 import {
   Tooltip,
@@ -74,9 +72,9 @@ export function StudentDetails() {
           </div>
         </div>
         <CardAction>
-          <Badge >
-            <IconActivity />
-            46 treino(s)
+          <Badge variant='outline' className='h-6 text-sm'>
+            <IconActivity className='size-6 text-sm' />
+            <span className='text-sm font-semibold'>46 treino(s)</span>
           </Badge>
         </CardAction>
       </CardHeader>

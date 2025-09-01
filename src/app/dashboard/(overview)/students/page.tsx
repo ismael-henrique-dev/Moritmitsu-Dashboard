@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/breadcrumb'
 import { Button } from '@/components/ui/button'
 import { Search } from '@/components/ui/search'
-import Pagination from '@/components/ui/test-pagination'
+import Pagination from '@/components/ui/pagination'
 import { IconCirclePlusFilled } from '@tabler/icons-react'
 import { Metadata } from 'next'
 import Link from 'next/link'

@@ -9,7 +9,6 @@ import {
   BreadcrumbPage,
 } from '@/components/ui/breadcrumb'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Search } from '@/components/ui/search'
 import { Metadata } from 'next'
 

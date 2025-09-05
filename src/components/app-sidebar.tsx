@@ -2,7 +2,6 @@
 
 import * as React from 'react'
 import {
-  IconBell,
   IconClipboardCheck,
   IconDashboard,
   IconSchool,
@@ -50,12 +49,6 @@ const data = {
       url: '/dashboard/students',
       icon: IconUsers,
     },
-    {
-      title: 'Notificações',
-      url: '/dashboard/notifications',
-      icon: IconBell,
-      badge: true,
-    },
   ],
 }
 
@@ -67,15 +60,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton
               asChild
-              className='data-[slot=sidebar-menu-button]:!p-1.5'
+              className='data-[slot=sidebar-menu-button]:!p-1.5 flex flex-col h-30'
             >
-              <Link href='/dashboard'>
+              <Link href='/dashboard' className=''>
                 <Image
-                  src='/morimitsu_logo.png'
+                  src='/logo_morimtsu.png'
                   alt='Image'
-                  className='h-6 w-6 object-cover dark:brightness-[0.2] dark:grayscale'
-                  width={24}
-                  height={24}
+                  className='h-20 w-20 object-cover dark:brightness-[0.2] dark:grayscale'
+                  width={200}
+                  height={200}
                 />
                 <span className='text-base font-semibold'>
                   Morimitsu Dashboard

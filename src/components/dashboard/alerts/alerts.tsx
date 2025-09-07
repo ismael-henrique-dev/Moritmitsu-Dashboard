@@ -29,7 +29,7 @@ export function Alerts() {
           <IconBell />
           <CardTitle>Avisos</CardTitle>
         </div>
-        <CardAction>
+        {/* <CardAction>
           <ToggleGroup
             type='single'
             variant='outline'
@@ -59,7 +59,7 @@ export function Alerts() {
               </SelectItem>
             </SelectContent>
           </Select>
-        </CardAction>
+        </CardAction> */}
       </CardHeader>
       <CardContent className='px-2 sm:px-6 space-y-6'>
         <AlertsList />

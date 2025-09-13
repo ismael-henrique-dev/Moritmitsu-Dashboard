@@ -9,7 +9,7 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<'form'>) {
   return (
-    <form className={cn('flex flex-col gap-6', className)} {...props}>
+    <form className={cn('flex flex-col gap-6 p-6', className)} {...props}>
       <div className='flex flex-col items-center gap-2'>
         <h1 className='text-2xl font-bold text-left'>Entre na sua conta</h1>
         <p className='text-muted-foreground text-sm text-balance'>
@@ -33,7 +33,7 @@ export function LoginForm({
           </div>
           <Input id='password' type='password' required />
         </div>
-        <Button type='submit' className='w-full'>
+        <Button type='submit'  className='w-full cursor-pointer'>
           Entrar
         </Button>
       </div>

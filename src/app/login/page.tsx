@@ -1,6 +1,7 @@
 import { LoginForm } from '@/components/forms/login-form'
 import { Metadata } from 'next'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Login',
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 export default function LoginPage() {
   return (
     <div className='grid min-h-svh lg:grid-cols-2'>
-      <div className='bg-muted relative hidden w-full h-full lg:flex items-center justify-center'>
+      <div className='bg-red-700/90 relative hidden w-full h-full lg:flex items-center justify-center'>
         <Image
           src='/logo_morimtsu.png'
           alt='Image'
@@ -19,8 +20,8 @@ export default function LoginPage() {
         />
       </div>
       <div className='flex flex-col gap-4 p-6 md:p-10'>
-        <div className='flex justify-center gap-2 md:justify-start'>
-          <a href='#' className='flex items-center gap-2 font-medium'>
+        {/* <div className='flex justify-center gap-2 md:justify-start'>
+          <Link href='/login' className='flex items-center gap-2 font-medium'>
             <div className='bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-full'>
               <Image
                 src='/logo_morimtsu.png'
@@ -31,10 +32,10 @@ export default function LoginPage() {
               />
             </div>
             Morimitsu | Tradição Jiu-jitsu
-          </a>
-        </div>
+          </Link>
+        </div> */}
         <div className='flex flex-1 items-center justify-center'>
-          <div className='w-full max-w-xs'>
+          <div className='w-full max-w-md'>
             <div className='w-full lg:hidden flex items-center justify-center mb-6'>
               <Image
                 src='/logo_morimtsu.png'

@@ -43,7 +43,7 @@ export function AlertsList() {
   return (
     <div className='grid lg:grid-cols-2 gap-2'>
       {birthdaysThisMonth.length > 0 && (
-        <Card className='bg-yellow-50'>
+        <Card className=''>
           <CardContent className='flex flex-col gap-1'>
             <div className='flex items-center gap-2 mb-1'>
               <IconCake className='text-yellow-700' />

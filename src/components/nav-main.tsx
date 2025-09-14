@@ -36,7 +36,11 @@ export function NavMain({
                 <Link href={item.url}>
                   <SidebarMenuButton
                     tooltip={item.title}
-                    className={cn(isActive && 'bg-primary text-white hover:bg-zinc-700 hover:text-white')}
+                    className={cn(
+                      'cursor-pointer',
+                      isActive &&
+                        'bg-primary text-white hover:bg-zinc-700 hover:text-white'
+                    )}
                   >
                     {item.icon && <item.icon />}
                     <span>{item.title}</span>

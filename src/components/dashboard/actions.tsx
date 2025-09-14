@@ -8,13 +8,22 @@ import {
   IconTools,
 } from '@tabler/icons-react'
 import React from 'react'
+import { type Icon } from '@tabler/icons-react'
+import Link from 'next/link'
 
-const actions = [
+type Action = {
+  id: number
+  title: string
+  icon: Icon
+  url: string
+}
+
+const actions: Action[] = [
   {
     id: 1,
-    title: 'Realizar Nova Frequência',
-    icon: <IconClipboardCheck />,
-    onClick: () => alert('Nova Frequência'),
+    title: 'Realizar Frequência',
+    icon: IconClipboardCheck,
+    url: '/dashboard/frequency/create',
   },
   // {
   //   id: 2,
@@ -25,49 +34,47 @@ const actions = [
   {
     id: 3,
     title: 'Cadastrar Aluno',
-    icon: <IconUsers />,
-    onClick: () => alert('Cadastrar Aluno'),
+    icon: IconUsers,
+    url: '/dashboard/frequency/create',
   },
   {
     id: 4,
     title: 'Cadastrar Turma',
-    icon: <IconSchool />,
-    onClick: () => alert('Cadastrar Turma'),
+    icon: IconSchool,
+    url: '/dashboard/frequency/create',
   },
 ]
 
-export function Actions() {
+export function QuickActions() {
   return (
-    <>
-      <Card className='@container/card'>
-        <CardHeader>
-          <div className='flex items-center gap-2'>
-            <IconTools />
-            <CardTitle>Ações</CardTitle>
-          </div>
-        </CardHeader>
-        <CardContent className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-          {actions.map((action) => (
-            <Card
-              key={action.id}
-              className='cursor-pointer hover:shadow-lg transition-shadow'
-              onClick={action.onClick}
-            >
-              <CardHeader>
-                <CardTitle className='flex items-center gap-2'>
-                   <div className='size-12 flex justify-center items-center rounded-full bg-zinc-800 text-white text-lg'>
-                    {action.icon}
+    <div className='space-y-4'>
+      <CardHeader className='px-0'>
+        <div className='flex items-center gap-2'>
+          <IconTools size={24} />
+          <CardTitle className='lg:text-xl'>Ações</CardTitle>
+        </div>
+      </CardHeader>
+      <CardContent className='grid grid-cols-1 sm:grid-cols-2 gap-4 px-0'>
+        {actions.map((action) => {
+          const Icon = action.icon
+
+          return (
+            <Link key={action.id} href={action.url}>
+              <Card className='cursor-pointer hover:shadow-lg transition-shadow'>
+                <CardHeader className='flex flex-row items-center'>
+                  <div className='size-10 flex justify-center items-center rounded-full bg-zinc-800 text-white'>
+                    <Icon size={24} />
                   </div>
-                   {action.title}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                Clique aqui para {action.title.toLowerCase()}
-              </CardContent>
-            </Card>
-          ))}
-        </CardContent>
-      </Card>
-    </>
+                  <CardTitle className='lg:text-lg'>{action.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  Clique aqui para {action.title.toLowerCase()}
+                </CardContent>
+              </Card>
+            </Link>
+          )
+        })}
+      </CardContent>
+    </div>
   )
 }

@@ -36,7 +36,7 @@ const data = {
     },
     {
       title: 'Frequência',
-      url: '/dashboard/frequency',
+      url: '/dashboard/attendances',
       icon: IconClipboardCheck,
     },
     {

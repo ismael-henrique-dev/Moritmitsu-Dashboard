@@ -16,43 +16,44 @@ import {
   FormMessage,
 } from '../ui/form'
 
-const items = [
+const students = [
   {
     id: 'recents',
-    label: 'Recents',
+    label: 'Ismael Henrique Gonçalves',
   },
   {
     id: 'home',
-    label: 'Home',
+    label: 'Marcos Silva',
   },
   {
     id: 'applications',
-    label: 'Applications',
+    label: 'Renata Moura dos Santos',
   },
   {
     id: 'desktop',
-    label: 'Desktop',
+    label: 'Jair Messias dos Reis',
   },
   {
     id: 'downloads',
-    label: 'Downloads',
+    label: 'Arlinda Macedo',
   },
   {
     id: 'documents',
-    label: 'Documents',
+    label: 'Simone Freire',
   },
 ] as const
+
 const FormSchema = z.object({
-  items: z.array(z.string()).refine((value) => value.some((item) => item), {
-    message: 'You have to select at least one item.',
+  students: z.array(z.string()).refine((value) => value.some((item) => item), {
+    message: 'Selecione pelo menos 1 aluno para realizar a frequência.',
   }),
 })
 
-export function CreateFrequency() {
+export function CreateAttendanceForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      items: ['recents', 'home'],
+      students: ['recents', 'home'],
     },
   })
 
@@ -69,10 +70,13 @@ export function CreateFrequency() {
   return (
     <div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 bg-accent'>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className='space-y-8 w-full'
+        >
           <FormField
             control={form.control}
-            name='items'
+            name='students'
             render={() => (
               <FormItem>
                 <div className='mb-4'>
@@ -81,20 +85,20 @@ export function CreateFrequency() {
                     Selecione os alunos que deseja marcar presença
                   </FormDescription>
                 </div>
-                {items.map((item) => (
+                {students.map((item) => (
                   <FormField
                     key={item.id}
                     control={form.control}
-                    name='items'
+                    name='students'
                     render={({ field }) => {
                       return (
                         <FormItem
                           key={item.id}
-                          className='flex flex-row items-center gap-2 bg-amber-50'
+                          className='hover:bg-accent/50 flex items-center gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950'
                         >
                           <FormControl>
                             <Checkbox
-                            className='size-5'
+                              className='size-5 cursor-pointer data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700'
                               checked={field.value?.includes(item.id)}
                               onCheckedChange={(checked) => {
                                 return checked
@@ -107,7 +111,7 @@ export function CreateFrequency() {
                               }}
                             />
                           </FormControl>
-                          <FormLabel className='text-sm font-normal'>
+                          <FormLabel className='text-sm font-semibold w-full cursor-pointer py-3'>
                             {item.label}
                           </FormLabel>
                         </FormItem>
@@ -115,13 +119,11 @@ export function CreateFrequency() {
                     }}
                   />
                 ))}
-                <FormMessage>
-                
-                </FormMessage>
+                <FormMessage></FormMessage>
               </FormItem>
             )}
           />
-          <Button type='submit'>Submit</Button>
+          <Button type='submit'>Concluir</Button>
         </form>
       </Form>
     </div>

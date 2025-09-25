@@ -8,9 +8,10 @@ import {
   BreadcrumbPage,
 } from '@/components/ui/breadcrumb'
 import { Metadata } from 'next'
-import { SelectClass } from '@/components/frequency/select'
-import { DatePicker } from '@/components/frequency/date-picker'
+
 import { CreateAttendanceForm } from '@/components/forms/create-attendance-form'
+import { SelectClass } from '@/components/attendances/select'
+import { DatePicker } from '@/components/attendances/date-picker'
 
 export const metadata: Metadata = {
   title: 'Nova Frequência',

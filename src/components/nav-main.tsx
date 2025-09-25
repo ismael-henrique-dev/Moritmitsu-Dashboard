@@ -18,8 +18,7 @@ export function NavMain({
   items: {
     title: string
     url: string
-    icon?: Icon
-    badge?: boolean
+    icon: Icon
   }[]
 }) {
   const pathname = usePathname()
@@ -30,6 +29,7 @@ export function NavMain({
         <SidebarMenu>
           {items.map((item) => {
             const isActive = pathname === item.url
+            const Icon = item.icon
 
             return (
               <SidebarMenuItem key={item.title}>
@@ -37,17 +37,14 @@ export function NavMain({
                   <SidebarMenuButton
                     tooltip={item.title}
                     className={cn(
-                      'cursor-pointer',
+                      'cursor-pointer text-base h-8 rounded-md',
                       isActive &&
                         'bg-primary text-white hover:bg-zinc-700 hover:text-white'
                     )}
                   >
-                    {item.icon && <item.icon />}
+                    <Icon className='!w-5 !h-5 ' />
+                    {/* {item.icon && <item.icon size={24} className='w-6 h-6' />} */}
                     <span>{item.title}</span>
-
-                    {item.badge && (
-                      <span className='ml-auto inline-flex items-center justify-center rounded-full bg-red-400 text-white text-xs font-medium size-2' />
-                    )}
                   </SidebarMenuButton>
                 </Link>
               </SidebarMenuItem>

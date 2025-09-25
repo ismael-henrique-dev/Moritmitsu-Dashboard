@@ -33,6 +33,15 @@ const frequencias = Array.from({ length: 35 }, (_, i) => ({
   ausentes: Math.floor(Math.random() * 5),
 }))
 
+type AttendancesListProps = {
+  data: {
+    id: string
+    class: string
+    date: string
+    instructor: string
+  }[]
+}
+
 export function FrequencyList() {
   const [page, setPage] = useState(1)
   const perPage = 12
@@ -79,7 +88,6 @@ export function FrequencyList() {
                     {freq.ausentes} de {freq.presentes}
                   </span>
                 </Badge>
-                
               </CardAction>
             </CardHeader>
 

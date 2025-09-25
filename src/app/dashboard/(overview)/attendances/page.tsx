@@ -1,4 +1,4 @@
-import { FrequencyList } from '@/components/frequency/frequency-list'
+
 import { SiteHeader } from '@/components/site-header'
 import {
   Breadcrumb,
@@ -17,6 +17,9 @@ import Link from 'next/link'
 export const metadata: Metadata = {
   title: 'Frequência',
 }
+
+import data from "../../data.json"
+import { DataTable } from '@/components/attendances/data-table'
 
 export default function Frequency() {
   return (
@@ -38,7 +41,7 @@ export default function Frequency() {
             asChild
             className='bg-primary text-primary-foreground hover:bg-primary/90'
           >
-            <Link href='/dashboard/frequency/create' rel='noopener noreferrer'>
+            <Link href='/dashboard/attendances/create' rel='noopener noreferrer'>
               <IconCirclePlusFilled />
               <span>Nova frêquencia</span>
             </Link>
@@ -52,7 +55,8 @@ export default function Frequency() {
               <div className='flex flex-col md:flex-row gap-2'>
                 {/* Filtros aqui */}
               </div>
-              <FrequencyList />
+              {/* <FrequencyList /> */}
+              <DataTable data={data} />
               <div className='flex w-full justify-center'>
                 <Pagination totalPages={10} />
               </div>

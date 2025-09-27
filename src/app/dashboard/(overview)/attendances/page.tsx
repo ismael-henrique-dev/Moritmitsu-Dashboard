@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 import data from '../../data.json'
 import { DataTable } from '@/components/attendances/data-table'
 
-import { SelectClass } from '@/components/attendances/select'
+import { SelectClass } from '@/components/attendances/class-select'
 import { DatePicker } from '@/components/attendances/date-picker'
 import { SelectInstructor } from '@/components/attendances/instructor-select'
 import { AttendancesList } from '@/components/attendances/attendances-list'

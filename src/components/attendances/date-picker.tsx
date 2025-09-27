@@ -10,9 +10,36 @@ import { Calendar } from '@/components/ui/calendar'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { useState } from 'react'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 export function DatePicker() {
-  const [date, setDate] = useState<Date | undefined>(new Date())
+  const [] = useState<Date | undefined>(new Date())
+
+  const searchParams = useSearchParams()
+  const pathname = usePathname()
+  const { replace } = useRouter()
+
+  const defaultValue = searchParams.get('date')
+
+  const [date, setDate] = useState<Date | undefined>(
+    defaultValue ? new Date(defaultValue) : undefined
+  )
+
+  const handleSelectDate = (selectedDate: Date | undefined) => {
+    setDate(selectedDate)
+
+    const params = new URLSearchParams(searchParams)
+
+    if (selectedDate) {
+      params.set('date', selectedDate.toISOString())
+    } else {
+      params.delete('date')
+    }
+
+    replace(`${pathname}?${params.toString()}`, {
+      scroll: false,
+    })
+  }
 
   return (
     <div className='flex flex-col gap-2 max-w-sm col-span-2 lg:col-span-1'>
@@ -29,13 +56,13 @@ export function DatePicker() {
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className='w-[var(--radix-popover-trigger-width)] p-0 sm:max-w-sm sm:rounded-md'
+          className='w-[var(--radix-popover-trigger-width)]  p-0 sm:max-w-sm sm:rounded-md'
           align='start'
         >
           <Calendar
             mode='single'
             selected={date}
-            onSelect={setDate}
+            onSelect={handleSelectDate}
             locale={ptBR}
           />
         </PopoverContent>

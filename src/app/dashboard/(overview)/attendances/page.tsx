@@ -20,6 +20,7 @@ export const metadata: Metadata = {
 
 import data from "../../data.json"
 import { DataTable } from '@/components/attendances/data-table'
+import { FrequencyList } from '@/components/attendances/frequency-list'
 
 export default function Frequency() {
   return (
@@ -57,7 +58,7 @@ export default function Frequency() {
               </div>
               {/* <FrequencyList /> */}
               <DataTable data={data} />
-              <div className='flex w-full justify-center'>
+              <div className='flex w-full justify-center my-6'>
                 <Pagination totalPages={10} />
               </div>
             </div>

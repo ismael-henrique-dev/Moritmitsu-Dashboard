@@ -5,6 +5,7 @@ import { ArrowLeftIcon, ArrowRightIcon } from 'lucide-react'
 import { usePathname, useSearchParams } from 'next/navigation'
 import clsx from 'clsx'
 import Link from 'next/link'
+import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react'
 
 export default function Pagination({ totalPages }: { totalPages: number }) {
   const pathname = usePathname()
@@ -27,7 +28,7 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
           isDisabled={currentPage <= 1}
         />
 
-        <div className='flex -space-x-px'>
+        <div className='flex gap-2 '>
           {allPages.map((page, index) => {
             let position: 'first' | 'last' | 'single' | 'middle' | undefined
 
@@ -70,13 +71,13 @@ function PaginationNumber({
   isActive: boolean
 }) {
   const className = clsx(
-    'flex h-10 w-10 items-center justify-center text-sm border',
+    'flex h-10 w-10 items-center justify-center text-sm px-3 rounded-md',
     {
-      'rounded-l-md': position === 'first' || position === 'single',
-      'rounded-r-md': position === 'last' || position === 'single',
-      'z-10 bg-primary border-blue-600 text-white': isActive,
+      // 'rounded-l-md': position === 'first' || position === 'single',
+      // 'rounded-r-md': position === 'last' || position === 'single',
+      'z-10 bg-red-700 text-white': isActive,
       'hover:bg-gray-100': !isActive && position !== 'middle',
-      'text-gray-300': position === 'middle',
+      'text-gray-900': position === 'middle',
     }
   )
 
@@ -110,9 +111,9 @@ function PaginationArrow({
 
   const icon =
     direction === 'left' ? (
-      <ArrowLeftIcon className='w-4' />
+      <IconChevronLeft className='w-4' />
     ) : (
-      <ArrowRightIcon className='w-4' />
+      <IconChevronRight className='w-4' />
     )
 
   return isDisabled ? (

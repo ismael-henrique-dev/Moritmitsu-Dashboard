@@ -145,9 +145,9 @@ export function DataTable({
   })
 
   return (
-    <div className='overflow-hidden rounded-lg border'>
+    <div className='overflow-hidden rounded-lg border lg:block hidden'>
       <Table>
-        <TableHeader className='bg-neutral-100 sticky top-0 z-10 py-3 hover:none'>
+        <TableHeader className='sticky top-0 z-10 py-3 hover:none'>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
@@ -155,7 +155,7 @@ export function DataTable({
                   <TableHead
                     key={header.id}
                     // se for a coluna Turma, duplica o espaço
-                    className='font-semibold py-4'
+                    className='font-semibold py-4 pl-6'
                     colSpan={header.column.id === 'class' ? 2 : header.colSpan}
                   >
                     {header.isPlaceholder
@@ -185,7 +185,7 @@ export function DataTable({
                     <TableCell
                       key={cell.id}
                       colSpan={cell.column.id === 'class' ? 2 : 1}
-                      className='py-4'
+                      className='py-4 pl-6'
                     >
                       {flexRender(
                         cell.column.columnDef.cell,

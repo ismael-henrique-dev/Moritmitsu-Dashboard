@@ -1,4 +1,3 @@
-
 import { SiteHeader } from '@/components/site-header'
 import {
   Breadcrumb,
@@ -15,14 +14,18 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Frequência',
+  title: 'Frequências',
 }
 
-import data from "../../data.json"
+import data from '../../data.json'
 import { DataTable } from '@/components/attendances/data-table'
-import { FrequencyList } from '@/components/attendances/frequency-list'
 
-export default function Frequency() {
+import { SelectClass } from '@/components/attendances/select'
+import { DatePicker } from '@/components/attendances/date-picker'
+import { SelectInstructor } from '@/components/attendances/instructor-select'
+import { AttendancesList } from '@/components/attendances/attendances-list'
+
+export default function Attandances() {
   return (
     <>
       <SiteHeader>
@@ -34,7 +37,7 @@ export default function Frequency() {
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbPage>Frequência</BreadcrumbPage>
+                <BreadcrumbPage>Frequências</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
@@ -42,29 +45,35 @@ export default function Frequency() {
             asChild
             className='bg-primary text-primary-foreground hover:bg-primary/90'
           >
-            <Link href='/dashboard/attendances/create' rel='noopener noreferrer'>
+            <Link
+              href='/dashboard/attendances/create'
+              rel='noopener noreferrer'
+            >
               <IconCirclePlusFilled />
               <span>Nova frêquencia</span>
             </Link>
           </Button>
         </div>
       </SiteHeader>
-      <div className='flex flex-1 flex-col'>
-        <div className='@container/main flex flex-1 flex-col gap-2'>
-          <div className='flex flex-col gap-4 py-4 md:gap-6 md:py-6'>
-            <div className='px-4 lg:px-6'>
-              <div className='flex flex-col md:flex-row gap-2'>
-                {/* Filtros aqui */}
-              </div>
-              {/* <FrequencyList /> */}
-              <DataTable data={data} />
-              <div className='flex w-full justify-center my-6'>
-                <Pagination totalPages={10} />
-              </div>
-            </div>
-          </div>
+      {/* <div className='flex flex-1 flex-col'> */}
+      {/* <div className='@container/main flex flex-1 flex-col gap-5'> */}
+      {/* <div className='flex flex-col gap-4 py-4 md:gap-6 md:py-6'> */}
+      <div className='px-4 lg:px-6 py-6'>
+        <div className='grid lg:grid-cols-[1fr_1fr_auto] grid-cols-2 gap-2 mb-6'>
+          <SelectClass />
+          <SelectInstructor />
+          <DatePicker />
+        </div>
+
+        <AttendancesList />
+        <DataTable data={data} />
+        <div className='flex w-full justify-center my-6'>
+          <Pagination totalPages={10} />
         </div>
       </div>
+      {/* </div> */}
+      {/* </div> */}
+      {/* </div> */}
     </>
   )
 }

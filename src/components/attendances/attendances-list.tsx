@@ -42,7 +42,7 @@ type AttendancesListProps = {
   }[]
 }
 
-export function FrequencyList() {
+export function AttendancesList() {
   const [page, setPage] = useState(1)
   const perPage = 12
 

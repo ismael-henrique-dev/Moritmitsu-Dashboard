@@ -15,7 +15,7 @@ export function DatePicker() {
   const [date, setDate] = useState<Date | undefined>(new Date())
 
   return (
-    <div className='flex flex-col gap-2 max-w-sm'>
+    <div className='flex flex-col gap-2 max-w-sm col-span-2 lg:col-span-1'>
       <label className='text-sm font-semibold'>Data da aula</label>
       <Popover>
         <PopoverTrigger asChild>
@@ -28,13 +28,15 @@ export function DatePicker() {
               : 'Escolher data'}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className='w-full p-0' align='end'>
+        <PopoverContent
+          className='w-[var(--radix-popover-trigger-width)] p-0 sm:max-w-sm sm:rounded-md'
+          align='start'
+        >
           <Calendar
             mode='single'
             selected={date}
             onSelect={setDate}
             locale={ptBR}
-            className=' lg:w-full'
           />
         </PopoverContent>
       </Popover>

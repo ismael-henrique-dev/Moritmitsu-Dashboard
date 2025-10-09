@@ -1,24 +1,5 @@
-'use client'
-
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import { IconAward, IconBell, IconCake } from '@tabler/icons-react'
-import React from 'react'
-import { AlertsList } from './alerts-list'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { IconAward, IconCake } from '@tabler/icons-react'
 import {
   Dialog,
   DialogContent,
@@ -26,7 +7,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
 
 const birthdays = [
   { id: 1, name: 'Ana Lima de Souza', age: 15 },
@@ -43,14 +23,10 @@ const eligibleStudents = [
 ]
 
 export function Announcements() {
-  // const [timeRange, setTimeRange] = React.useState('90d')
   return (
     <div className='space-y-4'>
       <CardHeader className='px-0'>
-        <div className='flex items-center gap-2'>
-          <IconBell size={24} />
-          <CardTitle className='lg:text-xl'>Avisos</CardTitle>
-        </div>
+        <CardTitle className='lg:text-xl font-poppins'>Avisos</CardTitle>
       </CardHeader>
       <div className='grid lg:grid-cols-2 gap-4'>
         <Card className='@container/card'>
@@ -68,7 +44,10 @@ export function Announcements() {
                 <li key={aluno.id}>
                   <div className='flex justify-between items-center'>
                     <strong>{aluno.name}:</strong>
-                    <span className='text-zinc-600'>{aluno.age} anos - {new Date(aluno.age).toLocaleDateString('pt-BR')}</span>
+                    <span className='text-zinc-600'>
+                      {aluno.age} anos -{' '}
+                      {new Date(aluno.age).toLocaleDateString('pt-BR')}
+                    </span>
                   </div>
                 </li>
               ))}

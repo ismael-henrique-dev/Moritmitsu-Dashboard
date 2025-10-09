@@ -1,5 +1,5 @@
 import { QuickActions } from '@/components/dashboard/actions'
-import { Announcements } from '@/components/dashboard/alerts/announcements'
+import { Announcements } from '@/components/dashboard/announcements'
 import { SiteHeader } from '@/components/site-header'
 import {
   Breadcrumb,

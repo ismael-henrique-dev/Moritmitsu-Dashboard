@@ -68,7 +68,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
   },
   {
     id: 'actions',
-    header: 'Ações',
+    // header: 'Ações',
     cell: () => (
       <div className='flex gap-3'>
         <Tooltip>

@@ -4,12 +4,12 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --color-morimitsu-red: #931317;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-poppins);
+  --font-mono: var(--font-poppins);
   --font-poppins: var(--font-poppins);
-  ----default-font-family: var(--font-poppins)
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);

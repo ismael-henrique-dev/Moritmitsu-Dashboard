@@ -18,9 +18,9 @@ export default function LoginPage() {
           height={256}
         />
       </div>
-      <div className='flex flex-col gap-4 p-6 md:p-10'>
+      <div className='flex flex-col gap-4 md:p-10'>
         <div className='flex flex-1 items-center justify-center'>
-          <div className='w-full max-w-md'>
+          <div className='w-full md:max-w-md'>
             <div className='w-full lg:hidden flex items-center justify-center mb-6'>
               <Image
                 src='/logo_morimtsu.png'

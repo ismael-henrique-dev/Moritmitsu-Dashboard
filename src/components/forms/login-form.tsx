@@ -1,21 +1,54 @@
-import { cn } from '@/lib/utils'
+'use client'
+
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import Link from 'next/link'
 import { PasswordInput } from '../ui/password-input'
+import { useTransition } from 'react'
+import { redirect } from 'next/navigation'
+import { LoginFormData, loginFormSchema } from '@/validators/login'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { login } from '@/http/auth/login'
+import { Spinner } from '../ui/spinner'
+import { toast } from 'sonner'
+import Link from 'next/link'
 
-export function LoginForm({
-  className,
-  ...props
-}: React.ComponentProps<'form'>) {
+export function LoginForm() {
+  const [isPending, startTransition] = useTransition()
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormData>({
+    mode: 'onChange',
+    resolver: zodResolver(loginFormSchema),
+  })
+
+  const handleLoginUser = (data: LoginFormData) => {
+    startTransition(async () => {
+      const response = await login(data)
+
+      if (response.status === 'success') {
+        toast.success(response.message)
+        redirect('/dashboard')
+      } else {
+        toast.error(response.message)
+      }
+    })
+  }
+
   return (
-    <form className={cn('flex flex-col gap-6 p-5', className)} {...props}>
+    <form
+      onSubmit={handleSubmit(handleLoginUser)}
+      className='flex flex-col gap-6 p-5'
+    >
       <div className='flex flex-col items-center gap-1'>
         <h1 className='font-poppins text-2xl font-semibold text-left'>
           Entre na sua conta
         </h1>
-        <p className='font-poppins text-muted-foreground text-balance'>
+        <p className='font-poppins text-muted-foreground lg:text-base text-sm'>
           Insira seu e-mail abaixo para acessar sua conta.
         </p>
       </div>
@@ -24,7 +57,16 @@ export function LoginForm({
           <Label htmlFor='email' className='font-semibold font-poppins'>
             Email
           </Label>
-          <Input id='email' type='email' placeholder='m@example.com' required />
+          <Input
+            id='email'
+            type='email'
+            placeholder='m@example.com'
+            aria-invalid={!!errors.email}
+            {...register('email')}
+          />
+          {errors.email && (
+            <p className='text-red-700 text-sm'>{errors.email.message}</p>
+          )}
         </div>
         <div className='grid gap-1'>
           <div className='flex items-center'>
@@ -40,12 +82,22 @@ export function LoginForm({
           </div>
           <PasswordInput
             id='password'
-            required
             placeholder='Digite sua senha'
+            aria-invalid={!!errors.password}
+            {...register('password')}
           />
+          {errors.password && (
+            <p className='text-red-700 text-sm'>{errors.password.message}</p>
+          )}
         </div>
-        <Button type='submit' className='w-full cursor-pointer'>
-          Entrar
+
+        <Button
+          type='submit'
+          className='w-full cursor-pointer'
+          disabled={isPending}
+        >
+          {isPending && <Spinner />}
+          {isPending ? 'Entrando...' : 'Entrar'}
         </Button>
       </div>
     </form>

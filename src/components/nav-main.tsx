@@ -39,7 +39,7 @@ export function NavMain({
                     className={cn(
                       'cursor-pointer text-base h-8 rounded-md',
                       isActive &&
-                        'bg-red-700 text-white hover:bg-red-800 hover:text-white'
+                        'bg-morimitsu-red text-white hover:bg-red-800 hover:text-white'
                     )}
                   >
                     <Icon className='!w-5 !h-5 ' />

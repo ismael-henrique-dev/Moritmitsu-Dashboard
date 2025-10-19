@@ -60,17 +60,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton
               asChild
-              className='data-[slot=sidebar-menu-button]:!p-1.5 flex flex-col h-30'
+              className='data-[slot=sidebar-menu-button]:!p-1.5 flex flex-col h-30 gap-1'
             >
-              <Link href='/dashboard' className=''>
+              <Link href='/dashboard'>
                 <Image
                   src='/logo_morimtsu.png'
-                  alt='Image'
+                  alt='Morimitsu logo'
                   className='h-20 w-20 object-cover dark:brightness-[0.2] dark:grayscale'
-                  width={200}
-                  height={200}
+                  width={80}
+                  height={80}
                 />
-                <span className='text-base font-semibold'>
+                <span className='text-base font-medium font-poppins'>
                   Morimitsu Dashboard
                 </span>
               </Link>

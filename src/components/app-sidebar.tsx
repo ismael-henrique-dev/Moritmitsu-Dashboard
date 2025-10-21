@@ -22,6 +22,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { NavUser } from './nav-user'
 import { useUserData } from '@/hooks/use-user'
+import { NavUserSkeleton } from './ui/skeletons'
 
 const data = {
   user: {
@@ -54,7 +55,7 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { user: userData } = useUserData()
+  const { user: userData, loading } = useUserData()
 
   const user = {
     name: userData?.username ?? 'User',
@@ -90,7 +91,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={user} />
+        {loading ? <NavUserSkeleton /> : <NavUser user={user} />}
       </SidebarFooter>
     </Sidebar>
   )

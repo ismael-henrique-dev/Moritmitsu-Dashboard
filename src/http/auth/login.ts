@@ -22,6 +22,11 @@ export async function login(formData: LoginFormData) {
       expires: expiresAt,
     })
 
+    cookieStore.set('userData', JSON.stringify(response.data), {
+      path: '/',
+      expires: expiresAt,
+    })
+
     return { message: 'Login realizado com sucesso.', status: 'success' }
   } catch (error) {
     const statusCode = getAxiosStatusCode(error)

@@ -6,7 +6,7 @@ import {
   IconLogout,
 } from '@tabler/icons-react'
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,6 +24,7 @@ import { logout } from '@/lib/actions'
 import { toast } from 'sonner'
 import { redirect } from 'next/navigation'
 import { useState } from 'react'
+import { getUserInitials } from '@/lib/utils'
 
 export function NavUser({
   user,
@@ -31,10 +32,11 @@ export function NavUser({
   user: {
     name: string
     email: string
-    avatar: string
   }
 }) {
   const [open, setOpen] = useState(false)
+
+  const userInitials = getUserInitials(user.name)
 
   const handleLogout = async () => {
     const response = await logout()
@@ -63,8 +65,9 @@ export function NavUser({
               className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer'
             >
               <Avatar className='h-8 w-8 rounded-lg grayscale'>
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className='rounded-lg'>SL</AvatarFallback>
+                <AvatarFallback className='rounded-lg'>
+                  {userInitials}
+                </AvatarFallback>
               </Avatar>
               <div className='grid flex-1 text-left text-sm leading-tight'>
                 <span className='truncate font-medium'>{user.name}</span>

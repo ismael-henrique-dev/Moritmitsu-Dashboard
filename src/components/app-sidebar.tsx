@@ -9,7 +9,6 @@ import {
 } from '@tabler/icons-react'
 
 import { NavMain } from '@/components/nav-main'
-import { NavUser } from '@/components/nav-user'
 import {
   Sidebar,
   SidebarContent,
@@ -21,6 +20,8 @@ import {
 } from '@/components/ui/sidebar'
 import Image from 'next/image'
 import Link from 'next/link'
+import { NavUser } from './nav-user'
+import { useUserData } from '@/hooks/use-user'
 
 const data = {
   user: {
@@ -53,6 +54,13 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { user: userData } = useUserData()
+
+  const user = {
+    name: userData?.username ?? 'User',
+    email: userData?.email ?? 'Email',
+  }
+
   return (
     <Sidebar collapsible='offcanvas' {...props}>
       <SidebarHeader>
@@ -82,7 +90,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
   )

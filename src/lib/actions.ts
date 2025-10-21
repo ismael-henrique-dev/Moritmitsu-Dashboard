@@ -20,4 +20,34 @@ export async function logout() {
     }
   }
 }
-  
+
+export async function getUserData() {
+  try {
+    const cookieStore = await cookies()
+    const userCookie = cookieStore.get('userData')?.value
+
+    if (!userCookie) {
+      return {
+        data: null,
+        message: 'Nenhum dado de usuário encontrado.',
+        status: 'error',
+      }
+    }
+
+    const userData: User = JSON.parse(userCookie)
+
+    return {
+      data: userData,
+      message: 'Dados recuperados com sucesso.',
+      status: 'success',
+    }
+  } catch (error) {
+    console.error('Erro ao obter dados do usuário:', error)
+
+    return {
+      data: null,
+      message: 'Ocorreu um erro ao tentar obter os dados do usuário.',
+      status: 'error',
+    }
+  }
+}

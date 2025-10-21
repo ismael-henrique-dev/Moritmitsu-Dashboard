@@ -1,5 +1,8 @@
-import axios from "axios"
+import { ENV } from '@/lib/env'
+import axios from 'axios'
+
+const API_URL = ENV.API_URL
 
 export const api = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: API_URL,
 })

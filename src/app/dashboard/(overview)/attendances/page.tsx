@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/breadcrumb'
 import { Button } from '@/components/ui/button'
 import Pagination from '@/components/ui/pagination'
-import { IconCirclePlusFilled } from '@tabler/icons-react'
+import { IconCirclePlus } from '@tabler/icons-react'
 import { Metadata } from 'next'
 import Link from 'next/link'
 
@@ -43,14 +43,14 @@ export default function Attandances() {
           </Breadcrumb>
           <Button
             asChild
-            className='bg-primary mb-2 text-primary-foreground hover:bg-primary/90'
+            className='lg:flex hidden bg-primary text-white hover:bg-primary/90 py-2 px-3 gap-2'
           >
             <Link
               href='/dashboard/attendances/create'
               rel='noopener noreferrer'
             >
-              <IconCirclePlusFilled />
-              <span>Nova frêquencia</span>
+              <IconCirclePlus className='size-5' />
+              <span className='font-poppins font-medium'>Nova frequência</span>
             </Link>
           </Button>
         </div>
@@ -62,6 +62,16 @@ export default function Attandances() {
           <SelectInstructor />
           <DatePicker />
         </div>
+
+        <Button
+          asChild
+          className='lg:hidden bg-primary text-white hover:bg-primary/90 w-full mb-6 py-2 px-3 gap-2'
+        >
+          <Link href='/dashboard/attendances/create' rel='noopener noreferrer'>
+            <IconCirclePlus className='size-5' />
+            <span className='font-poppins font-medium'>Nova frêquencia</span>
+          </Link>
+        </Button>
 
         <AttendancesList data={data} />
         <DataTable data={data} />

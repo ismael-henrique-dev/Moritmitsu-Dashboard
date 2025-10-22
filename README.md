@@ -1,8 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Moritmitsu Dashboard - Frontend
+
+## Estrutura do projeto
+
+![project structure](image.png)
 
 ## Getting Started
 
-First, run the development server:
+1 - Clone o repositório:
+
+```bash
+git clone https://github.com/ismael-henrique-dev/Moritmitsu-Dashboard.git
+```
+
+2 - Caso não esteja no diretório do projeto, entre acessando:
+
+```bash
+cd Moritmitsu-Dashboard
+```
+
+3 - Instale as dependências:
+
+```bash
+pnpm i
+# ou
+npm i
+```
+
+4 - Crie um arquivo na raíz do projeto chamado `.env` e cole a variável que está em `.env.example`:
+
+```javascript
+API_URL="https://morimitsu-dashboard-api.onrender.com"
+```
+
+5 - Inicialize o servidor:
 
 ```bash
 npm run dev
@@ -14,23 +44,7 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+6 - Abra [https://moritmitsu-dashboard.vercel.app](https://moritmitsu-dashboard.vercel.app) com seu navegador para ver o projeto rodando.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Você pode acessar o site hospedado também: [https://moritmitsu-dashboard.vercel.app](https://moritmitsu-dashboard.vercel.app).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

@@ -1,5 +1,10 @@
 # Moritmitsu Dashboard - Frontend
 
+# Requisitos
+
+- Node.js >= 22.x
+- PNPM ou NPM >= 10.x
+
 ## Estrutura do projeto
 
 ![project structure](image.png)
@@ -28,7 +33,7 @@ npm i
 
 4 - Crie um arquivo na raíz do projeto chamado `.env` e cole a variável que está em `.env.example`:
 
-```javascript
+```env
 API_URL="https://morimitsu-dashboard-api.onrender.com"
 ```
 

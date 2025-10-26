@@ -1,25 +1,53 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { IconAward, IconCake } from '@tabler/icons-react'
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { IconArrowRight, IconAward, IconCake, IconX } from '@tabler/icons-react'
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import { Avatar } from '../ui/avatar'
 
 const birthdays = [
-  { id: 1, name: 'Ana Lima de Souza', age: 15 },
-  { id: 2, name: 'Carlos Andrarde da Silva', age: 17 },
-  { id: 3, name: 'João Gonçalves de Araújo', age: 16 },
-  { id: 4, name: 'Marina Bastos', age: 20 },
+  { id: 1, name: 'Ana Lima de Souza', age: 15, birthday: '21/12' },
+  { id: 2, name: 'Carlos Andrarde da Silva', age: 17, birthday: '20/12' },
+  { id: 3, name: 'João Gonçalves de Araújo', age: 16, birthday: '14/12' },
+  { id: 4, name: 'Marina Bastos', age: 20, birthday: '12/12' },
 ]
 
 const eligibleStudents = [
-  { id: 1, name: 'Pedro Henrique', currentGraduation: 'Faixa Azul' },
-  { id: 2, name: 'Lucas Bezerra', currentGraduation: 'Faixa Roxa' },
-  { id: 3, name: 'Fernanda Maria', currentGraduation: 'Faixa Amarela' },
-  { id: 4, name: 'Beatriz Oliveira', currentGraduation: 'Faixa Laranja' },
+  {
+    id: 1,
+    name: 'Pedro Henrique',
+    type: 'grade',
+    graduation: {
+      currentGraduation: {
+        belt: 'Azul',
+        grade: 0,
+      },
+      newGraduation: { grade: 1 },
+    },
+  },
+  {
+    id: 2,
+    name: 'Lucas Bezerra',
+    type: 'belt',
+    graduation: {
+      currentGraduation: {
+        belt: 'Roxa',
+        grade: 4,
+      },
+      newGraduation: { belt: 'Marrom' },
+    },
+  },
 ]
 
 export function Announcements() {
@@ -29,95 +57,131 @@ export function Announcements() {
         <CardTitle className='lg:text-xl font-poppins'>Avisos</CardTitle>
       </CardHeader>
       <div className='grid lg:grid-cols-2 gap-4'>
-        <Card className='@container/card'>
-          <CardHeader>
-            <div className='flex items-center gap-2'>
-              <div className='size-10 flex justify-center items-center rounded-full bg-zinc-800 text-white'>
-                <IconCake />
-              </div>
-              <CardTitle>Aniversariantes do mês</CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <ul className='list-disc pl-5 text-sm space-y-1'>
-              {birthdays.slice(0, 3).map((aluno) => (
-                <li key={aluno.id}>
-                  <div className='flex justify-between items-center'>
-                    <strong>{aluno.name}:</strong>
-                    <span className='text-zinc-600'>
-                      {aluno.age} anos -{' '}
-                      {new Date(aluno.age).toLocaleDateString('pt-BR')}
-                    </span>
-                  </div>
-                </li>
-              ))}
-            </ul>
-            {birthdays.length > 3 && (
-              <Dialog>
-                <DialogTrigger asChild>
-                  <button className='underline mt-2 cursor-pointer'>
-                    Ver todos
-                  </button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Aniversariantes do mês</DialogTitle>
-                  </DialogHeader>
-                  <ul className='list-disc pl-5 space-y-1'>
-                    {birthdays.map((aluno) => (
-                      <li key={aluno.id}>
-                        {aluno.name} -{' '}
-                        {new Date(aluno.age).toLocaleDateString('pt-BR')}
-                      </li>
-                    ))}
-                  </ul>
-                </DialogContent>
-              </Dialog>
-            )}
-          </CardContent>
-        </Card>
-        <Card className='@container/card'>
-          <CardHeader>
-            <div className='flex items-center gap-2'>
-              <div className='size-10 flex justify-center items-center rounded-full bg-zinc-800 text-white'>
-                <IconAward />
-              </div>
-
-              <CardTitle>Alunos aptos à graduação</CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <ul className='list-disc pl-5 text-sm space-y-1'>
-              {eligibleStudents.slice(0, 3).map((aluno) => (
-                <li key={aluno.id}>
-                  {aluno.name} ({aluno.currentGraduation})
-                </li>
-              ))}
-            </ul>
-            {eligibleStudents.length > 3 && (
-              <Dialog>
-                <DialogTrigger asChild>
-                  <button className='underline mt-2 cursor-pointer'>
-                    Ver todos
-                  </button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Alunos aptos à graduação</DialogTitle>
-                  </DialogHeader>
-                  <ul className='list-disc pl-5 space-y-1'>
-                    {eligibleStudents.map((aluno) => (
-                      <li key={aluno.id}>
-                        {aluno.name} ({aluno.currentGraduation})
-                      </li>
-                    ))}
-                  </ul>
-                </DialogContent>
-              </Dialog>
-            )}
-          </CardContent>
-        </Card>
+        <BirthdaysCard />
+        <GraduationsCard />
       </div>
     </div>
+  )
+}
+
+function BirthdaysCard() {
+  return (
+    <Card className='@container/card'>
+      <CardHeader>
+        <div className='flex items-center gap-2'>
+          <Avatar className='size-10 flex justify-center items-center rounded-full bg-black text-white'>
+            <IconCake className='size-6' />
+          </Avatar>
+          <CardTitle className='text-base font-poppins font-medium'>
+            Aniversariantes do mês
+          </CardTitle>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <ul className='list-disc text-sm marker:text-xl pl-6'>
+          {birthdays.slice(0, 3).map((student) => (
+            <li key={student.id} className='h-9'>
+              <div className='flex justify-between items-center'>
+                <strong className='font-poppins font-medium text-sm'>
+                  {student.name}
+                </strong>
+                <span className='font-poppins text-neutral-500 text-sm tracking-[0.0005em]'>
+                  {student.birthday} - {student.age} anos
+                </span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </CardContent>
+
+      {birthdays.length > 3 && (
+        <CardFooter>
+          <Dialog>
+            <DialogTrigger asChild>
+              <button className='underline mt-2 cursor-pointer'>
+                Ver todos
+              </button>
+            </DialogTrigger>
+            <DialogContent showCloseButton={false} className='lg:max-w-1/3'>
+              <DialogHeader className='flex flex-row items-center justify-between'>
+                <DialogTitle className='text-xl font-poppins font-semibold tracking-[-0.0002em]'>
+                  Aniversariantes do mês
+                </DialogTitle>
+                <DialogClose asChild>
+                  <IconX className='size-4 cursor-pointer' />
+                </DialogClose>
+              </DialogHeader>
+              <ul className='list-disc text-sm marker:text-xl pl-6'>
+                {birthdays.slice(0, 3).map((student) => (
+                  <li key={student.id} className='h-9'>
+                    <div className='flex justify-between items-center'>
+                      <strong className='font-poppins font-medium text-sm'>
+                        {student.name}
+                      </strong>
+                      <span className='font-poppins text-neutral-500 text-sm tracking-[0.0005em]'>
+                        {student.birthday} - {student.age} anos
+                      </span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </DialogContent>
+          </Dialog>
+        </CardFooter>
+      )}
+    </Card>
+  )
+}
+
+function GraduationsCard() {
+  return (
+    <Card className='@container/card'>
+      <CardHeader>
+        <div className='flex items-center gap-2'>
+          <Avatar className='size-10 flex justify-center items-center rounded-full bg-black text-white'>
+            <IconAward className='size-6' />
+          </Avatar>
+          <CardTitle className='text-base font-poppins font-medium'>
+            Alunos aptos à graduação
+          </CardTitle>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <ul className='list-disc text-sm marker:text-xl pl-6'>
+          {eligibleStudents.slice(0, 3).map((student) => {
+            const { type, graduation } = student
+
+            const isBelt = type === 'belt'
+            const current = isBelt
+              ? graduation.currentGraduation.belt
+              : `Grau ${graduation.currentGraduation.grade}`
+            const next = isBelt
+              ? graduation.newGraduation.belt
+              : `Grau ${graduation.newGraduation.grade}`
+
+            return (
+              <li key={student.id} className='h-9'>
+                <div className='flex justify-between items-center'>
+                  <div className='space-x-1'>
+                    <strong className='font-poppins font-medium text-sm'>
+                      {student.name}
+                    </strong>
+                    <span className='font-poppins text-neutral-500 text-sm'>
+                      (faixa {graduation.currentGraduation.belt.toLowerCase()})
+                    </span>
+                  </div>
+
+                  <div className='flex items-center gap-1 text-neutral-500 text-sm font-poppins tracking-[0.0005em]'>
+                    <span>{current}</span>
+                    <IconArrowRight size={20} stroke={1.5} />
+                    <span>{next}</span>
+                  </div>
+                </div>
+              </li>
+            )
+          })}
+        </ul>
+      </CardContent>
+    </Card>
   )
 }

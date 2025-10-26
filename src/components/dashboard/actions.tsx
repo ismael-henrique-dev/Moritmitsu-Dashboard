@@ -33,27 +33,30 @@ const actions: Action[] = [
 
 export function QuickActions() {
   return (
-    <div className='space-y-4'>
+    <div className='space-y-6'>
       <CardHeader className='px-0'>
         <CardTitle className='lg:text-xl font-poppins'>Ações</CardTitle>
       </CardHeader>
       <CardContent className='grid grid-cols-1 sm:grid-cols-2 gap-4 px-0'>
         {actions.map((action) => {
           const Icon = action.icon
+          const formattedActionTitle = action.title.toLowerCase()
 
           return (
             <Link key={action.id} href={action.url}>
               <Card className='cursor-pointer hover:shadow-lg transition-shadow'>
                 <CardHeader className='flex flex-row items-center'>
-                  <div className='size-10 flex justify-center items-center rounded-full bg-zinc-800 text-white'>
+                  <div className='size-10 flex justify-center items-center rounded-full bg-black text-white'>
                     <Icon size={24} />
                   </div>
-                  <CardTitle className='lg:text-lg font-poppins'>
+                  <CardTitle className='font-poppins font-medium leading-[1.5]'>
                     {action.title}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  Clique aqui para {action.title.toLowerCase()}
+                  <span className='font-poppins text-neutral-500 leading-[1.5] text-sm'>
+                    Clique aqui para {formattedActionTitle}
+                  </span>
                 </CardContent>
               </Card>
             </Link>

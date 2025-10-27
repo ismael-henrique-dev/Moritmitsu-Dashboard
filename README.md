@@ -7,7 +7,7 @@
 
 ## Estrutura do projeto
 
-![project structure](image.png)
+![project structure](public/project-structure.png)
 
 ## Getting Started
 

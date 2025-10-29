@@ -27,8 +27,8 @@ type ClassCardProps = {
 
 export function ClassCard() {
   return (
-    <Link href='#' className='mb-4'>
-      <Card className='@container/card hover:shadow-xl mb-4'>
+    <Link href='/dashboard/classes/1234/details'className='mb-4'>
+      <Card className='@container/card cursor-pointer hover:shadow-lg transition-shadow mb-4'>
         <CardHeader className='flex justify-between items-start'>
           <div>
             <CardTitle className='text-xl font-semibold'>Turma Baby</CardTitle>

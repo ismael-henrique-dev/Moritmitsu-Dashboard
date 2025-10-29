@@ -17,7 +17,11 @@ const instructors = [
   { id: '3', name: 'Aluno' },
 ]
 
-export function SelectInstructor() {
+import * as SelectPrimitive from '@radix-ui/react-select'
+
+export function SelectInstructor({
+  ...props
+}: React.ComponentProps<typeof SelectPrimitive.Root>) {
   const searchParams = useSearchParams()
   const pathname = usePathname()
   const { replace } = useRouter()
@@ -44,22 +48,19 @@ export function SelectInstructor() {
     instructors.find((i) => i.id === selected)?.name || 'Escolha um professor'
 
   return (
-    <div className='flex flex-col gap-2'>
-      <label className='text-sm font-semibold'>Professor</label>
-      <Select value={selected} onValueChange={handleSelectInstructor}>
-        <SelectTrigger className='w-full'>
-          <SelectValue placeholder='Escolha uma professor'>
-            {selectedInstructor}
-          </SelectValue>
-        </SelectTrigger>
-        <SelectContent>
-          {instructors.map((instructor) => (
-            <SelectItem key={instructor.id} value={instructor.id}>
-              {instructor.name}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </div>
+    <Select value={selected} onValueChange={handleSelectInstructor} {...props}>
+      <SelectTrigger className='w-full'>
+        <SelectValue placeholder='Escolha uma professor'>
+          {selectedInstructor}
+        </SelectValue>
+      </SelectTrigger>
+      <SelectContent>
+        {instructors.map((instructor) => (
+          <SelectItem key={instructor.id} value={instructor.id}>
+            {instructor.name}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   )
 }

@@ -1,5 +1,5 @@
+import { AddStudentsSheet } from '@/components/classes/class-student-sheet'
 import { ClassStudentList } from '@/components/classes/class-students-list'
-import { CreateClassForm } from '@/components/forms/create-class'
 import { SiteHeader } from '@/components/site-header'
 import {
   Breadcrumb,
@@ -9,14 +9,11 @@ import {
   BreadcrumbLink,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
-import { Button } from '@/components/ui/button'
 import { Search } from '@/components/ui/search'
-import { IconCirclePlus } from '@tabler/icons-react'
 import { Metadata } from 'next'
-import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Cadastrar turma',
+  title: 'Detalhes da turma',
 }
 
 export default function ClassDetails() {
@@ -41,18 +38,7 @@ export default function ClassDetails() {
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
-          <Button
-            asChild
-            className='lg:flex hidden bg-primary text-white hover:bg-primary/90 py-2 px-3 gap-2'
-          >
-            <Link
-              href='/dashboard/attendances/create'
-              rel='noopener noreferrer'
-            >
-              <IconCirclePlus className='size-5' />
-              <span className='font-poppins font-medium'>Enturmar alunos</span>
-            </Link>
-          </Button>
+          <AddStudentsSheet />
         </div>
       </SiteHeader>
       <div className='p-5 space-y-6'>

@@ -42,6 +42,7 @@ export default function ClassDetails() {
         </div>
       </SiteHeader>
       <div className='p-5 space-y-6'>
+        <AddStudentsSheet />
         <Search placeholder='Buscar alunos...' />
         <ClassStudentList />
       </div>

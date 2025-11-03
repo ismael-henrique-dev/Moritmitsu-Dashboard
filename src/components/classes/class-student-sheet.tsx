@@ -110,7 +110,7 @@ export function AddStudentsSheet() {
           </div>
         </Button>
       </SheetTrigger>
-      <SheetContent className='flex flex-col h-dvh max-h-dvh pb-0 gap-0'>
+      <SheetContent className='flex flex-col h-dvh max-h-dvh pb-0 gap-0 w-full'>
         <SheetHeader>
           <SheetTitle className='font-poppins font-semibold text-xl'>
             Enturmar alunos

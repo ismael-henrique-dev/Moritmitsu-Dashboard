@@ -1,5 +1,6 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { useTransition } from 'react'
 import { useForm, useFieldArray, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -16,9 +17,12 @@ import {
 } from '@/validators/create-class'
 import { IconPlus } from '@tabler/icons-react'
 import { DayOfWeekSelect } from '../classes/day-of-week-select'
+import { createClass } from '@/http/classes/create'
+import { toast } from 'sonner'
 
 export function CreateClassForm() {
   const [isPending, startTransition] = useTransition()
+  const router = useRouter()
 
   const {
     control,
@@ -41,7 +45,14 @@ export function CreateClassForm() {
   const handleCreateClass = (data: CreateClassFormData) => {
     startTransition(async () => {
       console.log(data)
-      // chamada API depois
+      const response = await createClass(data)
+
+      if (response.status === 'success') {
+        toast.success(response.message)
+        router.push('/dashboard/classes')
+      } else {
+        toast.error(response.message)
+      }
     })
   }
 

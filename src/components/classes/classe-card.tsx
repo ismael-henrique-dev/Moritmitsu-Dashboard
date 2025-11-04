@@ -20,20 +20,20 @@ type ClassCardProps = {
     min: number
     max: number | null
   }
-  professor: string
+  instructor: string
   studentsCount: number
-  schedules: { day: string; hour: string }[]
+  schedule: string
 }
 
-export function ClassCard() {
+export function ClassCard(props:ClassCardProps) {
   return (
     <Link href='/dashboard/classes/1234/details'className='mb-4'>
       <Card className='@container/card cursor-pointer hover:shadow-lg transition-shadow mb-4'>
         <CardHeader className='flex justify-between items-start'>
           <div>
-            <CardTitle className='text-xl font-semibold'>Turma Baby</CardTitle>
+            <CardTitle className='text-xl font-semibold'>{props.title}</CardTitle>
             <span className='text-sm text-muted-foreground'>
-              Faixa etária: 4 a 7 anos
+              Faixa etária: {props.ageRange.min} a {props.ageRange.max} anos
             </span>
           </div>
 
@@ -63,17 +63,18 @@ export function ClassCard() {
         <CardContent className='grid gap-2 text-sm'>
           <div className='flex items-center gap-2'>
             <IconUser className='size-4 text-muted-foreground' />
-            <span>Professor: João Silva</span>
+            <span>Professor: {props.instructor}</span>
           </div>
 
           <div className='flex items-center gap-2'>
             <IconUsers className='size-4 text-muted-foreground' />
-            <span>Alunos: 18</span>
+            <span>Alunos: 12</span>
           </div>
 
           <div className='flex items-center gap-2'>
             <IconClock className='size-4 text-muted-foreground' />
-            <span>Seg, Qua, Sex - 18h às 19h</span>
+            <span>{props.schedule}</span>
+            {/* <span>Seg, Qua, Sex - 18h às 19h</span> */}
           </div>
         </CardContent>
       </Card>

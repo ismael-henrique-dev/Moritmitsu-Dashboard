@@ -1,4 +1,4 @@
-import { ClassCard } from '@/components/classes/classe-card'
+import { ClassesList } from '@/components/classes/classes-list'
 import { SiteHeader } from '@/components/site-header'
 import {
   Breadcrumb,
@@ -8,17 +8,23 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from '@/components/ui/breadcrumb'
-import { Button } from '@/components/ui/button'
 import { Search } from '@/components/ui/search'
-import { IconCirclePlus } from '@tabler/icons-react'
+import { ClassesListSkeleton } from '@/components/ui/skeletons'
 import { Metadata } from 'next'
-import Link from 'next/link'
+import { Suspense } from 'react'
 
 export const metadata: Metadata = {
   title: 'Turmas',
 }
 
-export default function Classes() {
+export default async function Classes(props: {
+  searchParams?: Promise<{
+    query?: string
+  }>
+}) {
+  const searchParams = await props.searchParams
+  const query = searchParams?.query || ''
+
   return (
     <>
       <SiteHeader>
@@ -38,18 +44,12 @@ export default function Classes() {
         <div className='@container/main flex flex-1 flex-col gap-2'>
           <div className='flex flex-col gap-4 py-4 md:gap-6 md:py-6'>
             <div className='px-4 lg:px-6 space-y-6'>
-              <div className='flex gap-3'>
+              <div className='w-full'>
                 <Search placeholder='Buscar turmas...' />
-                <Button type='submit' className='cursor-pointer'>
-                  Buscar
-                </Button>
               </div>
-
-              <div className='space-y-6'>
-                <ClassCard />
-                <ClassCard />
-                <ClassCard />
-              </div>
+              <Suspense fallback={<ClassesListSkeleton />}>
+                <ClassesList query={query} />
+              </Suspense>
             </div>
           </div>
         </div>

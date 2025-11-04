@@ -14,3 +14,8 @@ export type CreateClassResponse = {
     instructor_id: string
   }
 }
+
+export type FetchClassesResponse = {
+  message: string
+  result: Class[]
+}

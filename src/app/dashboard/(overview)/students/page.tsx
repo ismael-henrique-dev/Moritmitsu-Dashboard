@@ -1,5 +1,5 @@
 import { SiteHeader } from '@/components/site-header'
-import { StudentList } from '@/components/students/students-list'
+// import { StudentList } from '@/components/students/students-list'
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -11,9 +11,10 @@ import {
 import { Button } from '@/components/ui/button'
 import { Search } from '@/components/ui/search'
 import Pagination from '@/components/ui/pagination'
-import { IconCirclePlusFilled } from '@tabler/icons-react'
+import { IconCirclePlus, IconCirclePlusFilled } from '@tabler/icons-react'
 import { Metadata } from 'next'
 import Link from 'next/link'
+import { StudentsList } from '@/components/students/students-list'
 
 export const metadata: Metadata = {
   title: 'Alunos',
@@ -40,11 +41,11 @@ export default function Students() {
 
           <Button
             asChild
-            className='bg-primary text-primary-foreground hover:bg-primary/90'
+            className='lg:flex hidden bg-primary text-white hover:bg-primary/90 py-2 px-3 gap-2'
           >
-            <Link href='/dashboard/students/create' rel='noopener noreferrer'>
-              <IconCirclePlusFilled />
-              <span>Cadastrar aluno</span>
+            <Link href='/dashboard/students/create'>
+              <IconCirclePlus className='size-5' />
+              <span className='font-poppins font-medium'>Cadastrar aluno</span>
             </Link>
           </Button>
         </div>
@@ -52,15 +53,21 @@ export default function Students() {
       <div className='flex flex-1 flex-col'>
         <div className='@container/main flex flex-1 flex-col gap-2'>
           <div className='flex flex-col gap-4 py-4 md:gap-6 md:py-6'>
-            <div className='px-4 lg:px-6 space-y-6'>
-              {/* <Link href='/dashboard/students/123456/details'>
-                Ir para detalhes do aluno de id: 123456
-              </Link> */}
-              {/* Filtros */}
-              <div className='flex flex-col md:flex-row gap-2'>
-                <Search placeholder='Buscar alunos...' />
-              </div>
-              <StudentList />
+            <div className='px-4 lg:px-6 space-y-6 w-full'>
+              <Search placeholder='Buscar alunos...' />
+              <Button
+                asChild
+                className='lg:hidden flex bg-primary text-white hover:bg-primary/90 py-2 px-3 gap-2'
+              >
+                <Link href='/dashboard/students/create'>
+                  <IconCirclePlus className='size-5' />
+                  <span className='font-poppins font-medium'>
+                    Cadastrar aluno
+                  </span>
+                </Link>
+              </Button>
+
+              <StudentsList />
               <div className='flex w-full justify-center'>
                 <Pagination totalPages={totalPages} />
               </div>

@@ -55,7 +55,7 @@ export function StudentDetails() {
   return (
     <Card className='@container/card'>
       <CardHeader className='flex items-center justify-between'>
-        <div className='flex items-center gap-4'>
+       <div  className='flex items-center gap-4'>
           <Avatar className='h-12 w-12 rounded-lg grayscale'>
             <AvatarImage src='' alt='Ismael Henrique' />
             <AvatarFallback className='size-12 rounded-full bg-zinc-800 text-white text-lg'>

@@ -1,3 +1,4 @@
+import { CreateStudentForm } from '@/components/forms/create-student'
 import { SectionCards } from '@/components/section-cards'
 import { SiteHeader } from '@/components/site-header'
 import { StudentDetails } from '@/components/students/student-details'
@@ -31,7 +32,7 @@ export default function CreateStudent() {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Cadastro</BreadcrumbPage>
+              <BreadcrumbPage>Cadastrar aluno</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -40,8 +41,7 @@ export default function CreateStudent() {
         <div className='@container/main flex flex-1 flex-col gap-2'>
           <div className='flex flex-col gap-4 py-4 md:gap-6 md:py-6'>
             <div className='px-4 lg:px-6'>
-              {/* <h2>Details do aluno de id: {id}</h2> */}
-              <StudentDetails />
+              <CreateStudentForm />
             </div>
           </div>
         </div>

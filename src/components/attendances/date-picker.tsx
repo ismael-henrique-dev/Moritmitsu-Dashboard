@@ -12,7 +12,13 @@ import { ptBR } from 'date-fns/locale'
 import { useState } from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
-export function DatePicker() {
+type DatePickerProps = {
+  value?: Date
+  onChange?: (date?: Date) => void
+  error?: string
+}
+
+export function DatePicker({ value, onChange, error }: DatePickerProps) {
   const [] = useState<Date | undefined>(new Date())
 
   const searchParams = useSearchParams()
@@ -43,15 +49,15 @@ export function DatePicker() {
 
   return (
     <div className='flex flex-col gap-2 max-w-sm col-span-2 lg:col-span-1'>
-      <label className='text-sm font-semibold'>Data da aula</label>
+      {/* <label className='text-sm font-semibold'>Data da aula</label> */}
       <Popover>
         <PopoverTrigger asChild>
           <Button
             variant='outline'
             className='lg:w-[240px] justify-start text-left font-normal w-full'
           >
-            {date
-              ? format(date, "dd 'de' MMMM 'de' yyyy", { locale: ptBR })
+            {value
+              ? format(value, "dd 'de' MMMM 'de' yyyy", { locale: ptBR })
               : 'Escolher data'}
           </Button>
         </PopoverTrigger>
@@ -61,8 +67,8 @@ export function DatePicker() {
         >
           <Calendar
             mode='single'
-            selected={date}
-            onSelect={handleSelectDate}
+            selected={value}
+            onSelect={onChange}
             locale={ptBR}
           />
         </PopoverContent>

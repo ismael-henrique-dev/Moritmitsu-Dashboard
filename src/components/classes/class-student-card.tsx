@@ -32,7 +32,7 @@ export function ClassStudentCard() {
         </div>
 
         <AlertDialog>
-          <AlertDialogTrigger>
+          <AlertDialogTrigger asChild>
             <Button
               asChild
               className='bg-red-700 text-white hover:bg-red-700/90 py-2 px-3 gap-2 cursor-pointer'

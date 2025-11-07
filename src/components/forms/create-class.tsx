@@ -143,7 +143,7 @@ export function CreateClassForm() {
             }
 
             return (
-              <div className='grid gap-2'>
+              <div key={index} className='grid gap-2'>
                 <div
                   key={field.id}
                   className='grid grid-cols-2 gap-2 items-center'

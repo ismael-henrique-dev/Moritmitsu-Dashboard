@@ -9,7 +9,6 @@ import {
 } from '@/components/ui/select'
 
 import { useState } from 'react'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 const instructors = [
   { id: '1', name: 'Saulo Bezerra' },
@@ -19,29 +18,21 @@ const instructors = [
 
 import * as SelectPrimitive from '@radix-ui/react-select'
 
-export function SelectInstructor({
-  ...props
-}: React.ComponentProps<typeof SelectPrimitive.Root>) {
-  const searchParams = useSearchParams()
-  const pathname = usePathname()
-  const { replace } = useRouter()
+type SelectInstructorProps = {
+  ariaInvalid?: boolean
+} & React.ComponentProps<typeof SelectPrimitive.Root>
 
-  const defaultValue = searchParams.get('instructor')
-  const [selected, setSelected] = useState(defaultValue || '1')
+export function SelectInstructor({
+  ariaInvalid = false,
+  value,
+  onValueChange,
+  ...props
+}: SelectInstructorProps) {
+  const [selected, setSelected] = useState('1')
 
   const handleSelectInstructor = (option: string) => {
     setSelected(option)
-    const params = new URLSearchParams(searchParams)
-
-    if (option && option !== '1') {
-      params.set('instructor', option)
-    } else if (option === '1') {
-      params.delete('instructor')
-    }
-
-    replace(`${pathname}?${params.toString()}`, {
-      scroll: false,
-    })
+    onValueChange?.(option)
   }
 
   const selectedInstructor =
@@ -49,7 +40,7 @@ export function SelectInstructor({
 
   return (
     <Select value={selected} onValueChange={handleSelectInstructor} {...props}>
-      <SelectTrigger className='w-full'>
+      <SelectTrigger className='w-full' aria-invalid={ariaInvalid}>
         <SelectValue placeholder='Escolha uma professor'>
           {selectedInstructor}
         </SelectValue>

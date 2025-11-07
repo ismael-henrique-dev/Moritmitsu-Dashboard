@@ -4,21 +4,18 @@ import { useRouter } from 'next/navigation'
 import { useTransition } from 'react'
 import { useForm, useFieldArray, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Spinner } from '../ui/spinner'
-import { SelectInstructor } from '../attendances/instructor-select'
-
+import { Spinner } from '@/components/ui/spinner'
 import {
   createClassFormSchema,
   CreateClassFormData,
 } from '@/validators/create-class'
 import { IconPlus } from '@tabler/icons-react'
-import { DayOfWeekSelect } from '../classes/day-of-week-select'
 import { createClass } from '@/http/classes/create'
 import { toast } from 'sonner'
+import { DayOfWeekSelect, SelectInstructor } from '@/components/ui/selects'
 
 export function CreateClassForm() {
   const [isPending, startTransition] = useTransition()
@@ -46,14 +43,14 @@ export function CreateClassForm() {
   const handleCreateClass = (data: CreateClassFormData) => {
     startTransition(async () => {
       console.log(data)
-      // const response = await createClass(data)
+      const response = await createClass(data)
 
-      // if (response.status === 'success') {
-      //   toast.success(response.message)
-      //   router.push('/dashboard/classes')
-      // } else {
-      //   toast.error(response.message)
-      // }
+      if (response.status === 'success') {
+        toast.success(response.message)
+        router.push('/dashboard/classes')
+      } else {
+        toast.error(response.message)
+      }
     })
   }
 
@@ -71,6 +68,7 @@ export function CreateClassForm() {
           id='name'
           placeholder='Ex: Nogi, Infantil, Avançado'
           {...register('name')}
+          aria-invalid={!!errors.name}
         />
         {errors.name && (
           <p className='text-red-600 text-sm'>{errors.name.message}</p>
@@ -87,6 +85,7 @@ export function CreateClassForm() {
             <Input
               type='number'
               placeholder='Idade mínima'
+              aria-invalid={!!errors.minAge}
               {...register('minAge', { valueAsNumber: true })}
             />
             {errors.minAge && (
@@ -100,6 +99,7 @@ export function CreateClassForm() {
               {...register('maxAge', {
                 setValueAs: (v) => (v === null || v === '' ? null : Number(v)),
               })}
+              aria-invalid={!!errors.maxAge}
             />
             {errors.maxAge && (
               <p className='text-red-600 text-sm'>{errors.maxAge.message}</p>
@@ -119,6 +119,7 @@ export function CreateClassForm() {
             <SelectInstructor
               value={field.value}
               onValueChange={field.onChange}
+              ariaInvalid={!!errors.instructor}
             />
           )}
         />
@@ -131,49 +132,75 @@ export function CreateClassForm() {
       <div className='grid gap-2'>
         <Label className='font-semibold font-poppins'>Horários da turma</Label>
 
-        <div className='space-y-3'>
-          {fields.map((field, index) => (
-            <div key={field.id} className='grid grid-cols-2 gap-2 items-center'>
-              <Controller
-                control={control}
-                name={`schedules.${index}.dayOfWeek`}
-                render={({ field }) => (
-                  <DayOfWeekSelect
-                    value={field.value}
-                    onValueChange={field.onChange}
-                    error={errors.schedules?.[index]?.dayOfWeek?.message}
-                  />
-                )}
-              />
+        <div className='space-y-1'>
+          {fields.map((field, index) => {
+            const isDisabled = index === 0
 
-              <div className='flex gap-2'>
-                <Input
-                  type='time'
-                  {...register(`schedules.${index}.time`)}
-                  defaultValue='10:30'
-                  className='bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none'
-                />
-                <Button
-                  type='button'
-                  variant='destructive'
-                  onClick={() => remove(index)}
+            const handleDeleteSchedule = () => {
+              if (!isDisabled) {
+                remove(index)
+              }
+            }
+
+            return (
+              <div className='grid gap-2'>
+                <div
+                  key={field.id}
+                  className='grid grid-cols-2 gap-2 items-center'
                 >
-                  Remover
-                </Button>
-              </div>
+                  <Controller
+                    control={control}
+                    name={`schedules.${index}.dayOfWeek`}
+                    render={({ field }) => (
+                      <DayOfWeekSelect
+                        value={field.value}
+                        onValueChange={field.onChange}
+                        ariaInvalid={
+                          !!errors.schedules?.[index]?.dayOfWeek?.message
+                        }
+                      />
+                    )}
+                  />
 
-              {/* {errors.schedules?.[index]?.dayOfWeek && (
-                <p className='text-red-600 text-sm'>
-                  {errors.schedules[index]?.dayOfWeek?.message}
-                </p>
-              )} */}
-              {errors.schedules?.[index]?.time && (
-                <p className='text-red-600 text-sm'>
-                  {errors.schedules[index]?.time?.message}
-                </p>
-              )}
-            </div>
-          ))}
+                  <div className='flex gap-2'>
+                    <Input
+                      type='time'
+                      aria-invalid={!!errors.schedules?.[index]?.time}
+                      {...register(`schedules.${index}.time`)}
+                      defaultValue='10:30'
+                      className='bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none'
+                    />
+                    <Button
+                      disabled={isDisabled}
+                      type='button'
+                      variant='destructive'
+                      onClick={handleDeleteSchedule}
+                    >
+                      Remover
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Errors */}
+                <div className='grid grid-cols-2 gap-3'>
+                  <div>
+                    {errors.schedules?.[index]?.dayOfWeek && (
+                      <p className='text-red-600 text-sm'>
+                        {errors.schedules[index]?.dayOfWeek?.message}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    {errors.schedules?.[index]?.time && (
+                      <p className='text-red-600 text-sm'>
+                        {errors.schedules[index]?.time?.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )
+          })}
 
           <div>
             <Button
@@ -190,7 +217,12 @@ export function CreateClassForm() {
 
       {/* Botões */}
       <div className='flex justify-end gap-3'>
-        <Button type='button' variant='outline'>
+        <Button
+          type='button'
+          variant='outline'
+          disabled={isPending}
+          onClick={() => router.back()}
+        >
           Cancelar
         </Button>
         <Button type='submit' disabled={isPending}>

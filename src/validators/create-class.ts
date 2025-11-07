@@ -21,7 +21,7 @@ export const createClassFormSchema = z
     instructor: z.string({ error: 'Selecione um professor responsável.' }),
   })
   .superRefine((data, ctx) => {
-    const { minAge, maxAge } = data
+    const { minAge, maxAge, schedules } = data
 
     // Se minAge não for um número válido, a validação base já falhou.
     if (typeof minAge !== 'number') {
@@ -56,6 +56,44 @@ export const createClassFormSchema = z
         message: 'Idade máxima deve ser maior que a idade mínima.',
         path: ['maxAge'],
       })
+    }
+
+    // --- LÓGICA DE VALIDAÇÃO DOS HORARIOS ---
+
+    const scheduleMap = new Map()
+
+    schedules.forEach((schedule, index) => {
+      if (!schedule.dayOfWeek || !schedule.time) {
+        return
+      }
+
+      const key = `${schedule.dayOfWeek}-${schedule.time}`
+
+      if (!scheduleMap.has(key)) {
+        scheduleMap.set(key, [])
+      }
+
+      scheduleMap.get(key).push(index)
+    })
+
+    for (const indices of scheduleMap.values()) {
+      if (indices.length > 1) {
+        for (let i = 1; i < indices.length; i++) {
+          const duplicateIndex = indices[i]
+
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Este horário já foi adicionado, selecione outro horário.',
+            path: ['schedules', duplicateIndex, 'dayOfWeek'],
+          })
+
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Este horário já foi adicionado, selecione outro horário.',
+            path: ['schedules', duplicateIndex, 'time'],
+          })
+        }
+      }
     }
   })
 

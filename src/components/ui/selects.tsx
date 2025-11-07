@@ -8,6 +8,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import * as SelectPrimitive from '@radix-ui/react-select'
+import { useState } from 'react'
 
 const belts = [
   { id: 'white', name: 'Branca' },
@@ -29,6 +30,22 @@ const degrees = [
   { id: '5', name: '4º grau' },
   { id: '6', name: '5º grau' },
   { id: '7', name: '6º grau' },
+]
+
+const instructors = [
+  { id: '1', name: 'Saulo Bezerra' },
+  { id: '2', name: 'Daniel Lima' },
+  { id: '3', name: 'Aluno' },
+]
+
+const daysOfWeek = [
+  { id: 'segunda', name: 'Segunda-feira' },
+  { id: 'terca', name: 'Terça-feira' },
+  { id: 'quarta', name: 'Quarta-feira' },
+  { id: 'quinta', name: 'Quinta-feira' },
+  { id: 'sexta', name: 'Sexta-feira' },
+  { id: 'sabado', name: 'Sábado' },
+  { id: 'domingo', name: 'Domingo' },
 ]
 
 interface SelectProps
@@ -70,6 +87,75 @@ export function SelectDegree({ value, onValueChange, ...props }: SelectProps) {
         {degrees.map((degree) => (
           <SelectItem key={degree.id} value={degree.id}>
             {degree.name}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  )
+}
+
+type SelectInstructorProps = {
+  ariaInvalid?: boolean
+} & React.ComponentProps<typeof SelectPrimitive.Root>
+
+export function SelectInstructor({
+  ariaInvalid = false,
+  value,
+  onValueChange,
+  ...props
+}: SelectInstructorProps) {
+  const selectedInstructor =
+    instructors.find((i) => i.id === value)?.name || 'Escolha um professor'
+
+  return (
+    <Select value={value} onValueChange={onValueChange} {...props}>
+      <SelectTrigger className='w-full' aria-invalid={ariaInvalid}>
+        <SelectValue placeholder='Escolha uma professor'>
+          {selectedInstructor}
+        </SelectValue>
+      </SelectTrigger>
+      <SelectContent>
+        {instructors.map((instructor) => (
+          <SelectItem key={instructor.id} value={instructor.id}>
+            {instructor.name}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  )
+}
+
+type DayOfWeekSelectProps = {
+  ariaInvalid?: boolean
+} & React.ComponentProps<typeof SelectPrimitive.Root>
+
+export function DayOfWeekSelect({
+  ariaInvalid = false,
+  value,
+  onValueChange,
+  ...props
+}: DayOfWeekSelectProps) {
+  const [selected, setSelected] = useState(value ?? '')
+
+  const handleChange = (option: string) => {
+    setSelected(option)
+    onValueChange?.(option)
+  }
+
+  const selectedDay =
+    daysOfWeek.find((day) => day.id === selected)?.name || 'Selecione o dia'
+
+  return (
+    <Select value={selected} onValueChange={handleChange} {...props}>
+      <SelectTrigger className='w-full' aria-invalid={ariaInvalid}>
+        <SelectValue placeholder='Escolha um dia da semana'>
+          {selectedDay}
+        </SelectValue>
+      </SelectTrigger>
+      <SelectContent>
+        {daysOfWeek.map((day) => (
+          <SelectItem key={day.id} value={day.id}>
+            {day.name}
           </SelectItem>
         ))}
       </SelectContent>

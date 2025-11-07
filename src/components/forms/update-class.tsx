@@ -14,9 +14,10 @@ import {
   CreateClassFormData,
 } from '@/validators/create-class'
 import { IconPlus } from '@tabler/icons-react'
-import { DayOfWeekSelect } from '../classes/day-of-week-select'
+
 import { createClass } from '@/http/classes/create'
 import { toast } from 'sonner'
+import { DayOfWeekSelect } from '../ui/selects'
 
 export function UpdateClassForm() {
   const [isPending, startTransition] = useTransition()
@@ -136,7 +137,6 @@ export function UpdateClassForm() {
                   <DayOfWeekSelect
                     value={field.value}
                     onValueChange={field.onChange}
-                    error={errors.schedules?.[index]?.dayOfWeek?.message}
                   />
                 )}
               />

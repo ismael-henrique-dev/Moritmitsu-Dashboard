@@ -31,6 +31,7 @@ export function CreateClassForm() {
     formState: { errors },
   } = useForm<CreateClassFormData>({
     resolver: zodResolver(createClassFormSchema),
+    mode: 'onChange',
     defaultValues: {
       schedules: [{ dayOfWeek: '', time: '' }],
       maxAge: null,
@@ -45,14 +46,14 @@ export function CreateClassForm() {
   const handleCreateClass = (data: CreateClassFormData) => {
     startTransition(async () => {
       console.log(data)
-      const response = await createClass(data)
+      // const response = await createClass(data)
 
-      if (response.status === 'success') {
-        toast.success(response.message)
-        router.push('/dashboard/classes')
-      } else {
-        toast.error(response.message)
-      }
+      // if (response.status === 'success') {
+      //   toast.success(response.message)
+      //   router.push('/dashboard/classes')
+      // } else {
+      //   toast.error(response.message)
+      // }
     })
   }
 
@@ -96,7 +97,9 @@ export function CreateClassForm() {
             <Input
               type='number'
               placeholder='Idade máxima (opcional)'
-              {...register('maxAge', { valueAsNumber: true })}
+              {...register('maxAge', {
+                setValueAs: (v) => (v === null || v === '' ? null : Number(v)),
+              })}
             />
             {errors.maxAge && (
               <p className='text-red-600 text-sm'>{errors.maxAge.message}</p>

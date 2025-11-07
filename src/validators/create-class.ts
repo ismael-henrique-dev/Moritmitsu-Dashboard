@@ -1,12 +1,5 @@
 import { z } from 'zod'
 
-// A função auxiliar não está sendo usada, mas vou mantê-la.
-const toNumberOrUndefined = (val: number) => {
-  if (val === null || val === undefined) return null
-  if (typeof val === 'number' && isNaN(val)) return null
-  return val
-}
-
 export const createClassFormSchema = z
   .object({
     name: z.string().min(3, 'O nome da turma deve ter no mínimo 3 caracteres.'),
@@ -14,11 +7,9 @@ export const createClassFormSchema = z
       .number({
         error: 'A idade mínima é obrigatória.',
       })
-      .min(4, 'Idade mínima é de 4 anos.'),
 
-    maxAge: z
-      .union([z.number().min(0, 'Informe um número válido.'), z.null()])
-      .optional(), // .optional() significa que o valor pode ser number | null | undefined
+      .min(4, 'Idade mínima é de 4 anos.'),
+    maxAge: z.number().nullable(),
     schedules: z
       .array(
         z.object({
@@ -27,38 +18,45 @@ export const createClassFormSchema = z
         })
       )
       .min(1, 'Adicione pelo menos um horário.'),
-    instructor: z.string().nonempty('Selecione um professor.'),
+    instructor: z.string({ error: 'Selecione um professor responsável.' }),
   })
-  // 1. Se minAge < 12 → exige maxAge (que deve ser um número)
-  .refine(
-    (data) => {
-      // Se minAge >= 12, a regra não se aplica (passa)
-      if (data.minAge >= 12) {
-        return true
-      }
-      // Se minAge < 12, maxAge DEVE ser um número.
-      return typeof data.maxAge === 'number'
-    },
-    {
-      message:
-        'Se a idade mínima for menor que 12, a idade máxima é obrigatória.',
-      path: ['maxAge'],
+  .superRefine((data, ctx) => {
+    const { minAge, maxAge } = data
+
+    // Se minAge não for um número válido, a validação base já falhou.
+    if (typeof minAge !== 'number') {
+      return
     }
-  )
-  // 2. Se maxAge informado (é um número) → deve ser > minAge
-  .refine(
-    (data) => {
-      // Se maxAge não foi informado (não é um número), a regra não se aplica (passa)
-      if (typeof data.maxAge !== 'number') {
-        return true
-      }
-      // Se foi informado, deve ser maior que minAge
-      return data.maxAge > data.minAge
-    },
-    {
-      message: 'A idade máxima deve ser maior que a idade mínima.',
-      path: ['maxAge'],
+
+    // --- LÓGICA DE VALIDAÇÃO ---
+
+    if (maxAge && maxAge <= minAge) {
+      console.log('Regra 1')
+
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Idade máxima deve ser maior que a idade mínima.',
+        path: ['maxAge'],
+      })
     }
-  )
+
+    if (!maxAge && minAge < 12) {
+      console.log('Regra 2')
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Idade máxima é obrigatória se a mínima for menor que 12.',
+        path: ['maxAge'],
+      })
+    }
+
+    if (maxAge && maxAge > 12 && maxAge <= minAge) {
+      console.log('Regra 3')
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Idade máxima deve ser maior que a idade mínima.',
+        path: ['maxAge'],
+      })
+    }
+  })
 
 export type CreateClassFormData = z.infer<typeof createClassFormSchema>

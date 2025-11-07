@@ -12,7 +12,6 @@ import Link from 'next/link'
 import { deleteClassById } from '@/http/classes/delete'
 import {
   AlertDialog,
- 
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -57,15 +56,18 @@ export function ClassCard(props: ClassCardProps) {
   }
 
   return (
-    // <Link href='/dashboard/classes/1234/details' className='mb-4'>
     <Card className='@container/card cursor-pointer hover:shadow-lg transition-shadow mb-4'>
       <CardHeader className='flex justify-between items-start'>
-        <div>
-          <CardTitle className='text-xl font-semibold'>{props.title}</CardTitle>
-          <span className='text-sm text-muted-foreground'>
-            Faixa etária: {props.ageRange.min} a {props.ageRange.max} anos
-          </span>
-        </div>
+        <Link href={`/dashboard/classes/${classId}/details`} className='w-full'>
+          <div className='space-y-1'>
+            <CardTitle className='text-xl font-semibold'>
+              {props.title}
+            </CardTitle>
+            <span className='text-sm text-neutral-500 font-poppins'>
+              Faixa etária: {props.ageRange.min} a {props.ageRange.max} anos
+            </span>
+          </div>
+        </Link>
 
         <div className='flex items-center gap-3'>
           <Link href={`/dashboard/classes/${classId}/edit`}>
@@ -115,24 +117,27 @@ export function ClassCard(props: ClassCardProps) {
         </div>
       </CardHeader>
 
-      <CardContent className='grid gap-2 text-sm'>
-        <div className='flex items-center gap-2'>
-          <IconUser className='size-4 text-muted-foreground' />
-          <span>Professor: {props.instructor}</span>
-        </div>
+      <Link href={`/dashboard/classes/${classId}/details`}>
+        <CardContent className='grid gap-2 text-sm'>
+          <div className='flex items-center gap-2'>
+            <IconUser className='size-4' />
+            <span className='text-sm font-poppins'>
+              Professor: {props.instructor}
+            </span>
+          </div>
 
-        <div className='flex items-center gap-2'>
-          <IconUsers className='size-4 text-muted-foreground' />
-          <span>Alunos: 12</span>
-        </div>
+          <div className='flex items-center gap-2'>
+            <IconUsers className='size-4' />
+            <span className='text-sm font-poppins'>Alunos: 12</span>
+          </div>
 
-        <div className='flex items-center gap-2'>
-          <IconClock className='size-4 text-muted-foreground' />
-          <span>{props.schedule}</span>
-          {/* <span>Seg, Qua, Sex - 18h às 19h</span> */}
-        </div>
-      </CardContent>
+          <div className='flex items-center gap-2'>
+            <IconClock className='size-4' />
+            <span className='text-sm font-poppins'>{props.schedule}</span>
+            {/* <span>Seg, Qua, Sex - 18h às 19h</span> */}
+          </div>
+        </CardContent>
+      </Link>
     </Card>
-    // </Link>
   )
 }

@@ -1,3 +1,5 @@
+'use client'
+
 import {
   Card,
   CardAction,
@@ -21,6 +23,21 @@ import {
 } from '@/components/ui/tooltip'
 import { Progress } from '@/components/ui/progress'
 import { Badge } from '../ui/badge'
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
+import { useTransition } from 'react'
+import { deleteStudentById } from '@/http/students/delete'
+import { toast } from 'sonner'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 // Exemplo de componente para exibir a faixa
 function BeltProgress({
@@ -51,11 +68,32 @@ function BeltProgress({
   )
 }
 
-export function StudentDetails() {
+type StudentDetailsProps = {
+  id: string
+}
+
+export function StudentDetails(props: StudentDetailsProps) {
+  const [isPending, startTransition] = useTransition()
+  const { push } = useRouter()
+  const studentId = props.id
+
+  const handleDeleteStudentById = async () => {
+    startTransition(async () => {
+      const response = await deleteStudentById(studentId)
+
+      if (response.status === 'success') {
+        toast.success(response.message)
+        push('/dashboard/students')
+      } else {
+        toast.error(response.message)
+      }
+    })
+  }
+
   return (
     <Card className='@container/card'>
       <CardHeader className='flex items-center justify-between'>
-       <div  className='flex items-center gap-4'>
+        <div className='flex items-center gap-4'>
           <Avatar className='h-12 w-12 rounded-lg grayscale'>
             <AvatarImage src='' alt='Ismael Henrique' />
             <AvatarFallback className='size-12 rounded-full bg-zinc-800 text-white text-lg'>
@@ -128,8 +166,8 @@ export function StudentDetails() {
             <span>Graduar Aluno</span>
           </Button>
         </CardAction>
-        <div className='space-x-3 h-10'>
-          <Tooltip>
+        <div className='flex items-center gap-3 h-10'>
+          {/* <Tooltip>
             <TooltipTrigger>
               <IconPencil className='ml-auto size-6 cursor-pointer' />
             </TooltipTrigger>
@@ -144,7 +182,50 @@ export function StudentDetails() {
             <TooltipContent>
               <p>Deletar</p>
             </TooltipContent>
-          </Tooltip>
+          </Tooltip> */}
+
+          <Link href={`/dashboard/students/${studentId}/edit`}>
+            <IconPencil className='ml-auto size-6 cursor-pointer' />
+          </Link>
+
+          <AlertDialog>
+            <AlertDialogTrigger>
+              <IconTrash className='ml-auto size-6 cursor-pointer' />
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle className='text-xl font-poppins font-semibold tracking-[-0.0002em]'>
+                  Deletar aluno
+                </AlertDialogTitle>
+                <AlertDialogDescription className='font-poppins text-sm'>
+                  Você realmente deseja deletar este aluno?
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel
+                  disabled={isPending}
+                  className='cursor-pointer'
+                >
+                  Cancelar
+                </AlertDialogCancel>
+                {/* <AlertDialogAction
+                  asChild
+                  disabled={isPending}
+                  className='bg-red-700 hover:bg-red-700/90 transition-colors cursor-pointer'
+                > */}
+                <Button
+                  disabled={isPending}
+                  onClick={handleDeleteStudentById}
+                  className='bg-red-700 hover:bg-red-700/90 transition-colors cursor-pointer'
+                >
+                  <IconTrash className='size-5' />
+
+                  {isPending ? 'Deletando...' : 'Deletar'}
+                </Button>
+                {/* </AlertDialogAction> */}
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </CardFooter>
     </Card>

@@ -70,3 +70,32 @@ export function ClassesListSkeleton() {
     </div>
   )
 }
+
+function StudentCardSkeleton() {
+  return (
+    <Card className='mb-4 p-0'>
+      <CardContent className='flex justify-between items-center px-3 py-3'>
+        <div className='flex items-center gap-4'>
+          {/* Avatar */}
+          <Skeleton className='h-8 w-8 rounded-lg' />
+
+          {/* Nome */}
+          <Skeleton className='h-4 w-32' />
+        </div>
+
+        {/* Faixa e Grau */}
+        <Skeleton className='h-4 w-24' />
+      </CardContent>
+    </Card>
+  )
+}
+
+export function StudentListSkeleton() {
+  return (
+    <div className='space-y-6'>
+      {Array.from({ length: 6 }).map((_, index) => (
+        <StudentCardSkeleton key={index} />
+      ))}
+    </div>
+  )
+}

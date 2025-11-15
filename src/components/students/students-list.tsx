@@ -1,16 +1,22 @@
-'use client'
-
+import { fetchStudents } from '@/http/students/get'
 import { StudentCard } from './student-card'
 
-export async function StudentsList() {
-  // const response = await fetchClasses(query)
-  // const classes = response.data
+export async function StudentsList({ query }: { query: string }) {
+  const response = await fetchStudents(query)
+  const students = response.data
 
   return (
     <div className='space-y-6'>
-      {Array.from({ length: 10 }).map((_, index) => (
-        <StudentCard key={index} />
-      ))}
+      {students &&
+        students.map((student) => (
+          <StudentCard
+            key={student.id}
+            id={student.id}
+            belt={student.belt}
+            grade={student.grade}
+            title={student.name}
+          />
+        ))}
     </div>
   )
 }

@@ -11,16 +11,24 @@ import {
 import { Button } from '@/components/ui/button'
 import { Search } from '@/components/ui/search'
 import Pagination from '@/components/ui/pagination'
-import { IconCirclePlus, IconCirclePlusFilled } from '@tabler/icons-react'
+import { IconCirclePlus } from '@tabler/icons-react'
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { StudentsList } from '@/components/students/students-list'
+import { Suspense } from 'react'
+import { StudentListSkeleton } from '@/components/ui/skeletons'
 
 export const metadata: Metadata = {
   title: 'Alunos',
 }
 
-export default function Students() {
+export default async function Students(props: {
+  searchParams?: Promise<{
+    query?: string
+  }>
+}) {
+  const searchParams = await props.searchParams
+  const query = searchParams?.query || ''
   const totalPages = 10
 
   return (
@@ -67,7 +75,10 @@ export default function Students() {
                 </Link>
               </Button>
 
-              <StudentsList />
+              <Suspense fallback={<StudentListSkeleton />}>
+                <StudentsList query={query} />
+              </Suspense>
+
               <div className='flex w-full justify-center'>
                 <Pagination totalPages={totalPages} />
               </div>

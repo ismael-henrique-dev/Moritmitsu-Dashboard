@@ -84,3 +84,28 @@ export const formatPhone = (value: string) => {
       .replace(/(-\d{4})\d+?$/, '$1')
   }
 }
+
+export function beltToPtBr(belt: Belt): string {
+  const map: Record<Belt, string> = {
+    "white": "branca",
+    "gray/white": "cinza com branca",
+    "gray": "cinza",
+    "gray/black": "cinza com preto",
+    "yellow/white": "amarela com branca",
+    "yellow": "amarela",
+    "yellow/black": "amarela com preta",
+    "orange/white": "laranja com branca",
+    "orange": "laranja",
+    "orange/black": "laranja com preta",
+    "green/white": "verde com branca",
+    "green": "verde",
+    "green/black": "verde com preta",
+    "blue": "azul",
+    "purple": "roxa",
+    "brown": "marrom",
+    "black": "preta",
+    "red": "vermelha",
+  };
+
+  return map[belt];
+}

@@ -20,6 +20,18 @@ export type FetchClassesResponse = {
   result: Class[]
 }
 
+type FetchStudentData = {
+  id: string
+  name: string
+  belt: Belt
+  grade: number
+}
+
+export type FetchStudentsResponse = {
+  message: string
+  result: FetchStudentData[]
+}
+
 export type StudentData = {
   cpf: string
   full_name: string

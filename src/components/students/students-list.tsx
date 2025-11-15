@@ -1,13 +1,15 @@
 import { fetchStudents } from '@/http/students/get'
 import { StudentCard } from './student-card'
+import { EmptyStudents } from './empty-students'
 
 export async function StudentsList({ query }: { query: string }) {
   const response = await fetchStudents(query)
-  const students = response.data
+  const students = response.data ?? []
+  const hasStudents = students.length > 0
 
   return (
     <div className='space-y-6'>
-      {students &&
+      {hasStudents ? (
         students.map((student) => (
           <StudentCard
             key={student.id}
@@ -16,7 +18,10 @@ export async function StudentsList({ query }: { query: string }) {
             grade={student.grade}
             title={student.name}
           />
-        ))}
+        ))
+      ) : (
+        <EmptyStudents />
+      )}
     </div>
   )
 }

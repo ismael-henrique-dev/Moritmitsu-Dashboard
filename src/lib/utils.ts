@@ -53,3 +53,34 @@ export function getUserInitials(name: string) {
   }
   return initials[0] || ''
 }
+
+export const formatCpf = (value: string) => {
+  const cleanedValue = value.replace(/\D/g, '') // remove caracteres não numéricos
+
+  if (cleanedValue.length <= 11) {
+    // CPF
+    return cleanedValue
+      .replace(/(\d{3})(\d)/, '$1.$2')
+      .replace(/(\d{3})(\d)/, '$1.$2')
+      .replace(/(\d{3})(\d{1,2})/, '$1-$2')
+      .replace(/(-\d{2})\d+?$/, '$1')
+  }
+}
+
+export const formatPhone = (value: string) => {
+  const cleanedValue = value.replace(/\D/g, '')
+
+  if (cleanedValue.length <= 10) {
+    // formato fixo: (99) 9999-9999
+    return cleanedValue
+      .replace(/^(\d{2})(\d)/, '($1) $2')
+      .replace(/(\d{4})(\d)/, '$1-$2')
+      .replace(/(-\d{4})\d+?$/, '$1')
+  } else {
+    // formato celular: (99) 99999-9999
+    return cleanedValue
+      .replace(/^(\d{2})(\d)/, '($1) $2')
+      .replace(/(\d{5})(\d)/, '$1-$2')
+      .replace(/(-\d{4})\d+?$/, '$1')
+  }
+}

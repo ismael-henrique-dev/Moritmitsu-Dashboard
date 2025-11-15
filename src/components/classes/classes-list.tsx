@@ -1,13 +1,15 @@
 import { fetchClasses } from '@/http/classes/get'
 import { ClassCard } from './classe-card'
+import { EmptyClasses } from './empty-classes'
 
 export async function ClassesList({ query }: { query: string }) {
   const response = await fetchClasses(query)
-  const classes = response.data
+  const classes = response.data ?? []
+  const hasClasses = classes.length > 0
 
   return (
     <div className='space-y-6'>
-      {classes &&
+      {hasClasses ? (
         classes.map((cls) => (
           <ClassCard
             key={cls.id}
@@ -18,7 +20,10 @@ export async function ClassesList({ query }: { query: string }) {
             schedule={cls.schedule}
             title={cls.name}
           />
-        ))}
+        ))
+      ) : (
+        <EmptyClasses />
+      )}
     </div>
   )
 }

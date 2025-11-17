@@ -93,7 +93,7 @@ function StudentCardSkeleton() {
 export function StudentListSkeleton() {
   return (
     <div className='space-y-6'>
-      {Array.from({ length: 6 }).map((_, index) => (
+      {Array.from({ length: 10 }).map((_, index) => (
         <StudentCardSkeleton key={index} />
       ))}
     </div>

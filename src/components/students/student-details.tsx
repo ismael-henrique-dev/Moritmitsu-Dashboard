@@ -16,11 +16,6 @@ import {
   IconPencil,
   IconTrash,
 } from '@tabler/icons-react'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
 import { Progress } from '@/components/ui/progress'
 import { Badge } from '../ui/badge'
 import {
@@ -36,8 +31,8 @@ import {
 import { useTransition } from 'react'
 import { deleteStudentById } from '@/http/students/delete'
 import { toast } from 'sonner'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 // Exemplo de componente para exibir a faixa
 function BeltProgress({
@@ -167,23 +162,6 @@ export function StudentDetails(props: StudentDetailsProps) {
           </Button>
         </CardAction>
         <div className='flex items-center gap-3 h-10'>
-          {/* <Tooltip>
-            <TooltipTrigger>
-              <IconPencil className='ml-auto size-6 cursor-pointer' />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Editar</p>
-            </TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger>
-              <IconTrash className='ml-auto size-6 cursor-pointer' />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Deletar</p>
-            </TooltipContent>
-          </Tooltip> */}
-
           <Link href={`/dashboard/students/${studentId}/edit`}>
             <IconPencil className='ml-auto size-6 cursor-pointer' />
           </Link>

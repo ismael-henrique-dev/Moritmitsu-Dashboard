@@ -73,6 +73,7 @@ export function FilterClassSelect() {
         <SelectValue placeholder={getSelectedName()} />
       </SelectTrigger>
       <SelectContent>
+        <SelectItem value='all'>Todas</SelectItem>
         {classes.map((instructor) => (
           <SelectItem key={instructor.id} value={instructor.id}>
             {instructor.name}

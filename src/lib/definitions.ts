@@ -10,8 +10,14 @@ export type CreateClassResponse = {
     name: string
     min_age: number
     max_age: number
-    schedule: string
+    schedule: {
+      dayOfWeek: string
+      time: string
+    }[]
     instructor_id: string
+    instructor: {
+      username: string
+    }
   }
 }
 

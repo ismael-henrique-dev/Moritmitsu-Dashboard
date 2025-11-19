@@ -87,25 +87,76 @@ export const formatPhone = (value: string) => {
 
 export function beltToPtBr(belt: Belt): string {
   const map: Record<Belt, string> = {
-    "white": "branca",
-    "gray/white": "cinza com branca",
-    "gray": "cinza",
-    "gray/black": "cinza com preto",
-    "yellow/white": "amarela com branca",
-    "yellow": "amarela",
-    "yellow/black": "amarela com preta",
-    "orange/white": "laranja com branca",
-    "orange": "laranja",
-    "orange/black": "laranja com preta",
-    "green/white": "verde com branca",
-    "green": "verde",
-    "green/black": "verde com preta",
-    "blue": "azul",
-    "purple": "roxa",
-    "brown": "marrom",
-    "black": "preta",
-    "red": "vermelha",
-  };
+    white: 'branca',
+    'gray/white': 'cinza com branca',
+    gray: 'cinza',
+    'gray/black': 'cinza com preto',
+    'yellow/white': 'amarela com branca',
+    yellow: 'amarela',
+    'yellow/black': 'amarela com preta',
+    'orange/white': 'laranja com branca',
+    orange: 'laranja',
+    'orange/black': 'laranja com preta',
+    'green/white': 'verde com branca',
+    green: 'verde',
+    'green/black': 'verde com preta',
+    blue: 'azul',
+    purple: 'roxa',
+    brown: 'marrom',
+    black: 'preta',
+    red: 'vermelha',
+  }
 
-  return map[belt];
+  return map[belt]
 }
+
+const daysMap: Record<string, string> = {
+  'segunda-feira': 'Seg',
+  'terca-feira': 'Ter',
+  'terça-feira': 'Ter',
+  'quarta-feira': 'Qua',
+  'quinta-feira': 'Qui',
+  'sexta-feira': 'Sex',
+  sabado: 'Sáb',
+  sábado: 'Sáb',
+  domingo: 'Dom',
+}
+
+export function formatSchedule(
+  schedule: { dayOfWeek: string; time: string }[]
+) {
+  if (!schedule || schedule.length === 0) return ''
+
+  const normalized = (text: string) =>
+    text
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+
+  const groups: Record<string, string[]> = {}
+
+  for (const item of schedule) {
+    const normalizedDay = normalized(item.dayOfWeek)
+    const short = daysMap[normalizedDay] ?? item.dayOfWeek
+
+    if (!groups[item.time]) groups[item.time] = []
+    groups[item.time].push(short)
+  }
+
+  const parts = Object.entries(groups).map(([time, days]) => {
+    const [hour, minute] = time.split(':')
+    const formattedTime = `${hour}h${minute !== '00' ? minute : ''}`
+    return `${days.join(', ')} - ${formattedTime}`
+  })
+
+  return parts.join(' | ')
+}
+
+export function formatAgeRange(min: number, max: number | null) {
+  if (!max) {
+    return `${min} anos`
+  }
+
+  return `${min} a ${max} anos`
+}
+

@@ -162,3 +162,31 @@ export function DayOfWeekSelect({
     </Select>
   )
 }
+
+
+export function SelectClass({
+  ariaInvalid = false,
+  value,
+  onValueChange,
+  ...props
+}: SelectInstructorProps) {
+  const selectedInstructor =
+    instructors.find((i) => i.id === value)?.name || 'Escolha um professor'
+
+  return (
+    <Select value={value} onValueChange={onValueChange} {...props}>
+      <SelectTrigger className='w-full' aria-invalid={ariaInvalid}>
+        <SelectValue placeholder='Escolha uma professor'>
+          {selectedInstructor}
+        </SelectValue>
+      </SelectTrigger>
+      <SelectContent>
+        {instructors.map((instructor) => (
+          <SelectItem key={instructor.id} value={instructor.id}>
+            {instructor.name}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  )
+}

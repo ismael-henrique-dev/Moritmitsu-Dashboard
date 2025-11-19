@@ -19,7 +19,6 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from '@/components/ui/form'
 import z from 'zod'
 import { useForm } from 'react-hook-form'
@@ -50,23 +49,23 @@ const students = [
     label: 'Arlinda Macedo',
   },
   {
-    id: 'documents',
+    id: 'documents-1',
     label: 'Simone Freire',
   },
   {
-    id: 'documents',
+    id: 'documents-2',
     label: 'Simone Freire',
   },
   {
-    id: 'documents',
+    id: 'documents-3',
     label: 'Simone Freire',
   },
   {
-    id: 'documents',
+    id: 'documents-4',
     label: 'Simone Freire',
   },
   {
-    id: 'desktop',
+    id: 'desktop-1',
     label: 'Jair Messias dos Reis',
   },
 ] as const
@@ -102,7 +101,7 @@ export function AddStudentsSheet() {
       <SheetTrigger asChild>
         <Button
           asChild
-          className='lg:flex hidden bg-primary text-white hover:bg-primary/90 py-2 px-3 gap-2'
+          className='flex bg-primary text-white hover:bg-primary/90 py-2 px-3 gap-2'
         >
           <div>
             <IconCirclePlus className='size-5' />

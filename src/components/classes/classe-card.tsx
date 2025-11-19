@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useTransition } from 'react'
 import {
   IconUsers,
   IconClock,
@@ -8,8 +9,6 @@ import {
   IconTrash,
 } from '@tabler/icons-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import Link from 'next/link'
-import { deleteClassById } from '@/http/classes/delete'
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -21,8 +20,10 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { toast } from 'sonner'
-import { useState, useTransition } from 'react'
-import { Button } from '../ui/button'
+import { deleteClassById } from '@/http/classes/delete'
+import { Button } from '@/components/ui/button'
+import { formatAgeRange, formatSchedule } from '@/lib/utils'
+import Link from 'next/link'
 
 type ClassCardProps = {
   id: string
@@ -33,7 +34,11 @@ type ClassCardProps = {
   }
   instructor: string
   studentsCount: number
-  schedule: string
+  schedule: {
+    dayOfWeek: string
+    time: string
+  }[]
+  totalStudents: number
 }
 
 export function ClassCard(props: ClassCardProps) {
@@ -41,6 +46,9 @@ export function ClassCard(props: ClassCardProps) {
   const [isPending, startTransition] = useTransition()
 
   const classId = props.id
+
+  const ageRange = formatAgeRange(props.ageRange.min, props.ageRange.max)
+  const schedule = formatSchedule(props.schedule)
 
   const handleDeleteClassById = async () => {
     startTransition(async () => {
@@ -64,7 +72,7 @@ export function ClassCard(props: ClassCardProps) {
               {props.title}
             </CardTitle>
             <span className='text-sm text-neutral-500 font-poppins'>
-              Faixa etária: {props.ageRange.min} a {props.ageRange.max} anos
+              Faixa etária: {ageRange}
             </span>
           </div>
         </Link>
@@ -76,10 +84,7 @@ export function ClassCard(props: ClassCardProps) {
 
           <AlertDialog open={isOpen} onOpenChange={setIsOpen} key={classId}>
             <AlertDialogTrigger>
-              <IconTrash
-                className='size-5 cursor-pointer text-muted-foreground hover:text-destructive transition-colors'
-                // onClick={() => setIsOpen(true)}
-              />
+              <IconTrash className='size-5 cursor-pointer text-muted-foreground hover:text-destructive transition-colors' />
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
@@ -97,11 +102,6 @@ export function ClassCard(props: ClassCardProps) {
                 >
                   Cancelar
                 </AlertDialogCancel>
-                {/* <AlertDialogAction
-                  asChild
-                  disabled={isPending}
-                  className='bg-red-700 hover:bg-red-700/90 transition-colors cursor-pointer'
-                > */}
                 <Button
                   disabled={isPending}
                   onClick={handleDeleteClassById}
@@ -110,7 +110,6 @@ export function ClassCard(props: ClassCardProps) {
                   <IconTrash className='size-5' />
                   {isPending ? 'Deletando...' : 'Deletar'}
                 </Button>
-                {/* </AlertDialogAction> */}
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
@@ -128,13 +127,14 @@ export function ClassCard(props: ClassCardProps) {
 
           <div className='flex items-center gap-2'>
             <IconUsers className='size-4' />
-            <span className='text-sm font-poppins'>Alunos: 12</span>
+            <span className='text-sm font-poppins'>
+              Alunos: {props.totalStudents}
+            </span>
           </div>
 
           <div className='flex items-center gap-2'>
             <IconClock className='size-4' />
-            <span className='text-sm font-poppins'>{props.schedule}</span>
-            {/* <span>Seg, Qua, Sex - 18h às 19h</span> */}
+            <span className='text-sm font-poppins'>{schedule}</span>
           </div>
         </CardContent>
       </Link>

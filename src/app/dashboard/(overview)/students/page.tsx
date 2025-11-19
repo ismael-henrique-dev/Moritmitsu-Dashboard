@@ -17,6 +17,7 @@ import Link from 'next/link'
 import { StudentsList } from '@/components/students/students-list'
 import { Suspense } from 'react'
 import { StudentListSkeleton } from '@/components/ui/skeletons'
+import { StudentsFilters } from '@/components/students/students-filters'
 
 export const metadata: Metadata = {
   title: 'Alunos',
@@ -62,6 +63,7 @@ export default async function Students(props: {
         <div className='@container/main flex flex-1 flex-col gap-2'>
           <div className='flex flex-col gap-4 py-4 md:gap-6 md:py-6'>
             <div className='px-4 lg:px-6 space-y-6 w-full'>
+              <StudentsFilters />
               <Search placeholder='Buscar alunos...' />
               <Button
                 asChild

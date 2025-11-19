@@ -15,10 +15,11 @@ export async function ClassesList({ query }: { query: string }) {
             key={cls.id}
             id={cls.id}
             ageRange={{ max: cls.max_age, min: cls.min_age }}
-            instructor={cls.instructor_id}
+            instructor={cls.instructor.username}
             studentsCount={12}
             schedule={cls.schedule}
             title={cls.name}
+            totalStudents={0}
           />
         ))
       ) : (

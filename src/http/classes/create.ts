@@ -12,14 +12,16 @@ export async function createClass(formData: CreateClassFormData) {
     const cookieStore = await cookies()
     const accessToken = cookieStore.get('accessToken')?.value
 
+    const schedule = formData.schedules
+
     const newClass = {
       name: formData.name,
       maxAge: formData.maxAge,
       minAge: formData.minAge,
-      schedule: `${formData.schedules.map(
-        (schedule) => schedule.dayOfWeek
-      )} às ${formData.schedules.map((schedule) => schedule.time)}`,
+      schedule,
     }
+
+    console.log(newClass)
 
     await api.post<CreateClassResponse>('/classes/create', newClass, {
       headers: {

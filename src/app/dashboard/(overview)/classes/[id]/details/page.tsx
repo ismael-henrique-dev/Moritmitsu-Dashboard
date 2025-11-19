@@ -1,6 +1,7 @@
 import { AddStudentsSheet } from '@/components/classes/class-student-sheet'
 import { ClassStudentList } from '@/components/classes/class-students-list'
 import { SiteHeader } from '@/components/site-header'
+import { StudentsFilters } from '@/components/students/students-filters'
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -38,11 +39,16 @@ export default function ClassDetails() {
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
-          <AddStudentsSheet />
+          <div className='lg:flex hidden'>
+            <AddStudentsSheet />
+          </div>
         </div>
       </SiteHeader>
       <div className='p-5 space-y-6'>
-        <AddStudentsSheet />
+        <div className='lg:hidden'>
+          <AddStudentsSheet />
+        </div>
+
         <Search placeholder='Buscar alunos...' />
         <ClassStudentList />
       </div>

@@ -15,7 +15,13 @@ export const metadata: Metadata = {
   title: 'Editar aluno',
 }
 
-export default function EditStudent() {
+export default async function EditStudent({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}) {
+  const { id } = await params
+
   return (
     <>
       <SiteHeader>
@@ -35,7 +41,7 @@ export default function EditStudent() {
           </BreadcrumbList>
         </Breadcrumb>
       </SiteHeader>
-      <UpdateStudentForm />
+      <UpdateStudentForm id={id} />
     </>
   )
 }

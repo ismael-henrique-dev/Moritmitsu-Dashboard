@@ -16,8 +16,13 @@ import {
 import { SelectBelt, SelectDegree } from '../ui/selects'
 import { formatCpf, formatPhone } from '@/lib/utils'
 import { createStudent } from '@/http/students/create'
+import { updateStudent } from '@/http/students/update'
 
-export function UpdateStudentForm() {
+type UpdateStudentFormProps = {
+  id: string
+}
+
+export function UpdateStudentForm({ id }: UpdateStudentFormProps) {
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
 
@@ -37,7 +42,7 @@ export function UpdateStudentForm() {
   const handleCreateStudent = (data: CreateStudentFormData) => {
     startTransition(async () => {
       console.log(data)
-      const response = await createStudent(data)
+      const response = await updateStudent(id, data)
 
       if (response.status === 'success') {
         toast.success(response.message)
@@ -398,7 +403,7 @@ export function UpdateStudentForm() {
         </Button>
         <Button type='submit' disabled={isPending}>
           {isPending && <Spinner />}
-          {isPending ? 'Cadastrando...' : 'Cadastrar aluno'}
+          {isPending ? 'Editando...' : 'Editar aluno'}
         </Button>
       </div>
     </form>

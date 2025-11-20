@@ -9,6 +9,7 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from '@/components/ui/breadcrumb'
+import { getStudentById } from '@/http/students/details'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -21,6 +22,8 @@ export default async function Details({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
+
+  const studentData = await getStudentById(id)
 
   return (
     <>
@@ -36,7 +39,7 @@ export default async function Details({
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>{id}</BreadcrumbPage>
+              <BreadcrumbPage>{studentData.data?.personal_info.full_name}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -46,7 +49,7 @@ export default async function Details({
           <div className='flex flex-col gap-4 py-4 md:gap-6 md:py-6'>
             <div className='px-4 lg:px-6'>
               {/* <h2>Details do aluno de id: {id}</h2> */}
-              <StudentDetails id={id} />
+              <StudentDetails student={studentData.data!} />
             </div>
           </div>
         </div>

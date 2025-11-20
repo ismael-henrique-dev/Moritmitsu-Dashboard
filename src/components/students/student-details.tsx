@@ -12,6 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '../ui/button'
 import {
   IconActivity,
+  IconAward,
   IconCirclePlusFilled,
   IconPencil,
   IconTrash,
@@ -33,6 +34,8 @@ import { deleteStudentById } from '@/http/students/delete'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { StudentResult } from '@/lib/definitions'
+import { beltToPtBr, getUserInitials } from '@/lib/utils'
 
 // Exemplo de componente para exibir a faixa
 function BeltProgress({
@@ -64,13 +67,27 @@ function BeltProgress({
 }
 
 type StudentDetailsProps = {
-  id: string
+  student: StudentResult
 }
 
 export function StudentDetails(props: StudentDetailsProps) {
   const [isPending, startTransition] = useTransition()
   const { push } = useRouter()
-  const studentId = props.id
+  const studentId = props.student.id
+  const belt = beltToPtBr(props.student.belt)
+
+  function formatPhone(phone: string) {
+    return phone.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3')
+  }
+
+  function formatCPF(cpf: string): string {
+    const cleaned = cpf.replace(/\D/g, '') // remove tudo que não for número
+
+    return cleaned
+      .replace(/^(\d{3})(\d)/, '$1.$2')
+      .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3')
+      .replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d{2}).*/, '$1.$2.$3-$4')
+  }
 
   const handleDeleteStudentById = async () => {
     startTransition(async () => {
@@ -92,22 +109,26 @@ export function StudentDetails(props: StudentDetailsProps) {
           <Avatar className='h-12 w-12 rounded-lg grayscale'>
             <AvatarImage src='' alt='Ismael Henrique' />
             <AvatarFallback className='size-12 rounded-full bg-zinc-800 text-white text-lg'>
-              IH
+              {getUserInitials(props.student.personal_info.full_name)}
             </AvatarFallback>
           </Avatar>
           <div className='flex flex-col'>
             <CardTitle className='lg:text-2xl text-xl font-semibold tabular-nums'>
-              Ismael Henrique
+              {props.student.personal_info.full_name}
+
+              {props.student.alias && `(${props.student.alias})`}
             </CardTitle>
             <span className='text-sm text-muted-foreground'>
-              Aluno ID: 123456
+              {props.student.email}
             </span>
           </div>
         </div>
         <CardAction>
           <Badge variant='outline' className='h-6 text-sm'>
             <IconActivity className='size-6 text-sm' />
-            <span className='text-sm font-semibold'>46 treino(s)</span>
+            <span className='text-sm font-semibold'>
+              {props.student.total_frequency} treino(s)
+            </span>
           </Badge>
         </CardAction>
       </CardHeader>
@@ -116,48 +137,59 @@ export function StudentDetails(props: StudentDetailsProps) {
         <div className='grid lg:grid-cols-2 gap-x-8 gap-y-4 text-sm'>
           <div className='flex lg:flex-col space-x-1'>
             <span className='font-semibold'>CPF:</span>
-            <span>123.456.789-00</span>
+            <span>{formatCPF(props.student.personal_info.cpf)}</span>
           </div>
 
           <div className='flex lg:flex-col space-x-1'>
             <span className='font-semibold'>Data de Nascimento:</span>
-            <span>01/01/2000</span>
+            <span>
+              {new Date(
+                props.student.personal_info.date_of_birth
+              ).toLocaleDateString('pt-BR')}
+            </span>
           </div>
 
           <div className='flex lg:flex-col space-x-1'>
             <span className='font-semibold'>Telefone:</span>
-            <span>(11) 98765-4321</span>
+            <span>
+              {formatPhone(props.student.personal_info.student_phone)}
+            </span>
           </div>
 
           <div className='flex lg:flex-col space-x-1'>
             <span className='font-semibold'>Endereço:</span>
-            <span>Rua Exemplo, 123 - São Paulo/SP</span>
-          </div>
-
-          <div className='flex lg:flex-col space-x-1'>
-            <span className='font-semibold'>Graduação:</span>
-            <span>Faixa Azul - 2º Grau</span>
+            <span>{props.student.personal_info.address}</span>
           </div>
 
           <div className='flex lg:flex-col space-x-1'>
             <span className='font-semibold'>Responsável:</span>
-            <span>Maria Henrique (Mãe)</span>
+            <span>{props.student.personal_info.parent_name}</span>
+          </div>
+
+          <div className='flex lg:flex-col space-x-1'>
+            <span className='font-semibold'>Telfone do responsável:</span>
+            <span>{formatPhone(props.student.personal_info.parent_phone)}</span>
+          </div>
+
+          <div className='flex lg:flex-col space-x-1'>
+            <span className='font-semibold'>Matrícula:</span>
+            <span>{props.student.ifce_enrollment}</span>
           </div>
         </div>
 
         {/* Componente da Faixa */}
         <BeltProgress
-          belt='Faixa Branca'
-          degree={3}
-          currentClasses={12}
-          requiredClasses={30}
+          belt={`Faixa ${belt}`}
+          degree={props.student.grade}
+          currentClasses={props.student.current_frequency}
+          requiredClasses={props.student.total_frequency}
         />
       </CardContent>
 
       <CardFooter className='flex w-full justify-between items-center'>
         <CardAction>
-          <Button className='bg-primary text-primary-foreground hover:bg-primary/90 w-full'>
-            <IconCirclePlusFilled />
+          <Button className='bg-morimitsu-red text-primary-foreground hover:bg-morimitsu-red/90 w-full'>
+            <IconAward />
             <span>Graduar Aluno</span>
           </Button>
         </CardAction>

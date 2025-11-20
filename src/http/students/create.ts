@@ -21,7 +21,7 @@ export async function createStudent(formData: CreateStudentFormData) {
       grade: Number(formData.degree),
       date_of_birth: formData.birthDate,
       ifce_enrollment: formData.registrationIfce
-        ? Number(formData.registrationIfce)
+        ? formData.registrationIfce
         : null,
       parent_name: formData.parentName,
       parent_phone: formData.parentPhone?.replace(/\D/g, '') ?? '',

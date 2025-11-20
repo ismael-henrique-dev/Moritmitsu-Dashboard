@@ -24,7 +24,7 @@ export async function updateStudent(
       grade: Number(formData.degree),
       date_of_birth: formData.birthDate,
       ifce_enrollment: formData.registrationIfce
-        ? Number(formData.registrationIfce)
+        ? formData.registrationIfce
         : null,
       parent_name: formData.parentName,
       parent_phone: formData.parentPhone?.replace(/\D/g, '') ?? '',
@@ -33,15 +33,19 @@ export async function updateStudent(
 
     console.log(newStudent)
 
-    await api.patch<CreateClassResponse>(`/students/update/${studentId}`, newStudent, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
+    await api.patch<CreateClassResponse>(
+      `/students/update/${studentId}`,
+      newStudent,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
 
     revalidatePath('/dashboard/students')
 
-    return { message: 'Aluno cadastrado com sucesso.', status: 'success' }
+    return { message: 'Aluno atualizado com sucesso.', status: 'success' }
   } catch (error) {
     const statusCode = getAxiosStatusCode(error)
     console.log(error)

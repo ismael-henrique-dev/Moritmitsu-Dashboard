@@ -49,5 +49,35 @@ export type StudentData = {
   date_of_birth: string
   grade: number
   belt: string
-  ifce_enrollment: number | null
+  ifce_enrollment: string | null
+}
+
+export type PersonalInfo = {
+  id: string
+  student_id: string
+  cpf: string
+  parent_name: string
+  parent_phone: string
+  student_phone: string
+  address: string
+  full_name: string
+  date_of_birth: string
+}
+
+export type StudentResult = {
+  id: string
+  alias: string | null
+  belt: Belt
+  grade: number
+  current_frequency: number
+  total_frequency: number
+  email: string
+  class_id: string | null
+  ifce_enrollment: string
+  personal_info: PersonalInfo
+}
+
+export type FetchStudentByIdResponse = {
+  message: string
+  result: StudentResult
 }

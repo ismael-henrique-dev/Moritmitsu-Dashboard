@@ -49,7 +49,7 @@ export const createStudentFormSchema = z
 
     registrationIfce: z
       .string()
-      .regex(/^\d{8}$/, 'A matrícula deve conter exatamente 8 números.')
+      .regex(/^\d{14}$/, 'A matrícula deve conter exatamente 14 números.')
       .nullable(),
 
     currentAttendance: z

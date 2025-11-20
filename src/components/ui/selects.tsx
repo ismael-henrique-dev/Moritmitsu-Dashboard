@@ -23,13 +23,13 @@ const belts = [
 ]
 
 const degrees = [
-  { id: '1', name: 'Sem grau' },
-  { id: '2', name: '1º grau' },
-  { id: '3', name: '2º grau' },
-  { id: '4', name: '3º grau' },
-  { id: '5', name: '4º grau' },
-  { id: '6', name: '5º grau' },
-  { id: '7', name: '6º grau' },
+  { id: '0', name: 'Sem grau' },
+  { id: '1', name: '1º grau' },
+  { id: '2', name: '2º grau' },
+  { id: '3', name: '3º grau' },
+  { id: '4', name: '4º grau' },
+  { id: '5', name: '5º grau' },
+  { id: '6', name: '6º grau' },
 ]
 
 const instructors = [

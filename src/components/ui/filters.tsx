@@ -163,3 +163,51 @@ export function FilterDegreeSelect() {
     </Select>
   )
 }
+
+type FilterInstructorSelectProps = {
+  instructors: User[]
+}
+
+export function FilterInstructorSelect({
+  instructors,
+}: FilterInstructorSelectProps) {
+  const searchParams = useSearchParams()
+  const pathname = usePathname()
+  const { replace } = useRouter()
+
+  const defaultValue = searchParams.get('instructor') || 'all'
+  const [selected, setSelected] = useState(defaultValue)
+
+  const getSelectedName = () => {
+    if (selected === 'all') return 'Todos'
+    return (
+      degrees.find((d) => d.id === selected)?.name ?? 'Escolha um professor'
+    )
+  }
+
+  const handleChange = (value: string) => {
+    setSelected(value)
+    const params = new URLSearchParams(searchParams)
+
+    if (value === 'all') params.delete('instructor')
+    else params.set('instructor', value)
+
+    replace(`${pathname}?${params.toString()}`, { scroll: false })
+  }
+
+  return (
+    <Select value={selected} onValueChange={handleChange}>
+      <SelectTrigger className='w-full'>
+        <SelectValue placeholder={getSelectedName()} />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value='all'>Todos</SelectItem>
+        {instructors.map((d) => (
+          <SelectItem key={d.id} value={d.id}>
+            {d.username}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  )
+}

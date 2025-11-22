@@ -12,14 +12,10 @@ import Pagination from '@/components/ui/pagination'
 import { IconCirclePlus } from '@tabler/icons-react'
 import { Metadata } from 'next'
 import Link from 'next/link'
-
 import data from '../../data.json'
-
 import { DataTable } from '@/components/attendances/data-table'
-import { SelectClass } from '@/components/attendances/class-select'
-import { DatePicker } from '@/components/attendances/date-picker'
-import { SelectInstructor } from '@/components/attendances/instructor-select'
 import { AttendancesList } from '@/components/attendances/attendances'
+import { AttendancesFilters } from '@/components/attendances/filters'
 
 export const metadata: Metadata = {
   title: 'Frequências',
@@ -57,11 +53,7 @@ export default function Attandances() {
       </SiteHeader>
 
       <div className='px-4 lg:px-6 py-6'>
-        <div className='grid lg:grid-cols-[1fr_1fr_auto] grid-cols-2 gap-2 mb-6'>
-          <SelectClass />
-          <SelectInstructor />
-          <DatePicker />
-        </div>
+        <AttendancesFilters />
 
         <Button
           asChild

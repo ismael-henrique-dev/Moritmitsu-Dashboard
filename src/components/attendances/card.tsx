@@ -7,7 +7,6 @@ import {
   CardContent,
 } from '@/components/ui/card'
 import {
-  IconTrash,
   IconPencil,
   IconUsers,
   IconClipboardCheck,
@@ -72,14 +71,6 @@ export function AttendanceCard({ data }: AttendanceCardProps) {
               </Button>
             </TooltipTrigger>
             <TooltipContent>Editar</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button size='icon' variant='destructive'>
-                <IconTrash className='size-4' />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Excluir</TooltipContent>
           </Tooltip>
         </div>
       </CardContent>

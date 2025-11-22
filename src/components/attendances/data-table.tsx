@@ -79,18 +79,6 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
           </TooltipTrigger>
           <TooltipContent>Editar</TooltipContent>
         </Tooltip>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              size='icon'
-              variant='destructive'
-              className='cursor-pointer'
-            >
-              <IconTrash className='size-4' />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>Excluir</TooltipContent>
-        </Tooltip>
       </div>
     ),
   },

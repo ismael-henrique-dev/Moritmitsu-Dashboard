@@ -1,3 +1,4 @@
+import { Metadata } from 'next'
 import { SiteHeader } from '@/components/site-header'
 import {
   Breadcrumb,
@@ -7,11 +8,8 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from '@/components/ui/breadcrumb'
-import { Metadata } from 'next'
-
 import { CreateAttendanceForm } from '@/components/forms/create-attendance-form'
-import { SelectClass } from '@/components/attendances/class-select'
-import { DatePicker } from '@/components/attendances/date-picker'
+import { CreateAttendancesFilters } from '@/components/attendances/filters'
 
 export const metadata: Metadata = {
   title: 'Nova Frequência',
@@ -41,11 +39,7 @@ export default function CreateAttendance() {
       </SiteHeader>
 
       <div className='flex flex-1 flex-col px-4 lg:px-6 py-6 gap-6'>
-        <div className='grid grid-cols-[1fr_auto] gap-2'>
-          <SelectClass />
-          <DatePicker />
-        </div>
-
+        <CreateAttendancesFilters />
         <CreateAttendanceForm />
       </div>
     </>

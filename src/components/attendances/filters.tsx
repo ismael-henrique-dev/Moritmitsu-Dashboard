@@ -58,3 +58,19 @@ export function AttendancesFilters() {
     </div>
   )
 }
+
+export function CreateAttendancesFilters() {
+  return (
+    <div className='grid grid-cols-[1fr_auto] gap-2'>
+      <div className='grid gap-1'>
+        <Label>Turma</Label>
+        <FilterClassSelect />
+      </div>
+
+      <div className='grid gap-1 lg:col-span-1 col-span-2'>
+        <Label>Data</Label>
+        <DatePicker />
+      </div>
+    </div>
+  )
+}

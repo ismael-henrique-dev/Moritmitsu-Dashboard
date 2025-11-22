@@ -15,6 +15,7 @@ import {
   FormLabel,
   FormMessage,
 } from '../ui/form'
+import { useRouter } from 'next/navigation'
 
 const students = [
   {
@@ -50,6 +51,8 @@ const FormSchema = z.object({
 })
 
 export function CreateAttendanceForm() {
+  const router = useRouter()
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -123,7 +126,12 @@ export function CreateAttendanceForm() {
               </FormItem>
             )}
           />
-          <Button type='submit'>Concluir</Button>
+          <div className='w-full flex items-center justify-end gap-2'>
+            <Button type='button' variant='outline' onClick={() => router.back()}>
+              Cancelar
+            </Button>
+            <Button type='submit'>Concluir</Button>
+          </div>
         </form>
       </Form>
     </div>

@@ -8,6 +8,7 @@ import {
   BreadcrumbLink,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
+import { getStudentById } from '@/http/students/details'
 
 import { Metadata } from 'next'
 
@@ -21,6 +22,7 @@ export default async function EditStudent({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
+  const response = await getStudentById(id)
 
   return (
     <>
@@ -41,7 +43,7 @@ export default async function EditStudent({
           </BreadcrumbList>
         </Breadcrumb>
       </SiteHeader>
-      <UpdateStudentForm id={id} />
+      <UpdateStudentForm id={id} student={response.data!} />
     </>
   )
 }

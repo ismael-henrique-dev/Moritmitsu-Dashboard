@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useTransition } from 'react'
+import { useEffect, useTransition } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
@@ -15,20 +15,22 @@ import {
 } from '@/validators/create-student'
 import { SelectBelt, SelectDegree } from '../ui/selects'
 import { formatCpf, formatPhone } from '@/lib/utils'
-import { createStudent } from '@/http/students/create'
 import { updateStudent } from '@/http/students/update'
+import { StudentResult } from '@/lib/definitions'
 
 type UpdateStudentFormProps = {
   id: string
+  student: StudentResult
 }
 
-export function UpdateStudentForm({ id }: UpdateStudentFormProps) {
+export function UpdateStudentForm({ id, student }: UpdateStudentFormProps) {
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
 
   const {
     control,
     register,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm<CreateStudentFormData>({
@@ -38,6 +40,27 @@ export function UpdateStudentForm({ id }: UpdateStudentFormProps) {
       cpf: '',
     },
   })
+
+  useEffect(() => {
+  if (student) {
+    reset({
+      name: student.personal_info.full_name,
+      birthDate: student.personal_info.date_of_birth.substring(0, 10), // para o input date
+      alias: student.alias || '',
+      email: student.email,
+      cpf: student.personal_info.cpf,
+      phone: student.personal_info.student_phone,
+      parentName: student.personal_info.parent_name,
+      parentPhone: student.personal_info.parent_phone,
+      address: student.personal_info.address,
+      registrationIfce: student.ifce_enrollment || null,
+      currentAttendance: student.current_frequency,
+      totalTrainings: student.total_frequency,
+      belt: student.belt,
+      degree: String(student.grade),
+    })
+  }
+}, [student, reset])
 
   const handleCreateStudent = (data: CreateStudentFormData) => {
     startTransition(async () => {
@@ -363,6 +386,7 @@ export function UpdateStudentForm({ id }: UpdateStudentFormProps) {
               render={({ field }) => (
                 <SelectBelt
                   value={field.value}
+                  defaultValue={student.belt} 
                   onValueChange={field.onChange}
                 />
               )}
@@ -376,6 +400,7 @@ export function UpdateStudentForm({ id }: UpdateStudentFormProps) {
               render={({ field }) => (
                 <SelectDegree
                   value={field.value}
+                  defaultValue={String(student.grade)} 
                   onValueChange={field.onChange}
                 />
               )}

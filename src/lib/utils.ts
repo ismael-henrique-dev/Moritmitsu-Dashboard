@@ -160,3 +160,7 @@ export function formatAgeRange(min: number, max: number | null) {
   return `${min} a ${max} anos`
 }
 
+export function convertBrazilianDate(dateStr: string) {
+  const [day, month, year] = dateStr.split('/')
+  return `${year}-${month}-${day}`
+}

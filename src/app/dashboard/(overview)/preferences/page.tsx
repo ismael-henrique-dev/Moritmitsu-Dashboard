@@ -1,3 +1,4 @@
+import { UpdateAccountForm } from '@/components/forms/update-account'
 import { PreferencesDataTable } from '@/components/preferences/data-table'
 import { PreferencesList } from '@/components/preferences/list'
 import { SiteHeader } from '@/components/site-header'
@@ -60,7 +61,13 @@ export default function Preferences() {
         <div className='@container/main flex flex-1 flex-col gap-2'>
           <div className='flex flex-col gap-4 py-4 md:gap-6 md:py-6'>
             <div className='px-4 lg:px-6 grid gap-4'>
-              <h2 className='text-xl font-poppins font-semibold'>Preferências das graduções</h2>
+              <h2 className='text-xl font-poppins font-semibold'>
+                Detalhes da conta
+              </h2>
+              <UpdateAccountForm />
+              <h2 className='text-xl font-poppins font-semibold'>
+                Preferências das graduções
+              </h2>
               <PreferencesDataTable data={preferencesData} />
               <PreferencesList data={preferencesData} />
             </div>

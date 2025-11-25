@@ -36,6 +36,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { StudentResult } from '@/lib/definitions'
 import { beltToPtBr, getUserInitials } from '@/lib/utils'
+import { PromoteStudentToInstructor } from './promote-student'
 
 // Exemplo de componente para exibir a faixa
 function BeltProgress({
@@ -187,11 +188,12 @@ export function StudentDetails(props: StudentDetailsProps) {
       </CardContent>
 
       <CardFooter className='flex w-full justify-between items-center'>
-        <CardAction>
-          <Button className='bg-morimitsu-red text-primary-foreground hover:bg-morimitsu-red/90 w-full'>
+        <CardAction className='flex gap-3'>
+          <Button className='bg-morimitsu-red text-primary-foreground hover:bg-morimitsu-red/90'>
             <IconAward />
             <span>Graduar Aluno</span>
           </Button>
+          <PromoteStudentToInstructor />
         </CardAction>
         <div className='flex items-center gap-3 h-10'>
           <Link href={`/dashboard/students/${studentId}/edit`}>

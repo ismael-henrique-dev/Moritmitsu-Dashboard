@@ -5,7 +5,7 @@ import { getAxiosStatusCode } from '@/lib/utils'
 import { FetchClassesResponse } from '@/lib/definitions'
 import { cookies } from 'next/headers'
 
-export async function fetchClasses(query: string) {
+export async function fetchClasses(query: string = '') {
   try {
     const cookieStore = await cookies()
     const accessToken = cookieStore.get('accessToken')?.value

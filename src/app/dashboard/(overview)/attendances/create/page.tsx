@@ -10,12 +10,16 @@ import {
 } from '@/components/ui/breadcrumb'
 import { CreateAttendanceForm } from '@/components/forms/create-attendance-form'
 import { CreateAttendancesFilters } from '@/components/attendances/filters'
+import { fetchClasses } from '@/http/classes/get'
 
 export const metadata: Metadata = {
   title: 'Nova Frequência',
 }
 
-export default function CreateAttendance() {
+export default async function CreateAttendance() {
+  const response = await fetchClasses()
+  const classes = response.data || []
+
   return (
     <>
       <SiteHeader>
@@ -39,7 +43,7 @@ export default function CreateAttendance() {
       </SiteHeader>
 
       <div className='flex flex-1 flex-col px-4 lg:px-6 py-6 gap-6'>
-        <CreateAttendancesFilters />
+        <CreateAttendancesFilters classes={classes} />
         <CreateAttendanceForm />
       </div>
     </>

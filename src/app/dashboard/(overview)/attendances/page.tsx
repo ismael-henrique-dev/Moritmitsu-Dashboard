@@ -16,12 +16,16 @@ import data from '../../data.json'
 import { DataTable } from '@/components/attendances/data-table'
 import { AttendancesList } from '@/components/attendances/attendances'
 import { AttendancesFilters } from '@/components/attendances/filters'
+import { fetchClasses } from '@/http/classes/get'
 
 export const metadata: Metadata = {
   title: 'Frequências',
 }
 
-export default function Attandances() {
+export default async function Attandances() {
+  const response = await fetchClasses()
+  const classes = response.data || []
+
   return (
     <>
       <SiteHeader>
@@ -53,7 +57,7 @@ export default function Attandances() {
       </SiteHeader>
 
       <div className='px-4 lg:px-6 py-6'>
-        <AttendancesFilters />
+        <AttendancesFilters classes={classes} />
 
         <Button
           asChild

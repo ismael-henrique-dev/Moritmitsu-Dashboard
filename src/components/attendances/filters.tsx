@@ -40,12 +40,12 @@ const instructors: {
   },
 ]
 
-export function AttendancesFilters() {
+export function AttendancesFilters({ classes }: { classes: Class[] }) {
   return (
     <div className='grid lg:grid-cols-[1fr_1fr_auto] grid-cols-2 gap-2 mb-6'>
       <div className='grid gap-1'>
         <Label>Turma</Label>
-        <FilterClassSelect />
+        <FilterClassSelect classes={classes} />
       </div>
       <div className='grid gap-1'>
         <Label>Professor</Label>
@@ -59,12 +59,12 @@ export function AttendancesFilters() {
   )
 }
 
-export function CreateAttendancesFilters() {
+export function CreateAttendancesFilters({ classes }: { classes: Class[] }) {
   return (
     <div className='grid grid-cols-[1fr_auto] gap-2'>
       <div className='grid gap-1'>
         <Label>Turma</Label>
-        <FilterClassSelect />
+        <FilterClassSelect classes={classes} />
       </div>
 
       <div className='grid gap-1 lg:col-span-1 col-span-2'>

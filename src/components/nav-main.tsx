@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/sidebar'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 export function NavMain({
   items,
@@ -22,6 +22,7 @@ export function NavMain({
   }[]
 }) {
   const pathname = usePathname()
+  const router = useRouter()
 
   return (
     <SidebarGroup>
@@ -33,20 +34,21 @@ export function NavMain({
 
             return (
               <SidebarMenuItem key={item.title}>
-                <Link href={item.url}>
-                  <SidebarMenuButton
-                    tooltip={item.title}
-                    className={cn(
-                      'cursor-pointer text-base h-8 rounded-md',
-                      isActive &&
-                        'bg-morimitsu-red text-white hover:bg-red-800 hover:text-white'
-                    )}
-                  >
-                    <Icon className='!w-5 !h-5 ' />
-                    {/* {item.icon && <item.icon size={24} className='w-6 h-6' />} */}
-                    <span>{item.title}</span>
-                  </SidebarMenuButton>
-                </Link>
+                <div onMouseEnter={() => router.prefetch(item.url)}>
+                  <Link href={item.url}>
+                    <SidebarMenuButton
+                      tooltip={item.title}
+                      className={cn(
+                        'cursor-pointer text-base h-8 rounded-md',
+                        isActive &&
+                          'bg-morimitsu-red text-white hover:bg-red-800 hover:text-white'
+                      )}
+                    >
+                      <Icon className='!w-5 !h-5 ' />
+                      <span>{item.title}</span>
+                    </SidebarMenuButton>
+                  </Link>
+                </div>
               </SidebarMenuItem>
             )
           })}

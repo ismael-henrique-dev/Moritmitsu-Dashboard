@@ -10,11 +10,6 @@ import {
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 
-const classes = [
-  { id: '1', name: 'Turma Baby' },
-  { id: '2', name: 'Turma Kids' },
-]
-
 const belts = [
   { id: 'white', name: 'Branca' },
   { id: 'gray', name: 'Cinza' },
@@ -27,18 +22,17 @@ const belts = [
   { id: 'black', name: 'Preta' },
 ]
 
-const degrees = [
-  { id: '1', name: 'Sem grau' },
-  { id: '2', name: '1º grau' },
-  { id: '3', name: '2º grau' },
-  { id: '4', name: '3º grau' },
-  { id: '5', name: '4º grau' },
-  { id: '6', name: '5º grau' },
-  { id: '7', name: '6º grau' },
+const grades = [
+  { id: '0', name: 'Sem grau' },
+  { id: '1', name: '1º grau' },
+  { id: '2', name: '2º grau' },
+  { id: '3', name: '3º grau' },
+  { id: '4', name: '4º grau' },
+  { id: '5', name: '5º grau' },
+  { id: '6', name: '6º grau' },
 ]
 
-
-export function FilterClassSelect() {
+export function FilterClassSelect({ classes }: { classes: Class[] }) {
   const searchParams = useSearchParams()
   const pathname = usePathname()
   const { replace } = useRouter()
@@ -125,7 +119,7 @@ export function FilterBeltSelect() {
   )
 }
 
-export function FilterDegreeSelect() {
+export function FilterGradeSelect() {
   const searchParams = useSearchParams()
   const pathname = usePathname()
   const { replace } = useRouter()
@@ -135,7 +129,7 @@ export function FilterDegreeSelect() {
 
   const getSelectedName = () => {
     if (selected === 'all') return 'Todos os graus'
-    return degrees.find((d) => d.id === selected)?.name ?? 'Escolha um grau'
+    return grades.find((grade) => grade.id === selected)?.name ?? 'Escolha um grau'
   }
 
   const handleChange = (value: string) => {
@@ -155,7 +149,7 @@ export function FilterDegreeSelect() {
       </SelectTrigger>
       <SelectContent>
         <SelectItem value='all'>Todos</SelectItem>
-        {degrees.map((d) => (
+        {grades.map((d) => (
           <SelectItem key={d.id} value={d.id}>
             {d.name}
           </SelectItem>
@@ -182,7 +176,8 @@ export function FilterInstructorSelect({
   const getSelectedName = () => {
     if (selected === 'all') return 'Todos'
     return (
-      degrees.find((d) => d.id === selected)?.name ?? 'Escolha um professor'
+      grades.find((grade) => grade.id === selected)?.name ??
+      'Escolha um professor'
     )
   }
 

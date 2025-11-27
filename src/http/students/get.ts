@@ -8,8 +8,9 @@ import { cookies } from 'next/headers'
 export async function fetchStudents(
   query: string,
   belt: string,
+  classId: string,
   currentPage: number,
-  grade?: number,
+  grade?: number
 ) {
   try {
     const cookieStore = await cookies()
@@ -18,15 +19,32 @@ export async function fetchStudents(
     const { data: response } = await api.get<FetchStudentsResponse>(
       '/students',
       {
-        params: { search: query, belt, currentPage,...(grade !== undefined && { grade }) },
+        params: {
+          search: query,
+          belt,
+          classId,
+          currentPage,
+          ...(grade !== undefined && { grade }),
+        },
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       }
     )
 
+    api.interceptors.request.use((config) => {
+      console.log('➡️ [AXIOS REQUEST]', {
+        url: config.url,
+        method: config.method,
+        params: config.params,
+        body: config.data,
+        headers: config.headers,
+      })
+      return config
+    })
+
     return {
-      message: 'Turma criada com sucesso.',
+      message: 'Alunos carregados com sucesso.',
       status: 'success',
       data: response.result,
     }

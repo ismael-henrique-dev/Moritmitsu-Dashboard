@@ -6,14 +6,16 @@ export async function StudentsList({
   query,
   belt,
   currentPage,
+  classId,
   grade,
 }: {
   query: string
   belt: string
+  classId: string
   currentPage: number
   grade?: number
 }) {
-  const response = await fetchStudents(query, belt, currentPage, grade)
+  const response = await fetchStudents(query, belt, classId, currentPage, grade)
   const students = response.data ?? []
   const hasStudents = students.length > 0
 

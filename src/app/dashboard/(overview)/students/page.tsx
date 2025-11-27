@@ -17,6 +17,7 @@ import { Suspense } from 'react'
 import { StudentListSkeleton } from '@/components/ui/skeletons'
 import { StudentsFilters } from '@/components/students/students-filters'
 import Link from 'next/link'
+import { fetchClasses } from '@/http/classes/get'
 
 export const metadata: Metadata = {
   title: 'Alunos',
@@ -28,15 +29,20 @@ export default async function Students(props: {
     belt?: string
     page?: number
     degree?: number
+    class?: string
   }>
 }) {
   const searchParams = await props.searchParams
   const query = searchParams?.query || ''
+  const classId = searchParams?.class || ''
   const belt = searchParams?.belt || ''
   const page = searchParams?.page || 1
   const rawGrade = searchParams?.degree
   const grade = rawGrade ? Number(rawGrade) : undefined
   const totalPages = 10
+
+  const { data } = await fetchClasses('')
+  const classes = data || []
 
   return (
     <>
@@ -69,7 +75,7 @@ export default async function Students(props: {
         <div className='@container/main flex flex-1 flex-col gap-2'>
           <div className='flex flex-col gap-4 py-4 md:gap-6 md:py-6'>
             <div className='px-4 lg:px-6 space-y-6 w-full'>
-              <StudentsFilters />
+              <StudentsFilters classes={classes} />
               <Search placeholder='Buscar alunos...' />
               <Button
                 asChild
@@ -87,6 +93,7 @@ export default async function Students(props: {
                 <StudentsList
                   query={query}
                   belt={belt}
+                  classId={classId}
                   currentPage={page}
                   grade={grade}
                 />

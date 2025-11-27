@@ -26,7 +26,7 @@ export type FetchClassesResponse = {
   result: Class[]
 }
 
-type FetchStudentData = {
+export type FetchStudentData = {
   id: string
   name: string
   belt: Belt

@@ -16,6 +16,7 @@ import {
   FormMessage,
 } from '../ui/form'
 import { useRouter } from 'next/navigation'
+import { FetchStudentData } from '@/lib/definitions'
 
 const students = [
   {
@@ -50,7 +51,7 @@ const FormSchema = z.object({
   }),
 })
 
-export function CreateAttendanceForm() {
+export function CreateAttendanceForm({ students }: { students: FetchStudentData[] }) {
   const router = useRouter()
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -115,7 +116,7 @@ export function CreateAttendanceForm() {
                             />
                           </FormControl>
                           <FormLabel className='text-sm font-semibold w-full cursor-pointer py-3'>
-                            {item.label}
+                            {item.name}
                           </FormLabel>
                         </FormItem>
                       )
@@ -127,7 +128,11 @@ export function CreateAttendanceForm() {
             )}
           />
           <div className='w-full flex items-center justify-end gap-2'>
-            <Button type='button' variant='outline' onClick={() => router.back()}>
+            <Button
+              type='button'
+              variant='outline'
+              onClick={() => router.back()}
+            >
               Cancelar
             </Button>
             <Button type='submit'>Concluir</Button>

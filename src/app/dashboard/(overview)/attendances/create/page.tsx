@@ -11,14 +11,23 @@ import {
 import { CreateAttendanceForm } from '@/components/forms/create-attendance-form'
 import { CreateAttendancesFilters } from '@/components/attendances/filters'
 import { fetchClasses } from '@/http/classes/get'
+import { fetchStudents } from '@/http/students/get'
 
 export const metadata: Metadata = {
   title: 'Nova Frequência',
 }
 
-export default async function CreateAttendance() {
-  const response = await fetchClasses()
-  const classes = response.data || []
+export default async function CreateAttendance(props: {
+  searchParams?: Promise<{
+    class?: string
+  }>
+}) {
+  const searchParams = await props.searchParams
+  const classId = searchParams?.class || ''
+  const classesResponse = await fetchClasses()
+  const classes = classesResponse.data || []
+  const studentsResponse = await fetchStudents('', '', classId, 1)
+  const students = studentsResponse.data || []
 
   return (
     <>
@@ -30,7 +39,7 @@ export default async function CreateAttendance() {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink href='/dashboard/frequency'>
+              <BreadcrumbLink href='/dashboard/attendances'>
                 Frequência
               </BreadcrumbLink>
             </BreadcrumbItem>
@@ -44,7 +53,7 @@ export default async function CreateAttendance() {
 
       <div className='flex flex-1 flex-col px-4 lg:px-6 py-6 gap-6'>
         <CreateAttendancesFilters classes={classes} />
-        <CreateAttendanceForm />
+        <CreateAttendanceForm students={students} />
       </div>
     </>
   )

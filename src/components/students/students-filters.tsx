@@ -5,7 +5,6 @@ import {
 } from '../ui/filters'
 import { Label } from '../ui/label'
 
-
 export function StudentsFilters() {
   return (
     <div className='grid gap-2 lg:grid-cols-3'>

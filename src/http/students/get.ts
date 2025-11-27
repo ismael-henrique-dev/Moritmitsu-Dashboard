@@ -5,7 +5,12 @@ import { getAxiosStatusCode } from '@/lib/utils'
 import { FetchStudentsResponse } from '@/lib/definitions'
 import { cookies } from 'next/headers'
 
-export async function fetchStudents(query: string) {
+export async function fetchStudents(
+  query: string,
+  belt: string,
+  currentPage: number,
+  grade?: number,
+) {
   try {
     const cookieStore = await cookies()
     const accessToken = cookieStore.get('accessToken')?.value
@@ -13,7 +18,7 @@ export async function fetchStudents(query: string) {
     const { data: response } = await api.get<FetchStudentsResponse>(
       '/students',
       {
-        params: { search: query },
+        params: { search: query, belt, currentPage,...(grade !== undefined && { grade }) },
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

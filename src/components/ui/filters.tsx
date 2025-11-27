@@ -37,6 +37,7 @@ const degrees = [
   { id: '7', name: '6º grau' },
 ]
 
+
 export function FilterClassSelect() {
   const searchParams = useSearchParams()
   const pathname = usePathname()

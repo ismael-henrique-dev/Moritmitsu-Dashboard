@@ -1,5 +1,4 @@
 import { SiteHeader } from '@/components/site-header'
-// import { StudentList } from '@/components/students/students-list'
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -13,11 +12,11 @@ import { Search } from '@/components/ui/search'
 import Pagination from '@/components/ui/pagination'
 import { IconCirclePlus } from '@tabler/icons-react'
 import { Metadata } from 'next'
-import Link from 'next/link'
 import { StudentsList } from '@/components/students/students-list'
 import { Suspense } from 'react'
 import { StudentListSkeleton } from '@/components/ui/skeletons'
 import { StudentsFilters } from '@/components/students/students-filters'
+import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Alunos',
@@ -26,10 +25,17 @@ export const metadata: Metadata = {
 export default async function Students(props: {
   searchParams?: Promise<{
     query?: string
+    belt?: string
+    page?: number
+    degree?: number
   }>
 }) {
   const searchParams = await props.searchParams
   const query = searchParams?.query || ''
+  const belt = searchParams?.belt || ''
+  const page = searchParams?.page || 1
+  const rawGrade = searchParams?.degree
+  const grade = rawGrade ? Number(rawGrade) : undefined
   const totalPages = 10
 
   return (
@@ -78,7 +84,12 @@ export default async function Students(props: {
               </Button>
 
               <Suspense fallback={<StudentListSkeleton />}>
-                <StudentsList query={query} />
+                <StudentsList
+                  query={query}
+                  belt={belt}
+                  currentPage={page}
+                  grade={grade}
+                />
               </Suspense>
 
               <div className='flex w-full justify-center'>

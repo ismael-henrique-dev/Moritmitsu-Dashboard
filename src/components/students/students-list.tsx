@@ -2,8 +2,18 @@ import { fetchStudents } from '@/http/students/get'
 import { StudentCard } from './student-card'
 import { EmptyStudents } from './empty-students'
 
-export async function StudentsList({ query }: { query: string }) {
-  const response = await fetchStudents(query)
+export async function StudentsList({
+  query,
+  belt,
+  currentPage,
+  grade,
+}: {
+  query: string
+  belt: string
+  currentPage: number
+  grade?: number
+}) {
+  const response = await fetchStudents(query, belt, currentPage, grade)
   const students = response.data ?? []
   const hasStudents = students.length > 0
 

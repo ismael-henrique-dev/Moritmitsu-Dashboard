@@ -1,5 +1,5 @@
 import { fetchClasses } from '@/http/classes/get'
-import { ClassCard } from './classe-card'
+import { ClassCard } from './card'
 import { EmptyClasses } from './empty-classes'
 
 export async function ClassesList({ query }: { query: string }) {

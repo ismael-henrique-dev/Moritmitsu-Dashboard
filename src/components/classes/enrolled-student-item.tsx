@@ -16,7 +16,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 
-export function ClassStudentCard() {
+export function EnrolledStudentItem() {
   return (
     <Card className='p-0'>
       <CardContent className='flex justify-between items-center p-3'>

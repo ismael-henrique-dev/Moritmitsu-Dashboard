@@ -1,5 +1,5 @@
 import { AddStudentsSheet } from '@/components/classes/class-student-sheet'
-import { ClassStudentList } from '@/components/classes/class-students-list'
+import { EnrolledStudentsList } from '@/components/classes/enrolled-students-list'
 import { SiteHeader } from '@/components/site-header'
 import {
   Breadcrumb,
@@ -49,7 +49,7 @@ export default function ClassDetails() {
         </div>
 
         <Search placeholder='Buscar alunos...' />
-        <ClassStudentList />
+        <EnrolledStudentsList />
       </div>
     </>
   )

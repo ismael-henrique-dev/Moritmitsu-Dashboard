@@ -59,7 +59,7 @@ export function AttendancesFilters({ classes }: { classes: Class[] }) {
   )
 }
 
-export function CreateAttendancesFilters({ classes }: { classes: Class[] }) {
+export function CreateAttendanceFilters({ classes }: { classes: Class[] }) {
   return (
     <div className='grid grid-cols-[1fr_auto] gap-2'>
       <div className='grid gap-1'>

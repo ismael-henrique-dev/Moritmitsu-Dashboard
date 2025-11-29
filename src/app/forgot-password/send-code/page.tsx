@@ -1,4 +1,4 @@
-import { SendCodeForm } from '@/components/forms/send-code-form'
+import { SendCodeForm } from '@/components/forms/send-code'
 import { Metadata } from 'next'
 import Image from 'next/image'
 

@@ -1,4 +1,4 @@
-import { UpdateStudentForm } from '@/components/forms/update-student-form'
+import { UpdateStudentForm } from '@/components/forms/update-student'
 import { SiteHeader } from '@/components/site-header'
 import {
   Breadcrumb,

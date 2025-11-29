@@ -8,8 +8,8 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from '@/components/ui/breadcrumb'
-import { CreateAttendanceForm } from '@/components/forms/create-attendance-form'
-import { CreateAttendancesFilters } from '@/components/attendances/filters'
+import { CreateAttendanceForm } from '@/components/forms/create-attendance'
+import { CreateAttendanceFilters } from '@/components/attendances/filters'
 import { fetchClasses } from '@/http/classes/get'
 import { fetchStudents } from '@/http/students/get'
 
@@ -52,7 +52,7 @@ export default async function CreateAttendance(props: {
       </SiteHeader>
 
       <div className='flex flex-1 flex-col px-4 lg:px-6 py-6 gap-6'>
-        <CreateAttendancesFilters classes={classes} />
+        <CreateAttendanceFilters classes={classes} />
         <CreateAttendanceForm students={students} />
       </div>
     </>

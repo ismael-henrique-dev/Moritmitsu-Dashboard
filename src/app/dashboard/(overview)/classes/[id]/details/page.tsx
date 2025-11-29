@@ -1,7 +1,6 @@
 import { AddStudentsSheet } from '@/components/classes/class-student-sheet'
 import { ClassStudentList } from '@/components/classes/class-students-list'
 import { SiteHeader } from '@/components/site-header'
-import { StudentsFilters } from '@/components/students/students-filters'
 import {
   Breadcrumb,
   BreadcrumbList,

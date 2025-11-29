@@ -12,6 +12,6 @@ type Class = {
     username: string
   }
   _count: {
-    students: 0
+    students: number
   }
 }

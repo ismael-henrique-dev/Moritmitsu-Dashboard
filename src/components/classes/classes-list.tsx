@@ -19,7 +19,7 @@ export async function ClassesList({ query }: { query: string }) {
             studentsCount={12}
             schedule={cls.schedule}
             title={cls.name}
-            totalStudents={0}
+            totalStudents={cls._count.students}
           />
         ))
       ) : (

@@ -9,7 +9,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
-import { Button } from '../ui/button'
+import { Button } from '@/components/ui/button'
 import { IconUserUp } from '@tabler/icons-react'
 
 export function PromoteStudentToInstructorDialog() {

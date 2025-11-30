@@ -10,9 +10,13 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { IconActivity } from '@tabler/icons-react'
 import { Badge } from '@/components/ui/badge'
 import { StudentResult } from '@/lib/definitions'
-import { getUserInitials } from '@/lib/utils'
+import {
+  formatCpf,
+  formatPhone,
+  getUserInitials,
+  beltToPtBr,
+} from '@/lib/utils'
 import { BeltProgress } from './belt-progress'
-import { beltToPtBr } from '@/lib/utils'
 
 type StudentInfoGridProps = {
   basicInfo: Omit<StudentResult, 'personal_info'>
@@ -25,23 +29,10 @@ export function StudentInfoGrid({
 }: StudentInfoGridProps) {
   const belt = beltToPtBr(basicInfo.belt)
 
-  function formatPhone(phone: string) {
-    return phone.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3')
-  }
-
-  function formatCPF(cpf: string): string {
-    const cleaned = cpf.replace(/\D/g, '')
-
-    return cleaned
-      .replace(/^(\d{3})(\d)/, '$1.$2')
-      .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3')
-      .replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d{2}).*/, '$1.$2.$3-$4')
-  }
-
   return (
     <CardContent>
       <div className='grid lg:grid-cols-2 gap-x-8 gap-y-4 text-sm'>
-        <InfoItem label='CPF' value={formatCPF(personalInfo.cpf)} />
+        <InfoItem label='CPF' value={formatCpf(personalInfo.cpf) as string} />
         <InfoItem
           label='Data de Nascimento'
           value={new Date(personalInfo.date_of_birth).toLocaleDateString(
@@ -65,7 +56,7 @@ export function StudentInfoGrid({
         belt={`Faixa ${belt}`}
         degree={basicInfo.grade}
         currentClasses={basicInfo.current_frequency}
-        requiredClasses={basicInfo.total_frequency}
+        requiredClasses={5}
       />
     </CardContent>
   )
@@ -85,7 +76,6 @@ export function InfoItem({ label, value }: InfoItemProps) {
   )
 }
 
-// Recebe apenas o que precisa, em vez do objeto student inteiro.
 type StudentHeaderProps = {
   fullName: string
   alias: string | null
@@ -101,25 +91,27 @@ export function StudentHeader({
 }: StudentHeaderProps) {
   return (
     <CardHeader className='flex items-center justify-between'>
-      <div className='flex items-center gap-4'>
-        <Avatar className='h-12 w-12 rounded-lg grayscale'>
+      <div className='flex items-center gap-2'>
+        <Avatar className='h-10 w-10 rounded-lg grayscale'>
           <AvatarImage src='' alt={fullName} />
-          <AvatarFallback className='size-12 rounded-full bg-zinc-800 text-white text-lg'>
+          <AvatarFallback className='size-10 rounded-full bg-black text-white font-medium font-poppins'>
             {getUserInitials(fullName)}
           </AvatarFallback>
         </Avatar>
         <div className='flex flex-col'>
-          <CardTitle className='lg:text-2xl text-xl font-semibold tabular-nums'>
+          <CardTitle className='font-medium font-poppins'>
             {fullName}
             {alias && `(${alias})`}
           </CardTitle>
-          <span className='text-sm text-muted-foreground'>{email}</span>
+          <span className='text-xs text-neutral-500 font-medium font-poppins'>
+            {email}
+          </span>
         </div>
       </div>
       <CardAction>
-        <Badge variant='outline' className='h-6 text-sm'>
-          <IconActivity className='size-6 text-sm' />
-          <span className='text-sm font-semibold'>
+        <Badge variant='outline'>
+          <IconActivity className='size-4 text-sm text-neutral-600' />
+          <span className='text-sm font-semibold font-poppins text-neutral-600'>
             {totalFrequency} treino(s)
           </span>
         </Badge>

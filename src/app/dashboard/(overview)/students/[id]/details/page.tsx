@@ -1,5 +1,4 @@
 import { SiteHeader } from '@/components/site-header'
-import { StudentDetails } from '@/components/students/student-details'
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -8,10 +7,14 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from '@/components/ui/breadcrumb'
-import { getStudentById } from '@/http/students/details'
 import { Metadata } from 'next'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { GraduationsList } from '@/components/students/graduations'
+import { Suspense } from 'react'
+import { StudentDetailsSkeleton } from '@/components/ui/skeletons'
+import { Skeleton } from '@/components/ui/skeleton'
+import { BreadcrumbStudentName } from '@/components/students/breadcrumb-student-name'
+import { StudentDetailsAsync } from '@/components/students/student-details-async'
 
 export const metadata: Metadata = {
   title: 'Detalhes',
@@ -23,8 +26,6 @@ export default async function Details({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-
-  const studentData = await getStudentById(id)
 
   return (
     <>
@@ -41,7 +42,9 @@ export default async function Details({
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbPage>
-                {studentData.data?.personal_info.full_name}
+                <Suspense fallback={<Skeleton className='h-4 w-32' />}>
+                  <BreadcrumbStudentName id={id} />
+                </Suspense>
               </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
@@ -51,7 +54,6 @@ export default async function Details({
         <div className='@container/main flex flex-1 flex-col gap-2'>
           <div className='flex flex-col gap-4 py-4 md:gap-6 md:py-6'>
             <div className='px-4 lg:px-6'>
-              {/* <h2>Details do aluno de id: {id}</h2> */}
               <Tabs defaultValue='details'>
                 <TabsList className='bg-transparent p-0 h-auto mb-2'>
                   <TabsTrigger
@@ -68,7 +70,9 @@ export default async function Details({
                   </TabsTrigger>
                 </TabsList>
                 <TabsContent value='details'>
-                  <StudentDetails student={studentData.data!} />
+                  <Suspense fallback={<StudentDetailsSkeleton />}>
+                    <StudentDetailsAsync id={id} />
+                  </Suspense>
                 </TabsContent>
                 <TabsContent value='graduations'>
                   <GraduationsList />

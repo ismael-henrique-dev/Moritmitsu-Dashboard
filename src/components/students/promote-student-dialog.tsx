@@ -12,7 +12,7 @@ import {
 import { Button } from '../ui/button'
 import { IconUserUp } from '@tabler/icons-react'
 
-export function PromoteStudentToInstructor() {
+export function PromoteStudentToInstructorDialog() {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>

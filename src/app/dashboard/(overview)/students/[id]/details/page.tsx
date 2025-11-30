@@ -1,3 +1,5 @@
+import { Suspense } from 'react'
+import { Metadata } from 'next'
 import { SiteHeader } from '@/components/site-header'
 import {
   Breadcrumb,
@@ -7,14 +9,12 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from '@/components/ui/breadcrumb'
-import { Metadata } from 'next'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { GraduationsList } from '@/components/students/graduations'
-import { Suspense } from 'react'
 import { StudentDetailsSkeleton } from '@/components/ui/skeletons'
 import { Skeleton } from '@/components/ui/skeleton'
-import { BreadcrumbStudentName } from '@/components/students/breadcrumb-student-name'
-import { StudentDetailsAsync } from '@/components/students/student-details-async'
+import { BreadcrumbStudentName } from '@/components/ui/breadcrumb-async'
+import { StudentDetails } from '@/components/students/student-details'
 
 export const metadata: Metadata = {
   title: 'Detalhes',
@@ -71,7 +71,7 @@ export default async function Details({
                 </TabsList>
                 <TabsContent value='details'>
                   <Suspense fallback={<StudentDetailsSkeleton />}>
-                    <StudentDetailsAsync id={id} />
+                    <StudentDetails id={id} />
                   </Suspense>
                 </TabsContent>
                 <TabsContent value='graduations'>

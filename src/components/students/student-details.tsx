@@ -1,18 +1,19 @@
 import { Card, CardAction, CardFooter } from '@/components/ui/card'
 import { Button } from '../ui/button'
 import { IconAward, IconPencil } from '@tabler/icons-react'
-import { StudentResult } from '@/lib/definitions'
 import { PromoteStudentToInstructorDialog } from './promote-student-dialog'
 import { DeleteStudentDialog } from './delete-student-dialog'
 import { StudentHeader, StudentInfoGrid } from './student-info'
+import { getStudentById } from '@/http/students/details'
 import Link from 'next/link'
 
 type StudentDetailsProps = {
-  student: StudentResult
+  id: string
 }
 
-export function StudentDetails(props: StudentDetailsProps) {
-  const { personal_info: personalInfoData, ...basisInfo } = props.student
+export async function StudentDetails({ id }: StudentDetailsProps) {
+  const studentData = await getStudentById(id)
+  const { personal_info: personalInfoData, ...basisInfo } = studentData.data!
   const studentId = basisInfo.id
 
   return (

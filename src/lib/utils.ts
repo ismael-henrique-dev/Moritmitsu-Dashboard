@@ -105,6 +105,7 @@ export function beltToPtBr(belt: Belt): string {
     brown: 'marrom',
     black: 'preta',
     red: 'vermelha',
+    colored_belts: 'Faixas coloridas'
   }
 
   return map[belt]

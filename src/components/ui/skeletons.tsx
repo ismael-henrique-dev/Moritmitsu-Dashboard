@@ -172,3 +172,49 @@ export function StudentDetailsSkeleton() {
     </Card>
   )
 }
+
+export function PreferencesTableSkeleton() {
+  return (
+    <div className='hidden xl:block w-full'>
+      <div className='border rounded-md overflow-hidden'>
+        {/* Cabeçalho */}
+        <div className='grid grid-cols-4 gap-4 px-4 py-3 bg-neutral-50'>
+          <Skeleton className='h-4 w-24' />
+          <Skeleton className='h-4 w-24' />
+          <Skeleton className='h-4 w-32' />
+          <Skeleton className='h-4 w-10' />
+        </div>
+
+        {/* Linhas */}
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div key={i} className='grid grid-cols-4 gap-4 px-4 py-4 border-t'>
+            <Skeleton className='h-4 w-28' />
+            <Skeleton className='h-4 w-16' />
+            <Skeleton className='h-4 w-10' />
+            <Skeleton className='h-8 w-8 rounded-md' />
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+export function PreferencesListSkeleton() {
+  return (
+    <div className='xl:hidden grid gap-4'>
+      {Array.from({ length: 4 }).map((_, i) => (
+        <div key={i} className='border rounded-xl p-4 shadow-sm bg-white'>
+          <div className='flex justify-between'>
+            <div className='grid gap-3'>
+              <Skeleton className='h-4 w-32' />
+              <Skeleton className='h-4 w-20' />
+              <Skeleton className='h-4 w-28' />
+            </div>
+
+            <Skeleton className='h-8 w-8 rounded-md' />
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}

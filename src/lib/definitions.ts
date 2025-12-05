@@ -81,3 +81,17 @@ export type FetchStudentByIdResponse = {
   message: string
   result: StudentResult
 }
+
+type Preference = {
+  id: string
+  category: 'KIDS' | 'INFANTO-JUVENIL' | 'JUVENIL-ADULTO'
+  belt: Belt
+  minAge: number | null
+  maxAge: number | null
+  totalTrains: number
+}
+
+export type FetchPreferencesResponse = {
+  message: string
+  preferences: Preference[]
+}

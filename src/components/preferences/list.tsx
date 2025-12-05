@@ -1,25 +1,15 @@
+import { fetchPreferences } from '@/http/preferences/get'
+import { preferenceSchema } from '@/validators/preferences'
 import { PreferenceCard } from './card'
 
-type PreferencesListProps = {
-  data: {
-    id: string
-    ageRange: string
-    belt: string
-    necessaryTraining: number
-  }[]
-}
+export async function PreferencesList() {
+  const response = await fetchPreferences()
+  const data = preferenceSchema.array().parse(response.data)
 
-export function PreferencesList({ data }: PreferencesListProps) {
   return (
-    <div className='lg:hidden grid'>
+    <div className='xl:hidden grid'>
       {data.map((preference) => (
-        <PreferenceCard
-          key={preference.id}
-          id={preference.id}
-          ageRange={preference.ageRange}
-          belt={preference.belt}
-          necessaryTraining={preference.necessaryTraining}
-        />
+        <PreferenceCard key={preference.id} data={preference} />
       ))}
     </div>
   )

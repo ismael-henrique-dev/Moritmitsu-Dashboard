@@ -17,4 +17,5 @@ type Belt =
   | 'brown'
   | 'black'
   | 'red'
+  | 'red_black'
   | 'colored_belts'

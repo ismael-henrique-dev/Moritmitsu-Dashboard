@@ -104,6 +104,7 @@ export function beltToPtBr(belt: Belt): string {
     purple: 'roxa',
     brown: 'marrom',
     black: 'preta',
+    red_black: 'coral',
     red: 'vermelha',
     colored_belts: 'Faixas coloridas'
   }
@@ -153,7 +154,7 @@ export function formatSchedule(
   return parts.join(' | ')
 }
 
-export function formatAgeRange(min: number, max: number | null) {
+export function formatAgeRange(min: number | null, max: number | null) {
   if (!max) {
     return `${min} anos`
   }
@@ -164,4 +165,11 @@ export function formatAgeRange(min: number, max: number | null) {
 export function convertBrazilianDate(dateStr: string) {
   const [day, month, year] = dateStr.split('/')
   return `${year}-${month}-${day}`
+}
+
+export function formatAgeRangeForDataTable(minAge: number | null, maxAge: number | null) {
+  if (minAge === null && maxAge !== null) return `${maxAge}-`      // 12-
+  if (minAge !== null && maxAge === null) return `${minAge}+`      // 16+
+  if (minAge !== null && maxAge !== null) return `${minAge} a ${maxAge}` // 12 a 16
+  return "-" // fallback (se ambos forem null)
 }

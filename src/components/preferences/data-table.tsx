@@ -2,12 +2,6 @@
 
 import * as React from 'react'
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
-
 import { type UniqueIdentifier } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { IconPencil } from '@tabler/icons-react'
@@ -35,54 +29,59 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { preferenceSchema } from '@/validators/preferences'
+import { beltToPtBr, formatAgeRangeForDataTable } from '@/lib/utils'
 
-export const schema = z.object({
-  id: z.string(),
-  ageRange: z.string(),
-  belt: z.string(),
-  necessaryTraining: z.number(),
-})
-
-const columns: ColumnDef<z.infer<typeof schema>>[] = [
+const columns: ColumnDef<z.infer<typeof preferenceSchema>>[] = [
   {
-    accessorKey: 'ageRange',
+    accessorKey: 'category',
+    header: 'Categoria',
+    cell: ({ row }) => (
+      <div className='2xl:w-60 w-40'>{row.original.category}</div>
+    ),
+  },
+  {
+    id: 'ageRange',
     header: 'Faixa etária',
-    cell: ({ row }) => <div className='w-40'>{row.original.ageRange}</div>,
+    cell: ({ row }) => {
+      const { minAge, maxAge } = row.original
+      return <div>{formatAgeRangeForDataTable(minAge, maxAge)}</div>
+    },
   },
 
   {
     accessorKey: 'belt',
     header: 'Faixa',
-    cell: ({ row }) => <div className='w-32'>{row.original.belt}</div>,
+    cell: ({ row }) => {
+      const beltPtBr = beltToPtBr(row.original.belt as Belt)
+      const belt = beltPtBr.toLocaleUpperCase()
+
+      return <div className='w-32'>{belt}</div>
+    },
   },
+
   {
-    accessorKey: 'necessaryTraining',
+    accessorKey: 'totalTrains',
     header: 'Treinos necessários',
   },
+
   {
     id: 'actions',
     header: 'Ações',
     cell: () => (
-      <div className='flex gap-3'>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button size='icon' variant='outline' className='cursor-pointer'>
-              <IconPencil className='size-4' />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>Editar</TooltipContent>
-        </Tooltip>
-      </div>
+      <Button size='icon' variant='outline'>
+        <IconPencil className='size-4' />
+      </Button>
     ),
   },
 ]
 
-export function PreferencesDataTable({
+export async function PreferencesDataTable({
   data: initialData,
 }: {
-  data: z.infer<typeof schema>[]
+  data: z.infer<typeof preferenceSchema>[]
 }) {
-  const [data, setData] = React.useState(() => initialData)
+  const [data] = React.useState(() => initialData)
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
@@ -126,7 +125,7 @@ export function PreferencesDataTable({
   })
 
   return (
-    <div className='overflow-hidden rounded-lg border lg:block hidden'>
+    <div className='overflow-hidden rounded-lg border xl:block hidden'>
       <Table>
         <TableHeader className='sticky top-0 z-10 py-3 hover:none'>
           {table.getHeaderGroups().map((headerGroup) => (

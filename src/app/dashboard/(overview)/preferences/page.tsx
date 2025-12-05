@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { UpdateAccountForm } from '@/components/forms/update-account'
 import { PreferencesList } from '@/components/preferences/list'
 import { PreferencesTableWrapper } from '@/components/preferences/wrapper-table'

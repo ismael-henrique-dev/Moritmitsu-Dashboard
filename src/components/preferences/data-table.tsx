@@ -4,7 +4,7 @@ import * as React from 'react'
 
 import { type UniqueIdentifier } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
-import { IconPencil } from '@tabler/icons-react'
+import { IconPencil, IconCheck } from '@tabler/icons-react'
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -29,59 +29,120 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { Input } from '@/components/ui/input'
 import { preferenceSchema } from '@/validators/preferences'
 import { beltToPtBr, formatAgeRangeForDataTable } from '@/lib/utils'
 
-const columns: ColumnDef<z.infer<typeof preferenceSchema>>[] = [
-  {
-    accessorKey: 'category',
-    header: 'Categoria',
-    cell: ({ row }) => (
-      <div className='2xl:w-60 w-40'>{row.original.category}</div>
-    ),
-  },
-  {
-    id: 'ageRange',
-    header: 'Faixa etária',
-    cell: ({ row }) => {
-      const { minAge, maxAge } = row.original
-      return <div>{formatAgeRangeForDataTable(minAge, maxAge)}</div>
-    },
-  },
 
-  {
-    accessorKey: 'belt',
-    header: 'Faixa',
-    cell: ({ row }) => {
-      const beltPtBr = beltToPtBr(row.original.belt as Belt)
-      const belt = beltPtBr.toLocaleUpperCase()
-
-      return <div className='w-32'>{belt}</div>
-    },
-  },
-
-  {
-    accessorKey: 'totalTrains',
-    header: 'Treinos necessários',
-  },
-
-  {
-    id: 'actions',
-    header: 'Ações',
-    cell: () => (
-      <Button size='icon' variant='outline'>
-        <IconPencil className='size-4' />
-      </Button>
-    ),
-  },
-]
-
-export async function PreferencesDataTable({
+export function PreferencesDataTable({
   data: initialData,
 }: {
   data: z.infer<typeof preferenceSchema>[]
 }) {
-  const [data] = React.useState(() => initialData)
+  const [data, setData] = React.useState(() => initialData)
+
+  // 👉 Estado de qual linha está em edição
+  const [editingRowId, setEditingRowId] = React.useState<string | null>(null)
+
+  // 👉 Valor editado de totalTrains
+  const [editingValue, setEditingValue] = React.useState<number | null>(null)
+
+  // 👉 Colunas vêm aqui dentro para acessar os estados acima
+  const columns: ColumnDef<z.infer<typeof preferenceSchema>>[] = [
+    {
+      accessorKey: 'category',
+      header: 'Categoria',
+      cell: ({ row }) => (
+        <div className='2xl:w-60 w-40'>{row.original.category}</div>
+      ),
+    },
+
+    {
+      id: 'ageRange',
+      header: 'Faixa etária',
+      cell: ({ row }) => {
+        const { minAge, maxAge } = row.original
+        return <div>{formatAgeRangeForDataTable(minAge, maxAge)}</div>
+      },
+    },
+
+    {
+      accessorKey: 'belt',
+      header: 'Faixa',
+      cell: ({ row }) => {
+        const beltPtBr = beltToPtBr(row.original.belt as Belt)
+        const belt = beltPtBr.toLocaleUpperCase()
+        return <div className='w-32'>{belt}</div>
+      },
+    },
+
+    {
+      accessorKey: 'totalTrains',
+      header: 'Treinos necessários',
+      cell: ({ row }) => {
+        const rowId = row.original.id
+        const isEditing = editingRowId === rowId
+
+        if (isEditing) {
+          return (
+            <Input
+              type='number'
+              value={editingValue ?? row.original.totalTrains}
+              onChange={(e) => setEditingValue(Number(e.target.value))}
+              className='w-20 h-8'
+            />
+          )
+        }
+
+        return <span>{row.original.totalTrains}</span>
+      },
+    },
+
+    {
+      id: 'actions',
+      header: 'Ações',
+      cell: ({ row }) => {
+        const rowId = row.original.id
+        const isEditing = editingRowId === rowId
+
+        const handleEdit = () => {
+          setEditingRowId(rowId)
+          setEditingValue(row.original.totalTrains)
+        }
+
+        const handleSave = () => {
+          // Atualiza os dados localmente
+          setData((prev) =>
+            prev.map((item) =>
+              item.id === rowId
+                ? { ...item, totalTrains: editingValue ?? item.totalTrains }
+                : item
+            )
+          )
+
+          // await updatePreference(rowId, { totalTrains: editingValue })
+
+          setEditingRowId(null)
+        }
+
+        return (
+          <>
+            {isEditing ? (
+              <Button size='icon' variant='outline' onClick={handleSave}>
+                <IconCheck className='size-4' />
+              </Button>
+            ) : (
+              <Button size='icon' variant='outline' onClick={handleEdit}>
+                <IconPencil className='size-4' />
+              </Button>
+            )}
+          </>
+        )
+      },
+    },
+  ]
+
+
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
@@ -134,9 +195,7 @@ export async function PreferencesDataTable({
                 return (
                   <TableHead
                     key={header.id}
-                    // se for a coluna Turma, duplica o espaço
                     className='font-semibold py-4 pl-6'
-                    colSpan={header.column.id === 'class' ? 2 : header.colSpan}
                   >
                     {header.isPlaceholder
                       ? null
@@ -150,23 +209,17 @@ export async function PreferencesDataTable({
             </TableRow>
           ))}
         </TableHeader>
-        <TableBody className='**:data-[slot=table-cell]:first:w-8'>
+
+        <TableBody>
           {table.getRowModel().rows?.length ? (
             <SortableContext
               items={dataIds}
               strategy={verticalListSortingStrategy}
             >
               {table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  className='relative z-0 data-[dragging=true]:opacity-80 cursor-pointer'
-                >
+                <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      key={cell.id}
-                      colSpan={cell.column.id === 'id' ? 2 : 1}
-                      className='py-4 pl-6'
-                    >
+                    <TableCell key={cell.id} className='py-4 pl-6'>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -178,7 +231,7 @@ export async function PreferencesDataTable({
             </SortableContext>
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className='h-24 text-center'>
+              <TableCell colSpan={5} className='h-24 text-center'>
                 Nenhum resultado
               </TableCell>
             </TableRow>

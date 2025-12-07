@@ -32,7 +32,9 @@ import {
 import { Input } from '@/components/ui/input'
 import { preferenceSchema } from '@/validators/preferences'
 import { beltToPtBr, formatAgeRangeForDataTable } from '@/lib/utils'
-
+import { updatePreference } from '@/http/preferences/update'
+import { toast } from 'sonner'
+import { Loader2 } from 'lucide-react'
 
 export function PreferencesDataTable({
   data: initialData,
@@ -46,6 +48,8 @@ export function PreferencesDataTable({
 
   // 👉 Valor editado de totalTrains
   const [editingValue, setEditingValue] = React.useState<number | null>(null)
+
+  const [isPending, startTransition] = React.useTransition()
 
   // 👉 Colunas vêm aqui dentro para acessar os estados acima
   const columns: ColumnDef<z.infer<typeof preferenceSchema>>[] = [
@@ -81,12 +85,13 @@ export function PreferencesDataTable({
       header: 'Treinos necessários',
       cell: ({ row }) => {
         const rowId = row.original.id
-        const isEditing = editingRowId === rowId
+        const isRowEditing = editingRowId === rowId
 
-        if (isEditing) {
+        if (isRowEditing) {
           return (
             <Input
               type='number'
+              autoFocus
               value={editingValue ?? row.original.totalTrains}
               onChange={(e) => setEditingValue(Number(e.target.value))}
               className='w-20 h-8'
@@ -103,7 +108,7 @@ export function PreferencesDataTable({
       header: 'Ações',
       cell: ({ row }) => {
         const rowId = row.original.id
-        const isEditing = editingRowId === rowId
+        const isRowEditing = editingRowId === rowId
 
         const handleEdit = () => {
           setEditingRowId(rowId)
@@ -111,37 +116,71 @@ export function PreferencesDataTable({
         }
 
         const handleSave = () => {
-          // Atualiza os dados localmente
-          setData((prev) =>
-            prev.map((item) =>
-              item.id === rowId
-                ? { ...item, totalTrains: editingValue ?? item.totalTrains }
-                : item
-            )
-          )
+          startTransition(async () => {
+            try {
+              setData((prev) =>
+                prev.map((item) =>
+                  item.id === rowId
+                    ? { ...item, totalTrains: editingValue ?? item.totalTrains }
+                    : item
+                )
+              )
 
-          // await updatePreference(rowId, { totalTrains: editingValue })
+              const response = await updatePreference(rowId, {
+                totalTrainings: editingValue as number,
+              })
 
-          setEditingRowId(null)
+              if (response.status === 'success') {
+                toast.success(response.message)
+              } else {
+                toast.error(response.message)
+              }
+            } finally {
+              setEditingRowId(null)
+              setEditingValue(null)
+            }
+          })
         }
 
-        return (
-          <>
-            {isEditing ? (
-              <Button size='icon' variant='outline' onClick={handleSave}>
-                <IconCheck className='size-4' />
-              </Button>
+        // return (
+        //   <>
+        //     {isRowEditing ? (
+        //       <Button size='icon' variant='outline' onClick={handleSave}>
+        //         <IconCheck className='size-4' />
+        //       </Button>
+        //     ) : (
+        //       <Button size='icon' variant='outline' onClick={handleEdit}>
+        //         <IconPencil className='size-4' />
+        //       </Button>
+        //     )}
+        //   </>
+        // )
+        return isRowEditing ? (
+          <Button
+            size='icon'
+            variant='outline'
+            onClick={handleSave}
+            disabled={isPending}
+          >
+            {isPending ? (
+              <Loader2 className='size-4 animate-spin' />
             ) : (
-              <Button size='icon' variant='outline' onClick={handleEdit}>
-                <IconPencil className='size-4' />
-              </Button>
+              <IconCheck className='size-4' />
             )}
-          </>
+          </Button>
+        ) : (
+          <Button
+            size='icon'
+            variant='outline'
+            onClick={handleEdit}
+            disabled={true}
+          >
+            <IconPencil className='size-4' />
+          </Button>
         )
       },
     },
   ]
-
 
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] =

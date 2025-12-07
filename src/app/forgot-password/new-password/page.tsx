@@ -1,9 +1,9 @@
-import { SendEmailForm } from '@/components/forms/send-email'
+import { NewPasswordForm } from '@/components/forms/new-password'
 import { Metadata } from 'next'
 import Image from 'next/image'
 
 export const metadata: Metadata = {
-  title: 'New Password',
+  title: 'Nova Senha',
 }
 
 export default function SendEmail() {
@@ -18,7 +18,7 @@ export default function SendEmail() {
           height={400}
         />
       </div>
-      <div className='flex flex-col gap-4 p-6 md:p-10'>
+      <div className='flex flex-col gap-4'>
         <div className='flex flex-1 items-center justify-center'>
           <div className='w-full max-w-md'>
             <div className='w-full lg:hidden flex items-center justify-center mb-6'>
@@ -30,7 +30,7 @@ export default function SendEmail() {
                 height={200}
               />
             </div>
-            <SendEmailForm />
+            <NewPasswordForm />
           </div>
         </div>
       </div>

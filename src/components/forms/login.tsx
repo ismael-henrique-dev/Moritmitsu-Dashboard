@@ -42,7 +42,7 @@ export function LoginForm() {
   return (
     <form
       onSubmit={handleSubmit(handleLoginUser)}
-      className='flex flex-col gap-6 p-5'
+      className='flex flex-col gap-6 p-5 pt-0'
     >
       <div className='flex flex-col items-center gap-1'>
         <h1 className='font-poppins text-2xl font-semibold text-left'>

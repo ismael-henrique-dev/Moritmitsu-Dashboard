@@ -1,8 +1,11 @@
 import { fetchClasses } from '@/http/classes/get'
 import { ClassCard } from './card'
 import { EmptyClasses } from './empty-classes'
+import { getUserRole } from '@/lib/get-user'
 
 export async function ClassesList({ query }: { query: string }) {
+  const role = await getUserRole()
+
   const response = await fetchClasses(query)
   const classes = response.data ?? []
   const hasClasses = classes.length > 0
@@ -20,6 +23,7 @@ export async function ClassesList({ query }: { query: string }) {
             schedule={cls.schedule}
             title={cls.name}
             totalStudents={cls._count.students}
+            role={role}
           />
         ))
       ) : (

@@ -3,7 +3,6 @@ export const dynamic = 'force-dynamic'
 import { UpdateAccountForm } from '@/components/forms/update-account'
 import { PreferencesList } from '@/components/preferences/list'
 import { PreferencesTableWrapper } from '@/components/preferences/wrapper-table'
-
 import { SiteHeader } from '@/components/site-header'
 import {
   Breadcrumb,
@@ -17,6 +16,7 @@ import {
   PreferencesListSkeleton,
   PreferencesTableSkeleton,
 } from '@/components/ui/skeletons'
+import { getUserRole } from '@/lib/get-user'
 import { Metadata } from 'next'
 import { Suspense } from 'react'
 
@@ -25,6 +25,9 @@ export const metadata: Metadata = {
 }
 
 export default async function Preferences() {
+  const role = await getUserRole()
+  const isAdmin = role === 'admin'
+
   return (
     <>
       <SiteHeader>
@@ -48,15 +51,20 @@ export default async function Preferences() {
                 Detalhes da conta
               </h2>
               <UpdateAccountForm />
-              <h2 className='text-xl font-poppins font-semibold'>
-                Preferências das graduções
-              </h2>
-              <Suspense fallback={<PreferencesTableSkeleton />}>
-                <PreferencesTableWrapper />
-              </Suspense>
-              <Suspense fallback={<PreferencesListSkeleton />}>
-                <PreferencesList />
-              </Suspense>
+
+              {isAdmin && (
+                <>
+                  <h2 className='text-xl font-poppins font-semibold'>
+                    Preferências das graduções
+                  </h2>
+                  <Suspense fallback={<PreferencesTableSkeleton />}>
+                    <PreferencesTableWrapper />
+                  </Suspense>
+                  <Suspense fallback={<PreferencesListSkeleton />}>
+                    <PreferencesList />
+                  </Suspense>
+                </>
+              )}
             </div>
           </div>
         </div>

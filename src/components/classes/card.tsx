@@ -39,6 +39,7 @@ type ClassCardProps = {
     time: string
   }[]
   totalStudents: number
+  role: Role
 }
 
 export function ClassCard(props: ClassCardProps) {
@@ -63,6 +64,8 @@ export function ClassCard(props: ClassCardProps) {
     })
   }
 
+  const isAdmin = props.role === 'admin'
+
   return (
     <Card className='@container/card cursor-pointer hover:shadow-lg transition-shadow mb-4'>
       <CardHeader className='flex justify-between items-start'>
@@ -84,7 +87,9 @@ export function ClassCard(props: ClassCardProps) {
 
           <AlertDialog open={isOpen} onOpenChange={setIsOpen} key={classId}>
             <AlertDialogTrigger>
-              <IconTrash className='size-5 cursor-pointer text-muted-foreground hover:text-destructive transition-colors' />
+              {isAdmin && (
+                <IconTrash className='size-5 cursor-pointer text-muted-foreground hover:text-destructive transition-colors' />
+              )}
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>

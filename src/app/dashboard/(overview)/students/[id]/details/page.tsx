@@ -11,7 +11,10 @@ import {
 } from '@/components/ui/breadcrumb'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { GraduationsList } from '@/components/students/graduations'
-import { StudentDetailsSkeleton } from '@/components/ui/skeletons'
+import {
+  GraduationsListSkeleton,
+  StudentDetailsSkeleton,
+} from '@/components/ui/skeletons'
 import { Skeleton } from '@/components/ui/skeleton'
 import { BreadcrumbStudentName } from '@/components/ui/breadcrumb-async'
 import { StudentDetails } from '@/components/students/student-details'
@@ -75,7 +78,9 @@ export default async function Details({
                   </Suspense>
                 </TabsContent>
                 <TabsContent value='graduations'>
-                  <GraduationsList />
+                  <Suspense fallback={<GraduationsListSkeleton />}>
+                    <GraduationsList id={id} />
+                  </Suspense>
                 </TabsContent>
               </Tabs>
             </div>

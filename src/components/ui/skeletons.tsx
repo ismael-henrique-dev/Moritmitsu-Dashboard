@@ -218,3 +218,24 @@ export function PreferencesListSkeleton() {
     </div>
   )
 }
+
+export function GraduationsListSkeleton() {
+  return (
+    <Card>
+      <CardContent className='gap-4 flex flex-col min-h-[700px]'>
+        {Array.from({ length: 4 }).map((_, i) => (
+          <Card key={i}>
+            <CardContent className='flex justify-between items-center'>
+              <div className='grid gap-2'>
+                <Skeleton className='h-4 w-40' />
+                <Skeleton className='h-4 w-24' />
+              </div>
+
+              <Skeleton className='h-6 w-24 rounded-md' />
+            </CardContent>
+          </Card>
+        ))}
+      </CardContent>
+    </Card>
+  )
+}

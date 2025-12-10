@@ -95,3 +95,13 @@ export type FetchPreferencesResponse = {
   message: string
   preferences: Preference[]
 }
+
+export type Graduation = {
+  id: string
+  student_id: string
+  graduation_date: string
+  belt: Belt
+  grade: number
+}
+
+export type FetchGraduationsResponse = Graduation[]

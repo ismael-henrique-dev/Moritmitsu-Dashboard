@@ -7,6 +7,7 @@ import {
   BreadcrumbLink,
   BreadcrumbSeparator,
   BreadcrumbPage,
+  BreadcrumbEllipsis,
 } from '@/components/ui/breadcrumb'
 import { CreateAttendanceForm } from '@/components/forms/create-attendance'
 import { CreateAttendanceFilters } from '@/components/attendances/filters'
@@ -39,9 +40,13 @@ export default async function CreateAttendance(props: {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink href='/dashboard/attendances'>
-                Frequência
+              <BreadcrumbLink
+                className='lg:flex hidden'
+                href='/dashboard/attendances'
+              >
+                Frequências
               </BreadcrumbLink>
+              <BreadcrumbEllipsis />
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>

@@ -66,26 +66,26 @@ export function Announcements() {
 
 function BirthdaysCard() {
   return (
-    <Card className='@container/card'>
+    <Card className='@container/card lg:gap-6 gap-4 '>
       <CardHeader>
         <div className='flex items-center gap-2'>
-          <Avatar className='size-10 flex justify-center items-center rounded-full bg-black text-white'>
-            <IconCake className='size-6' />
+          <Avatar className='lg:size-10 size-8 flex justify-center items-center rounded-full bg-black text-white'>
+            <IconCake className='lg:size-6 size-4' />
           </Avatar>
-          <CardTitle className='text-base font-poppins font-medium'>
+          <CardTitle className='lg:text-base text-sm font-poppins font-medium'>
             Aniversariantes do mês
           </CardTitle>
         </div>
       </CardHeader>
       <CardContent>
-        <ul className='list-disc text-sm marker:text-xl pl-6'>
+        <ul className='list-disc text-sm marker:text-xl lg:pl-6 pl-5'>
           {birthdays.slice(0, 3).map((student) => (
             <li key={student.id} className='h-9'>
               <div className='flex justify-between items-center'>
-                <strong className='font-poppins font-medium text-sm'>
+                <strong className='font-poppins font-medium lg:text-sm text-xs break-words'>
                   {student.name}
                 </strong>
-                <span className='font-poppins text-neutral-500 text-sm tracking-[0.0005em]'>
+                <span className='font-poppins text-neutral-500 lg:text-sm tracking-[0.0005em] text-xs'>
                   {student.birthday} - {student.age} anos
                 </span>
               </div>
@@ -115,10 +115,10 @@ function BirthdaysCard() {
                 {birthdays.slice(0, 3).map((student) => (
                   <li key={student.id} className='h-9'>
                     <div className='flex justify-between items-center'>
-                      <strong className='font-poppins font-medium text-sm'>
+                      <strong className='font-poppins font-medium lg:text-sm text-xs'>
                         {student.name}
                       </strong>
-                      <span className='font-poppins text-neutral-500 text-sm tracking-[0.0005em]'>
+                      <span className='font-poppins text-neutral-500 lg:text-sm text-xs tracking-[0.0005em]'>
                         {student.birthday} - {student.age} anos
                       </span>
                     </div>
@@ -138,16 +138,16 @@ function GraduationsCard() {
     <Card className='@container/card'>
       <CardHeader>
         <div className='flex items-center gap-2'>
-          <Avatar className='size-10 flex justify-center items-center rounded-full bg-black text-white'>
-            <IconAward className='size-6' />
+          <Avatar className='lg:size-10 size-8 flex justify-center items-center rounded-full bg-black text-white'>
+            <IconAward className='lg:size-6 size-4' />
           </Avatar>
-          <CardTitle className='text-base font-poppins font-medium'>
+          <CardTitle className='lg:text-base text-sm font-poppins font-medium'>
             Alunos aptos à graduação
           </CardTitle>
         </div>
       </CardHeader>
       <CardContent>
-        <ul className='list-disc text-sm marker:text-xl pl-6'>
+        <ul className='list-disc text-sm marker:text-xl lg:pl-6 pl-5'>
           {eligibleStudents.slice(0, 3).map((student) => {
             const { type, graduation } = student
 
@@ -163,17 +163,17 @@ function GraduationsCard() {
               <li key={student.id} className='h-9'>
                 <div className='flex justify-between items-center'>
                   <div className='space-x-1'>
-                    <strong className='font-poppins font-medium text-sm'>
+                    <strong className='font-poppins font-medium lg:text-sm text-xs'>
                       {student.name}
                     </strong>
-                    <span className='font-poppins text-neutral-500 text-sm'>
+                    {/* <span className='font-poppins text-neutral-500 lg:text-sm text-xs'>
                       (faixa {graduation.currentGraduation.belt.toLowerCase()})
-                    </span>
+                    </span> */}
                   </div>
 
-                  <div className='flex items-center gap-1 text-neutral-500 text-sm font-poppins tracking-[0.0005em]'>
+                  <div className='flex items-center gap-1 text-neutral-500 lg:text-sm text-xs font-poppins tracking-[0.0005em]'>
                     <span>{current}</span>
-                    <IconArrowRight size={20} stroke={1.5} />
+                    <IconArrowRight stroke={1.5} className='lg:size-5 size-4' />
                     <span>{next}</span>
                   </div>
                 </div>

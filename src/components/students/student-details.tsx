@@ -4,9 +4,9 @@ import { PromoteStudentToInstructorDialog } from './promote-student-dialog'
 import { DeleteStudentDialog } from './delete-student-dialog'
 import { StudentHeader, StudentInfoGrid } from './student-info'
 import { getStudentById } from '@/http/students/details'
-import Link from 'next/link'
 import { CreateGraduationDialog } from './create-graduation-dialog'
 import { getUserRole } from '@/lib/get-user'
+import Link from 'next/link'
 
 type StudentDetailsProps = {
   id: string
@@ -26,6 +26,10 @@ export async function StudentDetails({ id }: StudentDetailsProps) {
 
   const role = await getUserRole()
   const isAdmin = role === 'admin'
+  const canPromote =
+    studentInfo.belt === 'purple' ||
+    studentInfo.belt === 'brown' ||
+    studentInfo.belt === 'black'
 
   return (
     <Card className='@container/card'>
@@ -41,7 +45,7 @@ export async function StudentDetails({ id }: StudentDetailsProps) {
           {isAdmin && (
             <>
               <CreateGraduationDialog data={studentInfo} />
-              <PromoteStudentToInstructorDialog />
+              {canPromote && <PromoteStudentToInstructorDialog />}
             </>
           )}
         </CardAction>

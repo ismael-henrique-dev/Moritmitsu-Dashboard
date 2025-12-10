@@ -46,7 +46,7 @@ export default async function CreateAttendance(props: {
               >
                 Frequências
               </BreadcrumbLink>
-              <BreadcrumbEllipsis />
+              <BreadcrumbEllipsis className='lg:hidden' />
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>

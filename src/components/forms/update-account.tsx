@@ -1,11 +1,21 @@
+'use client'
+
 import { Card, CardContent } from '../ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '../ui/button'
 import { Spinner } from '../ui/spinner'
 import Link from 'next/link'
+import { useUserData } from '@/hooks/use-user'
 
 export function UpdateAccountForm() {
+  const { user: userData, loading } = useUserData()
+
+  const user = {
+    name: userData?.username ?? 'User',
+    email: userData?.email ?? 'Email',
+  }
+  
   const isPending = false
 
   return (
@@ -17,7 +27,12 @@ export function UpdateAccountForm() {
               <Label htmlFor='email' className='font-semibold font-poppins'>
                 Nome
               </Label>
-              <Input id='email' type='email' placeholder='m@example.com' />
+              <Input
+                id='email'
+                type='text'
+                defaultValue={user.name}
+                placeholder='Nome de usuário'
+              />
               {/* {errors.email && (
               <p className='text-red-700 text-sm'>{errors.email.message}</p>
             )} */}
@@ -26,7 +41,12 @@ export function UpdateAccountForm() {
               <Label htmlFor='email' className='font-semibold font-poppins'>
                 Email
               </Label>
-              <Input id='email' type='email' placeholder='m@example.com' />
+              <Input
+                id='email'
+                type='email'
+                defaultValue={user.email}
+                placeholder='m@example.com'
+              />
               {/* {errors.email && (
               <p className='text-red-700 text-sm'>{errors.email.message}</p>
             )} */}

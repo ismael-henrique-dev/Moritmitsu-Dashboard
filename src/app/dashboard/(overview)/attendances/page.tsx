@@ -12,11 +12,11 @@ import Pagination from '@/components/ui/pagination'
 import { IconCirclePlus } from '@tabler/icons-react'
 import { Metadata } from 'next'
 import Link from 'next/link'
-import data from '../../data.json'
-import { DataTable } from '@/components/attendances/data-table'
 import { AttendancesList } from '@/components/attendances/attendances'
 import { AttendancesFilters } from '@/components/attendances/filters'
 import { fetchClasses } from '@/http/classes/get'
+import { fetchAttendances } from '@/http/attendances/get-attendances'
+import { AttendancesTable } from '@/components/attendances/data-table'
 
 export const metadata: Metadata = {
   title: 'Frequências',
@@ -25,6 +25,8 @@ export const metadata: Metadata = {
 export default async function Attandances() {
   const response = await fetchClasses()
   const classes = response.data || []
+  const attendancesResponse = await fetchAttendances()
+  const attendances = attendancesResponse.data ?? []
 
   return (
     <>
@@ -69,8 +71,8 @@ export default async function Attandances() {
           </Link>
         </Button>
 
-        <AttendancesList data={data} />
-        <DataTable data={data} />
+        <AttendancesList attendances={attendances} />
+        <AttendancesTable data={attendances} />
         <div className='flex w-full justify-center my-6'>
           <Pagination totalPages={10} />
         </div>

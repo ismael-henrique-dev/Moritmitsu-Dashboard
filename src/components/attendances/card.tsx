@@ -1,4 +1,5 @@
-import { Button } from '@/components/ui/button'
+'use client'
+
 import {
   Card,
   CardHeader,
@@ -13,14 +14,11 @@ import {
   IconClock,
 } from '@tabler/icons-react'
 import { Badge } from '../ui/badge'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
+import { AttendanceBy } from '@/lib/definitions'
+import Link from 'next/link'
 
 type AttendanceCardProps = {
-  data: Attendance
+  data: AttendanceBy
 }
 
 export function AttendanceCard({ data }: AttendanceCardProps) {
@@ -35,12 +33,14 @@ export function AttendanceCard({ data }: AttendanceCardProps) {
           </span>
           <div className='flex flex-col'>
             <CardTitle className='lg:text-xl text-xl font-semibold tabular-nums'>
-              {data.class}
+              {data.class.name}
             </CardTitle>
 
             <div className='flex items-center gap-2'>
               <IconClock className='size-4 text-muted-foreground' />
-              <span className='text-sm text-muted-foreground'>{data.date}</span>
+              <span className='text-sm text-muted-foreground'>
+                {data.session_date}
+              </span>
             </div>
           </div>
         </div>
@@ -48,7 +48,7 @@ export function AttendanceCard({ data }: AttendanceCardProps) {
           <Badge variant='secondary' className='h-6 text-sm py-3'>
             <IconUsers className='size-6 text-sm' />
 
-            <span>{data.studentsPresent}</span>
+            <span>{data.class._count.students}</span>
           </Badge>
         </CardAction>
       </CardHeader>
@@ -58,21 +58,14 @@ export function AttendanceCard({ data }: AttendanceCardProps) {
         <div className='flex flex-col gap-1 text-sm text-muted-foreground'>
           <div className='flex items-center gap-2'>
             <span className='font-semibold'>Professor:</span>
-            <span>{data.instructor}</span>
+            <span>{data.instructor.username}</span>
           </div>
         </div>
 
         {/* Ações com tooltip */}
-        <div className='flex gap-2'>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button size='icon' variant='outline'>
-                <IconPencil className='size-4' />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Editar</TooltipContent>
-          </Tooltip>
-        </div>
+        <Link href={`/dashboard/attendances/${data.instructor.username}/edit`}>
+          <IconPencil className='size-4' />
+        </Link>
       </CardContent>
     </Card>
   )

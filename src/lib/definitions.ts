@@ -38,6 +38,18 @@ export type FetchStudentsResponse = {
   result: FetchStudentData[]
 }
 
+export type AttendenceStudent = {
+  id: string
+  personal_info: {
+    full_name: string
+  }
+}
+
+export type FetchAllStudentsByIdResponse = {
+  message: string
+  result: AttendenceStudent[]
+}
+
 export type StudentData = {
   cpf: string
   full_name: string
@@ -105,3 +117,33 @@ export type Graduation = {
 }
 
 export type FetchGraduationsResponse = Graduation[]
+
+export type CreateAttendanceRequest = {
+  session_date: string
+  attendance: {
+    studentId: string
+    present: boolean
+  }[]
+}
+
+export type AttendanceBy = {
+  id: string
+  session_date: string
+  class: ClassInfo
+  instructor: Instructor
+}
+
+export type ClassInfo = {
+  name: string
+  _count: ClassCount
+}
+
+export type ClassCount = {
+  students: number
+}
+
+export type Instructor = {
+  username: string
+}
+
+export type AttendanceResponse = AttendanceBy[]

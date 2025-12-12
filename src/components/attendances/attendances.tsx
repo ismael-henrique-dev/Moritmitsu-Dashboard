@@ -1,17 +1,15 @@
-import Link from 'next/link'
 import { AttendanceCard } from './card'
+import { AttendanceBy } from '@/lib/definitions'
 
 type AttendancesListProps = {
-  data: Attendance[]
+  attendances: AttendanceBy[]
 }
 
-export function AttendancesList({ data: attendances }: AttendancesListProps) {
+export function AttendancesList({ attendances }: AttendancesListProps) {
   return (
     <div className='grid lg:hidden gap-4'>
       {attendances.map((attendance) => (
-        <Link key={attendance.id} href='#' className='mb-4'>
-          <AttendanceCard data={attendance} />
-        </Link>
+        <AttendanceCard key={attendance.id} data={attendance} />
       ))}
     </div>
   )

@@ -9,16 +9,16 @@ import {
   BreadcrumbPage,
   BreadcrumbEllipsis,
 } from '@/components/ui/breadcrumb'
-import { CreateAttendanceForm } from '@/components/forms/create-attendance'
 import { CreateAttendanceFilters } from '@/components/attendances/filters'
 import { fetchClasses } from '@/http/classes/get'
 import { fetchAllStudentsById } from '@/http/attendances/get-all'
+import { UpdateAttendanceForm } from '@/components/forms/update-attendance'
 
 export const metadata: Metadata = {
   title: 'Nova Frequência',
 }
 
-export default async function CreateAttendance(props: {
+export default async function EditAttendance(props: {
   searchParams?: Promise<{
     class?: string
     date?: string
@@ -54,7 +54,7 @@ export default async function CreateAttendance(props: {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Nova Frequência</BreadcrumbPage>
+              <BreadcrumbPage>Editar Frequência</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -62,7 +62,7 @@ export default async function CreateAttendance(props: {
 
       <div className='flex flex-1 flex-col px-4 lg:px-6 py-6 gap-6'>
         <CreateAttendanceFilters classes={classes} />
-        <CreateAttendanceForm students={students} date={date} classId={classId} />
+        <UpdateAttendanceForm students={students} date={date} classId={classId} />
       </div>
     </>
   )

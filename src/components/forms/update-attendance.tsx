@@ -18,6 +18,7 @@ import {
 import { redirect, useRouter } from 'next/navigation'
 import { AttendenceStudent } from '@/lib/definitions'
 import { createAttendance } from '@/http/attendances/create'
+import { updateAttendance } from '@/http/attendances/update'
 
 const FormSchema = z.object({
   students: z.array(z.string()).refine((value) => value.some((item) => item), {
@@ -25,7 +26,7 @@ const FormSchema = z.object({
   }),
 })
 
-export function CreateAttendanceForm({
+export function UpdateAttendanceForm({
   students,
   date,
   classId,
@@ -50,7 +51,7 @@ export function CreateAttendanceForm({
       })),
     }
 
-    const response = await createAttendance(payload, classId)
+    const response = await updateAttendance(payload, classId)
 
     if (response.status === 'success') {
       toast.success(response.message)

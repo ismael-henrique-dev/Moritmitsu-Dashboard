@@ -1,16 +1,9 @@
 'use client'
 
 import * as React from 'react'
-
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
-
 import { type UniqueIdentifier } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
-import { IconPencil, IconTrash } from '@tabler/icons-react'
+import { IconPencil } from '@tabler/icons-react'
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -26,8 +19,6 @@ import {
   VisibilityState,
 } from '@tanstack/react-table'
 import { z } from 'zod'
-
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
   Table,
@@ -37,54 +28,57 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import Link from 'next/link'
 
 export const schema = z.object({
-  id: z.number(),
-  class: z.string(),
-  date: z.string(),
-  studentsPresent: z.number(),
-  instructor: z.string(),
+  id: z.string(),
+  session_date: z.string(),
+  class: z.object({
+    name: z.string(),
+    _count: z.object({
+      students: z.number(),
+    }),
+  }),
+  instructor: z.object({
+    username: z.string(),
+  }),
 })
 
 const columns: ColumnDef<z.infer<typeof schema>>[] = [
   {
     accessorKey: 'class',
     header: 'Turma',
-    cell: ({ row }) => <div className='w-[60%]'>{row.original.class}</div>,
+    cell: ({ row }) => <div className='w-[60%]'>{row.original.class.name}</div>,
   },
 
   {
     accessorKey: 'date',
-    header: 'Data e hora',
-    cell: ({ row }) => <div className='w-32'>{row.original.date}</div>,
+    header: 'Data',
+    cell: ({ row }) => <div className='w-32'>{row.original.session_date}</div>,
   },
   {
-    accessorKey: 'studentsPresent',
+    accessorKey: 'class._count.students',
     header: 'Alunos Presentes',
   },
   {
-    accessorKey: 'instructor',
+    accessorKey: 'instructor.username',
     header: 'Professor',
   },
   {
     id: 'actions',
-    // header: 'Ações',
-    cell: () => (
-      <div className='flex gap-3'>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button size='icon' variant='outline' className='cursor-pointer'>
-              <IconPencil className='size-4' />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>Editar</TooltipContent>
-        </Tooltip>
-      </div>
+    cell: ({ row }) => (
+      <Link href={`/dashboard/attendances/${row.original.id}/edit`}>
+        <div className='flex gap-3'>
+          <Button size='icon' variant='outline' className='cursor-pointer'>
+            <IconPencil className='size-4' />
+          </Button>
+        </div>
+      </Link>
     ),
   },
 ]
 
-export function DataTable({
+export function AttendancesTable({
   data: initialData,
 }: {
   data: z.infer<typeof schema>[]
@@ -117,7 +111,7 @@ export function DataTable({
       columnFilters,
       pagination,
     },
-    getRowId: (row) => row.id.toString(),
+    getRowId: (row) => row.id,
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,

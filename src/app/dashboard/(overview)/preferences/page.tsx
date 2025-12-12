@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic'
 
 import { UpdateAccountForm } from '@/components/forms/update-account'
-import { PreferencesList } from '@/components/preferences/list'
+import { PreferencesList } from '@/components/preferences/preferences-list-wrapper'
 import { PreferencesTableWrapper } from '@/components/preferences/wrapper-table'
 import { SiteHeader } from '@/components/site-header'
 import {

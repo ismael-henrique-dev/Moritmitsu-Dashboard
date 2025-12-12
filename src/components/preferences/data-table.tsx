@@ -43,15 +43,15 @@ export function PreferencesDataTable({
 }) {
   const [data, setData] = React.useState(() => initialData)
 
-  // 👉 Estado de qual linha está em edição
+  // Estado de qual linha está em edição
   const [editingRowId, setEditingRowId] = React.useState<string | null>(null)
 
-  // 👉 Valor editado de totalTrains
+  // Valor editado de totalTrains
   const [editingValue, setEditingValue] = React.useState<number | null>(null)
 
   const [isPending, startTransition] = React.useTransition()
 
-  // 👉 Colunas vêm aqui dentro para acessar os estados acima
+  // Colunas vêm aqui dentro para acessar os estados acima
   const columns: ColumnDef<z.infer<typeof preferenceSchema>>[] = [
     {
       accessorKey: 'category',
@@ -142,19 +142,6 @@ export function PreferencesDataTable({
           })
         }
 
-        // return (
-        //   <>
-        //     {isRowEditing ? (
-        //       <Button size='icon' variant='outline' onClick={handleSave}>
-        //         <IconCheck className='size-4' />
-        //       </Button>
-        //     ) : (
-        //       <Button size='icon' variant='outline' onClick={handleEdit}>
-        //         <IconPencil className='size-4' />
-        //       </Button>
-        //     )}
-        //   </>
-        // )
         return isRowEditing ? (
           <Button
             size='icon'
@@ -173,7 +160,12 @@ export function PreferencesDataTable({
             size='icon'
             variant='outline'
             onClick={handleEdit}
-            disabled={true}
+            disabled={editingRowId !== null && editingRowId !== rowId}
+            className={
+              editingRowId !== null && editingRowId !== rowId
+                ? 'pointer-events-none opacity-50'
+                : ''
+            }
           >
             <IconPencil className='size-4' />
           </Button>

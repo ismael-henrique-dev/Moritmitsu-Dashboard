@@ -18,8 +18,12 @@ export function DatePicker() {
   const { replace } = useRouter()
 
   const defaultValue = searchParams.get('date')
+
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+
   const [date, setDate] = useState<Date | undefined>(
-    defaultValue ? new Date(defaultValue) : undefined
+    defaultValue ? new Date(defaultValue) : today
   )
 
   const handleSelectDate = (selected?: Date) => {
@@ -60,6 +64,9 @@ export function DatePicker() {
             selected={date}
             onSelect={handleSelectDate}
             locale={ptBR}
+            disabled={{
+              after: today, // bloqueia datas futuras
+            }}
           />
         </PopoverContent>
       </Popover>

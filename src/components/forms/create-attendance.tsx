@@ -14,10 +14,13 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '../ui/form'
+} from '@/components/ui/form'
 import { redirect, useRouter } from 'next/navigation'
 import { AttendenceStudent } from '@/lib/definitions'
 import { createAttendance } from '@/http/attendances/create'
+import { AlertSelectClass } from '../attendances/alert-select-class'
+import { useTransition } from 'react'
+import { Spinner } from '@/components/ui/spinner'
 
 const FormSchema = z.object({
   students: z.array(z.string()).refine((value) => value.some((item) => item), {
@@ -29,107 +32,124 @@ export function CreateAttendanceForm({
   students,
   date,
   classId,
-}: // date
-{
+}: {
   students: AttendenceStudent[]
   date: string
   classId: string
 }) {
+  const [isPending, startTransition] = useTransition()
   const router = useRouter()
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+      students: [],
+    },
   })
 
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
-    const payload = {
-      session_date: date, // depois pode vir de um date picker
-      attendance: students.map((student) => ({
-        studentId: student.id,
-        present: data.students.includes(student.id),
-      })),
-    }
+  function onSubmit(data: z.infer<typeof FormSchema>) {
+    startTransition(async () => {
+      console.log('date' + date)
+      const payload = {
+        session_date: date,
+        attendance: students.map((student) => ({
+          studentId: student.id,
+          present: data.students.includes(student.id),
+        })),
+      }
 
-    const response = await createAttendance(payload, classId)
+      const response = await createAttendance(payload, classId)
 
-    if (response.status === 'success') {
-      toast.success(response.message)
-      redirect('/dashboard/attendances')
-    } else {
-      toast.error(response.message)
-    }
+      if (response.status === 'success') {
+        toast.success(response.message)
+        redirect('/dashboard/attendances')
+      } else {
+        toast.error(response.message)
+      }
+    })
+  }
+
+  const hasSelectedClass = classId !== ''
+
+  if (hasSelectedClass && students.length === 0) {
+    return (
+      <div className='border rounded-lg p-6 text-center text-muted-foreground'>
+        Nenhum aluno encontrado para esta turma.
+      </div>
+    )
+  }
+
+  if (!hasSelectedClass) {
+    return <AlertSelectClass />
   }
 
   return (
-    <div>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className='space-y-8 w-full'
-        >
-          <FormField
-            control={form.control}
-            name='students'
-            render={() => (
-              <FormItem>
-                <div className='mb-4'>
-                  <FormLabel className='text-base'>Alunos</FormLabel>
-                  <FormDescription>
-                    Selecione os alunos que deseja marcar presença
-                  </FormDescription>
-                </div>
-                {students.map((item) => (
-                  <FormField
-                    key={item.id}
-                    control={form.control}
-                    name='students'
-                    render={({ field }) => {
-                      return (
-                        <FormItem
-                          key={item.id}
-                          className='hover:bg-accent/50 flex items-center gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950'
-                        >
-                          <FormControl>
-                            <Checkbox
-                              className='size-5 cursor-pointer data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700'
-                              checked={field.value?.includes(item.id)}
-                              onCheckedChange={(checked) => {
-                                const current = field.value ?? []
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 w-full'>
+        <FormField
+          control={form.control}
+          name='students'
+          render={() => (
+            <FormItem>
+              <div className='mb-4'>
+                <FormLabel className='text-base'>Alunos</FormLabel>
+                <FormDescription>
+                  Selecione os alunos que deseja marcar presença
+                </FormDescription>
+              </div>
+              {students.map((item) => (
+                <FormField
+                  key={item.id}
+                  control={form.control}
+                  name='students'
+                  render={({ field }) => {
+                    return (
+                      <FormItem
+                        key={item.id}
+                        className='hover:bg-accent/50 flex items-center gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950'
+                      >
+                        <FormControl>
+                          <Checkbox
+                            className='size-5 cursor-pointer data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700'
+                            checked={field.value?.includes(item.id)}
+                            onCheckedChange={(checked) => {
+                              const current = field.value ?? []
 
-                                return checked
-                                  ? field.onChange([...current, item.id])
-                                  : field.onChange(
-                                      current.filter(
-                                        (value) => value !== item.id
-                                      )
-                                    )
-                              }}
-                            />
-                          </FormControl>
-                          <FormLabel className='text-sm font-semibold w-full cursor-pointer py-3'>
-                            {item.personal_info.full_name}
-                          </FormLabel>
-                        </FormItem>
-                      )
-                    }}
-                  />
-                ))}
-                <FormMessage></FormMessage>
-              </FormItem>
-            )}
-          />
-          <div className='w-full flex items-center justify-end gap-2'>
-            <Button
-              type='button'
-              variant='outline'
-              onClick={() => router.back()}
-            >
-              Cancelar
-            </Button>
-            <Button type='submit'>Concluir</Button>
-          </div>
-        </form>
-      </Form>
-    </div>
+                              return checked
+                                ? field.onChange([...current, item.id])
+                                : field.onChange(
+                                    current.filter((value) => value !== item.id)
+                                  )
+                            }}
+                          />
+                        </FormControl>
+                        <FormLabel className='text-sm font-semibold w-full cursor-pointer py-3'>
+                          {item.personal_info.full_name}
+                        </FormLabel>
+                      </FormItem>
+                    )
+                  }}
+                />
+              ))}
+              <FormMessage></FormMessage>
+            </FormItem>
+          )}
+        />
+        <div className='w-full flex items-center justify-end gap-2'>
+          <Button
+            type='button'
+            variant='outline'
+            onClick={() => router.back()}
+            disabled={isPending}
+          >
+            Cancelar
+          </Button>
+          <Button type='submit' disabled={isPending}>
+            {isPending && <Spinner />}
+            {isPending ? 'Concluindo...' : 'Concluir'}
+          </Button>
+        </div>
+      </form>
+    </Form>
   )
 }

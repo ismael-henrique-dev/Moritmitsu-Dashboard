@@ -17,6 +17,7 @@ import { AttendancesFilters } from '@/components/attendances/filters'
 import { fetchClasses } from '@/http/classes/get'
 import { fetchAttendances } from '@/http/attendances/get-attendances'
 import { AttendancesTable } from '@/components/attendances/data-table'
+import { fetchInstructructos } from '@/http/user/get'
 
 export const metadata: Metadata = {
   title: 'Frequências',
@@ -27,6 +28,8 @@ export default async function Attandances() {
   const classes = response.data || []
   const attendancesResponse = await fetchAttendances()
   const attendances = attendancesResponse.data ?? []
+  const instructorsResponse = await fetchInstructructos()
+  const instructors = instructorsResponse.data ?? []
 
   return (
     <>
@@ -59,7 +62,7 @@ export default async function Attandances() {
       </SiteHeader>
 
       <div className='px-4 lg:px-6 py-6'>
-        <AttendancesFilters classes={classes} />
+        <AttendancesFilters classes={classes} instructors={instructors} />
 
         <Button
           asChild

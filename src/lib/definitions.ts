@@ -147,3 +147,8 @@ export type Instructor = {
 }
 
 export type AttendanceResponse = AttendanceBy[]
+
+export type FetchInstructorsResponse = {
+  message: string
+  users: User[]
+}

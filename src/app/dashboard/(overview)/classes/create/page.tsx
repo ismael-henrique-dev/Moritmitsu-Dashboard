@@ -8,13 +8,17 @@ import {
   BreadcrumbLink,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
+import { fetchInstructructos } from '@/http/user/get'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Cadastrar turma',
 }
 
-export default function CreateClass() {
+export default async function CreateClass() {
+  const instructorsResponse = await fetchInstructructos()
+  const instructors = instructorsResponse.data ?? []
+
   return (
     <>
       <SiteHeader>
@@ -35,7 +39,7 @@ export default function CreateClass() {
         </Breadcrumb>
       </SiteHeader>
       <div className='grid flex-1 '>
-        <CreateClassForm />
+        <CreateClassForm instructors={instructors} />
       </div>
     </>
   )

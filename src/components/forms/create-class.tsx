@@ -17,7 +17,11 @@ import { createClass } from '@/http/classes/create'
 import { toast } from 'sonner'
 import { DayOfWeekSelect, SelectInstructor } from '@/components/ui/selects'
 
-export function CreateClassForm() {
+type CreateClassFormProps = {
+  instructors: User[]
+}
+
+export function CreateClassForm({ instructors }: CreateClassFormProps) {
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
 
@@ -84,6 +88,7 @@ export function CreateClassForm() {
           <div>
             <Input
               type='number'
+              min={1}
               placeholder='Idade mínima'
               aria-invalid={!!errors.minAge}
               {...register('minAge', { valueAsNumber: true })}
@@ -95,6 +100,7 @@ export function CreateClassForm() {
           <div>
             <Input
               type='number'
+              min={1}
               placeholder='Idade máxima (opcional)'
               {...register('maxAge', {
                 setValueAs: (v) => (v === null || v === '' ? null : Number(v)),
@@ -117,6 +123,7 @@ export function CreateClassForm() {
           name='instructor'
           render={({ field }) => (
             <SelectInstructor
+              instructors={instructors}
               value={field.value}
               onValueChange={field.onChange}
               ariaInvalid={!!errors.instructor}

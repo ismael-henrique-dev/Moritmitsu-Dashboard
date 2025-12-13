@@ -32,12 +32,6 @@ const degrees = [
   { id: '6', name: '6º grau' },
 ]
 
-const instructors = [
-  { id: '1', name: 'Saulo Bezerra' },
-  { id: '2', name: 'Daniel Lima' },
-  { id: '3', name: 'Aluno' },
-]
-
 const daysOfWeek = [
   { id: 'segunda', name: 'Segunda-feira' },
   { id: 'terca', name: 'Terça-feira' },
@@ -96,16 +90,23 @@ export function SelectDegree({ value, onValueChange, ...props }: SelectProps) {
 
 type SelectInstructorProps = {
   ariaInvalid?: boolean
+  instructors: User[]
 } & React.ComponentProps<typeof SelectPrimitive.Root>
 
 export function SelectInstructor({
   ariaInvalid = false,
   value,
+  instructors,
   onValueChange,
   ...props
 }: SelectInstructorProps) {
   const selectedInstructor =
-    instructors.find((i) => i.id === value)?.name || 'Escolha um professor'
+    instructors.find((i) => i.id === value)?.username || 'Escolha um professor'
+
+  console.log({
+    value,
+    instructorsIds: instructors.map((i) => i.id),
+  })
 
   return (
     <Select value={value} onValueChange={onValueChange} {...props}>
@@ -117,7 +118,7 @@ export function SelectInstructor({
       <SelectContent>
         {instructors.map((instructor) => (
           <SelectItem key={instructor.id} value={instructor.id}>
-            {instructor.name}
+            {instructor.username}
           </SelectItem>
         ))}
       </SelectContent>
@@ -163,30 +164,29 @@ export function DayOfWeekSelect({
   )
 }
 
+// export function SelectClass({
+//   ariaInvalid = false,
+//   value,
+//   onValueChange,
+//   ...props
+// }: SelectInstructorProps) {
+//   const selectedInstructor =
+//     instructors.find((i) => i.id === value)?.name || 'Escolha um professor'
 
-export function SelectClass({
-  ariaInvalid = false,
-  value,
-  onValueChange,
-  ...props
-}: SelectInstructorProps) {
-  const selectedInstructor =
-    instructors.find((i) => i.id === value)?.name || 'Escolha um professor'
-
-  return (
-    <Select value={value} onValueChange={onValueChange} {...props}>
-      <SelectTrigger className='w-full' aria-invalid={ariaInvalid}>
-        <SelectValue placeholder='Escolha uma professor'>
-          {selectedInstructor}
-        </SelectValue>
-      </SelectTrigger>
-      <SelectContent>
-        {instructors.map((instructor) => (
-          <SelectItem key={instructor.id} value={instructor.id}>
-            {instructor.name}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
-  )
-}
+//   return (
+//     <Select value={value} onValueChange={onValueChange} {...props}>
+//       <SelectTrigger className='w-full' aria-invalid={ariaInvalid}>
+//         <SelectValue placeholder='Escolha uma professor'>
+//           {selectedInstructor}
+//         </SelectValue>
+//       </SelectTrigger>
+//       <SelectContent>
+//         {instructors.map((instructor) => (
+//           <SelectItem key={instructor.id} value={instructor.id}>
+//             {instructor.name}
+//           </SelectItem>
+//         ))}
+//       </SelectContent>
+//     </Select>
+//   )
+// }

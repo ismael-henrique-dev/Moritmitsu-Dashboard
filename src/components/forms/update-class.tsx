@@ -1,31 +1,43 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useTransition } from 'react'
+import { useEffect, useState, useTransition } from 'react'
 import { useForm, useFieldArray, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Spinner } from '../ui/spinner'
-import { SelectInstructor } from '../attendances/instructor-select'
 import {
   createClassFormSchema,
   CreateClassFormData,
 } from '@/validators/create-class'
 import { IconPlus } from '@tabler/icons-react'
-
 import { createClass } from '@/http/classes/create'
 import { toast } from 'sonner'
-import { DayOfWeekSelect } from '../ui/selects'
+import { DayOfWeekSelect, SelectInstructor } from '../ui/selects'
+import { ClassDetails } from '@/lib/definitions'
+import { updateClass } from '@/http/classes/update'
 
-export function UpdateClassForm() {
+type UpdateClassFormProps = {
+  instructors: User[]
+  classData: ClassDetails
+  classId: string
+}
+
+export function UpdateClassForm({
+  instructors,
+  classData,
+  classId,
+}: UpdateClassFormProps) {
+  const [defaultValueInstructor, setDefaultValueInstructor] = useState('')
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
 
   const {
     control,
     register,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm<CreateClassFormData>({
@@ -33,6 +45,7 @@ export function UpdateClassForm() {
     defaultValues: {
       schedules: [{ dayOfWeek: '', time: '' }],
       maxAge: null,
+      instructor: classData.instructor_id,
     },
   })
 
@@ -41,10 +54,24 @@ export function UpdateClassForm() {
     name: 'schedules',
   })
 
+  useEffect(() => {
+    if (classData) {
+      reset({
+        instructor: classData.instructor_id,
+        maxAge: classData.max_age,
+        minAge: classData.min_age,
+        name: classData.name,
+        schedules: classData.schedule,
+      })
+
+      setDefaultValueInstructor(classData.instructor_id)
+    }
+  }, [classData, reset])
+
   const handleUpdateClass = (data: CreateClassFormData) => {
     startTransition(async () => {
       console.log(data)
-      const response = await createClass(data)
+      const response = await updateClass(classId, data)
 
       if (response.status === 'success') {
         toast.success(response.message)
@@ -53,6 +80,10 @@ export function UpdateClassForm() {
         toast.error(response.message)
       }
     })
+  }
+
+  if (!instructors.length) {
+    return <div className='p-5'>Carregando professores...</div>
   }
 
   return (
@@ -84,6 +115,7 @@ export function UpdateClassForm() {
           <div>
             <Input
               type='number'
+              min={1}
               placeholder='Idade mínima'
               {...register('minAge', { valueAsNumber: true })}
             />
@@ -94,6 +126,7 @@ export function UpdateClassForm() {
           <div>
             <Input
               type='number'
+              min={1}
               placeholder='Idade máxima (opcional)'
               {...register('maxAge', { valueAsNumber: true })}
             />
@@ -113,8 +146,10 @@ export function UpdateClassForm() {
           name='instructor'
           render={({ field }) => (
             <SelectInstructor
-              value={field.value}
+              instructors={instructors}
+              value={field.value ?? defaultValueInstructor}
               onValueChange={field.onChange}
+              ariaInvalid={!!errors.instructor}
             />
           )}
         />
@@ -157,11 +192,6 @@ export function UpdateClassForm() {
                 </Button>
               </div>
 
-              {/* {errors.schedules?.[index]?.dayOfWeek && (
-                <p className='text-red-600 text-sm'>
-                  {errors.schedules[index]?.dayOfWeek?.message}
-                </p>
-              )} */}
               {errors.schedules?.[index]?.time && (
                 <p className='text-red-600 text-sm'>
                   {errors.schedules[index]?.time?.message}

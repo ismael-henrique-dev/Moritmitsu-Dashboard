@@ -152,3 +152,33 @@ export type FetchInstructorsResponse = {
   message: string
   users: User[]
 }
+
+export type ClassSchedule = {
+  dayOfWeek: string
+  time: string
+}
+
+export type ClassInstructor = {
+  username: string
+}
+
+export type ClassStudentRef = {
+  id: string
+}
+
+export type ClassDetails = {
+  id: string
+  name: string
+  min_age: number
+  max_age: number
+  schedule: ClassSchedule[]
+  instructor_id: string
+  instructor: ClassInstructor
+  students: ClassStudentRef[]
+  _count: ClassCount
+}
+
+export type FetchClassDetailsResponse = {
+  message: string
+  result: ClassDetails
+}

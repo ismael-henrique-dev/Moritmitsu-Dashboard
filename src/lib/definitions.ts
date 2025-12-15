@@ -39,10 +39,9 @@ export type FetchStudentsResponse = {
 }
 
 export type AttendenceStudent = {
-  id: string
-  personal_info: {
-    full_name: string
-  }
+  student_id: string
+  full_name: string
+  present: boolean
 }
 
 export type FetchAllStudentsByIdResponse = {
@@ -146,7 +145,40 @@ export type Instructor = {
   username: string
 }
 
-export type AttendanceResponse = AttendanceBy[]
+export interface Session {
+  id: string
+  class_id: string
+  instructor_id: string
+  session_date: string // ISO Date
+  class: {
+    id: string
+    name: string
+    _count: {
+      students: number
+    }
+  }
+  instructor: Instructor
+  attendances: Attendance[]
+}
+
+export interface Attendance {
+  present: boolean
+  student: {
+    personal_info: {
+      full_name: string
+    }
+  }
+}
+
+export type SessionResponse = {
+  data: Session[]
+  pagination: {
+    total: number
+    currentPage: number
+    perPage: number
+    totalPages: number
+  }
+}
 
 export type FetchInstructorsResponse = {
   message: string

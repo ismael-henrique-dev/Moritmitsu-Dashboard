@@ -17,7 +17,6 @@ import {
 } from '../ui/form'
 import { redirect, useRouter } from 'next/navigation'
 import { AttendenceStudent } from '@/lib/definitions'
-import { createAttendance } from '@/http/attendances/create'
 import { updateAttendance } from '@/http/attendances/update'
 
 const FormSchema = z.object({
@@ -46,8 +45,8 @@ export function UpdateAttendanceForm({
     const payload = {
       session_date: date, // depois pode vir de um date picker
       attendance: students.map((student) => ({
-        studentId: student.id,
-        present: data.students.includes(student.id),
+        studentId: student.student_id,
+        present: data.students.includes(student.student_id),
       })),
     }
 
@@ -81,34 +80,34 @@ export function UpdateAttendanceForm({
                 </div>
                 {students.map((item) => (
                   <FormField
-                    key={item.id}
+                    key={item.student_id}
                     control={form.control}
                     name='students'
                     render={({ field }) => {
                       return (
                         <FormItem
-                          key={item.id}
+                          key={item.student_id}
                           className='hover:bg-accent/50 flex items-center gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950'
                         >
                           <FormControl>
                             <Checkbox
                               className='size-5 cursor-pointer data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700'
-                              checked={field.value?.includes(item.id)}
+                              checked={field.value?.includes(item.student_id)}
                               onCheckedChange={(checked) => {
                                 const current = field.value ?? []
 
                                 return checked
-                                  ? field.onChange([...current, item.id])
+                                  ? field.onChange([...current, item.student_id])
                                   : field.onChange(
                                       current.filter(
-                                        (value) => value !== item.id
+                                        (value) => value !== item.student_id
                                       )
                                     )
                               }}
                             />
                           </FormControl>
                           <FormLabel className='text-sm font-semibold w-full cursor-pointer py-3'>
-                            {item.personal_info.full_name}
+                            {item.full_name}
                           </FormLabel>
                         </FormItem>
                       )

@@ -30,7 +30,7 @@ import {
 } from '@/components/ui/table'
 import Link from 'next/link'
 
-export const schema = z.object({
+export const attendanceSchema = z.object({
   id: z.string(),
   session_date: z.string(),
   class: z.object({
@@ -44,7 +44,9 @@ export const schema = z.object({
   }),
 })
 
-const columns: ColumnDef<z.infer<typeof schema>>[] = [
+export type Attendance = z.infer<typeof attendanceSchema>
+
+const columns: ColumnDef<z.infer<typeof attendanceSchema>>[] = [
   {
     accessorKey: 'class',
     header: 'Turma',
@@ -81,7 +83,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
 export function AttendancesTable({
   data: initialData,
 }: {
-  data: z.infer<typeof schema>[]
+  data: Attendance[]
 }) {
   const [data, setData] = React.useState(() => initialData)
   const [rowSelection, setRowSelection] = React.useState({})

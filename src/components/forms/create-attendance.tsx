@@ -1,6 +1,6 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
@@ -53,10 +53,12 @@ export function CreateAttendanceForm({
       const payload = {
         session_date: date,
         attendance: students.map((student) => ({
-          studentId: student.id,
-          present: data.students.includes(student.id),
+          studentId: student.student_id,
+          present: data.students.includes(student.student_id),
         })),
       }
+
+      console.log("Payload: " + payload)
 
       const response = await createAttendance(payload, classId)
 
@@ -70,6 +72,8 @@ export function CreateAttendanceForm({
   }
 
   const hasSelectedClass = classId !== ''
+
+  console.log(students)
 
   if (hasSelectedClass && students.length === 0) {
     return (
@@ -99,32 +103,31 @@ export function CreateAttendanceForm({
               </div>
               {students.map((item) => (
                 <FormField
-                  key={item.id}
+                  key={item.student_id}
                   control={form.control}
                   name='students'
                   render={({ field }) => {
                     return (
-                      <FormItem
-                        key={item.id}
-                        className='hover:bg-accent/50 flex items-center gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950'
-                      >
+                      <FormItem className='hover:bg-accent/50 flex items-center gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950'>
                         <FormControl>
                           <Checkbox
                             className='size-5 cursor-pointer data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700'
-                            checked={field.value?.includes(item.id)}
+                            checked={field.value?.includes(item.student_id)}
                             onCheckedChange={(checked) => {
                               const current = field.value ?? []
 
                               return checked
-                                ? field.onChange([...current, item.id])
+                                ? field.onChange([...current, item.student_id])
                                 : field.onChange(
-                                    current.filter((value) => value !== item.id)
+                                    current.filter(
+                                      (value) => value !== item.student_id
+                                    )
                                   )
                             }}
                           />
                         </FormControl>
                         <FormLabel className='text-sm font-semibold w-full cursor-pointer py-3'>
-                          {item.personal_info.full_name}
+                          {item.full_name}
                         </FormLabel>
                       </FormItem>
                     )

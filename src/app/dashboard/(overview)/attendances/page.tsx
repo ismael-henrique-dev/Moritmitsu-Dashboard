@@ -23,13 +23,35 @@ export const metadata: Metadata = {
   title: 'Frequências',
 }
 
-export default async function Attandances() {
+export default async function Attandances(props: {
+  searchParams?: Promise<{
+    instructor?: string
+    date?: string
+    page?: number
+    class?: string
+  }>
+}) {
+  const searchParams = await props.searchParams
+
+  const currentPage = searchParams?.page || 1
+  const classId = searchParams?.class || ''
+  const instructorId = searchParams?.class || ''
+  const date = searchParams?.date || ''
+
   const response = await fetchClasses()
   const classes = response.data || []
-  const attendancesResponse = await fetchAttendances()
-  const attendances = attendancesResponse.data ?? []
+  const attendancesResponse = await fetchAttendances(
+    currentPage,
+    classId,
+    instructorId,
+    date
+  )
+  const attendances = attendancesResponse.data?.data ?? []
   const instructorsResponse = await fetchInstructructos()
   const instructors = instructorsResponse.data ?? []
+
+  const totalPages = attendancesResponse.data?.pagination.totalPages ?? 1
+  console.log(classId)
 
   return (
     <>
@@ -77,7 +99,7 @@ export default async function Attandances() {
         <AttendancesList attendances={attendances} />
         <AttendancesTable data={attendances} />
         <div className='flex w-full justify-center my-6'>
-          <Pagination totalPages={10} />
+          {totalPages > 1 && <Pagination totalPages={totalPages} />}
         </div>
       </div>
     </>

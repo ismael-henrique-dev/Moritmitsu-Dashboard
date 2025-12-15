@@ -2,17 +2,28 @@
 
 import { api } from '@/services/api'
 import { getAxiosStatusCode } from '@/lib/utils'
-import { AttendanceResponse } from '@/lib/definitions'
+import { SessionResponse } from '@/lib/definitions'
 import { cookies } from 'next/headers'
 
-export async function fetchAttendances() {
+export async function fetchAttendances(
+  currentPage: number,
+  classId: string,
+  instructorId: string,
+  date: string
+) {
   try {
     const cookieStore = await cookies()
     const accessToken = cookieStore.get('accessToken')?.value
 
-    const { data: response } = await api.get<AttendanceResponse>(
+    const { data: response } = await api.get<SessionResponse>(
       `/attendence/get`,
       {
+        params: {
+          currentPage,
+          classId,
+          instructorId,
+          date,
+        },
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

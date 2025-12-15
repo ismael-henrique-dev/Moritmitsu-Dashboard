@@ -29,6 +29,8 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import Link from 'next/link'
+import { formatDateBR } from '@/lib/utils'
+import { AttendancesTableSkeleton } from '../ui/skeletons'
 
 export const attendanceSchema = z.object({
   id: z.string(),
@@ -56,7 +58,11 @@ const columns: ColumnDef<z.infer<typeof attendanceSchema>>[] = [
   {
     accessorKey: 'date',
     header: 'Data',
-    cell: ({ row }) => <div className='w-32'>{row.original.session_date}</div>,
+    cell: ({ row }) => {
+      return (
+        <div className='w-32'>{formatDateBR(row.original.session_date)}</div>
+      )
+    },
   },
   {
     accessorKey: 'class._count.students',
@@ -69,7 +75,9 @@ const columns: ColumnDef<z.infer<typeof attendanceSchema>>[] = [
   {
     id: 'actions',
     cell: ({ row }) => (
-      <Link href={`/dashboard/attendances/${row.original.id}/edit`}>
+      <Link
+        href={`/dashboard/attendances/${row.original.id}/edit?class=${row.original.id}&date=${row.original.session_date}`}
+      >
         <div className='flex gap-3'>
           <Button size='icon' variant='outline' className='cursor-pointer'>
             <IconPencil className='size-4' />
@@ -82,11 +90,26 @@ const columns: ColumnDef<z.infer<typeof attendanceSchema>>[] = [
 
 export function AttendancesTable({
   data: initialData,
+
 }: {
   data: Attendance[]
 }) {
   const [data, setData] = React.useState(() => initialData)
   const [rowSelection, setRowSelection] = React.useState({})
+
+  const [isLoading, setIsLoading] = React.useState(true)
+
+  React.useEffect(() => {
+    setIsLoading(true)
+
+    const id = setTimeout(() => {
+      setData(initialData)
+      setIsLoading(false)
+    }, 0)
+
+    return () => clearTimeout(id)
+  }, [initialData])
+
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -127,6 +150,10 @@ export function AttendancesTable({
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
   })
+
+  if (isLoading) {
+    return <AttendancesTableSkeleton />
+  }
 
   return (
     <div className='overflow-hidden rounded-lg border lg:block hidden'>

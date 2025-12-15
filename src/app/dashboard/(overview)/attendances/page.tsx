@@ -18,6 +18,7 @@ import { fetchClasses } from '@/http/classes/get'
 import { fetchAttendances } from '@/http/attendances/get-attendances'
 import { AttendancesTable } from '@/components/attendances/data-table'
 import { fetchInstructructos } from '@/http/user/get'
+import { AttendancesTableSkeleton } from '@/components/ui/skeletons'
 
 export const metadata: Metadata = {
   title: 'Frequências',
@@ -35,7 +36,7 @@ export default async function Attandances(props: {
 
   const currentPage = searchParams?.page || 1
   const classId = searchParams?.class || ''
-  const instructorId = searchParams?.class || ''
+  const instructorId = searchParams?.instructor || ''
   const date = searchParams?.date || ''
 
   const response = await fetchClasses()
@@ -51,7 +52,8 @@ export default async function Attandances(props: {
   const instructors = instructorsResponse.data ?? []
 
   const totalPages = attendancesResponse.data?.pagination.totalPages ?? 1
-  console.log(classId)
+
+  console.log(attendances)
 
   return (
     <>
@@ -97,7 +99,7 @@ export default async function Attandances(props: {
         </Button>
 
         <AttendancesList attendances={attendances} />
-        <AttendancesTable data={attendances} />
+        {attendances.length > 1 && <AttendancesTable data={attendances} />}
         <div className='flex w-full justify-center my-6'>
           {totalPages > 1 && <Pagination totalPages={totalPages} />}
         </div>

@@ -239,3 +239,34 @@ export function GraduationsListSkeleton() {
     </Card>
   )
 }
+
+export function AttendancesTableSkeleton() {
+  return (
+    <div className='hidden lg:block w-full'>
+      <div className='border rounded-md overflow-hidden'>
+        {/* Cabeçalho */}
+        <div className='grid grid-cols-5 gap-4 px-6 py-4 bg-neutral-50'>
+          <Skeleton className='h-4 w-32' /> {/* Turma */}
+          <Skeleton className='h-4 w-24' /> {/* Data */}
+          <Skeleton className='h-4 w-40' /> {/* Alunos */}
+          <Skeleton className='h-4 w-28' /> {/* Professor */}
+          <Skeleton className='h-4 w-10' /> {/* Ações */}
+        </div>
+
+        {/* Linhas */}
+        {Array.from({ length: 10 }).map((_, i) => (
+          <div
+            key={i}
+            className='grid grid-cols-5 gap-4 px-6 py-4 border-t items-center'
+          >
+            <Skeleton className='h-4 w-40' /> {/* Turma */}
+            <Skeleton className='h-4 w-24' /> {/* Data */}
+            <Skeleton className='h-4 w-20' /> {/* Alunos */}
+            <Skeleton className='h-4 w-32' /> {/* Professor */}
+            <Skeleton className='h-8 w-8 rounded-md' /> {/* Ação */}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}

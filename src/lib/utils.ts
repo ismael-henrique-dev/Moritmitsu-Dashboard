@@ -1,6 +1,8 @@
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import { AxiosError } from 'axios'
+import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -106,7 +108,7 @@ export function beltToPtBr(belt: Belt): string {
     black: 'preta',
     red_black: 'coral',
     red: 'vermelha',
-    colored_belts: 'Faixas coloridas'
+    colored_belts: 'Faixas coloridas',
   }
 
   return map[belt]
@@ -167,9 +169,17 @@ export function convertBrazilianDate(dateStr: string) {
   return `${year}-${month}-${day}`
 }
 
-export function formatAgeRangeForDataTable(minAge: number | null, maxAge: number | null) {
-  if (minAge === null && maxAge !== null) return `${maxAge}-`      // 12-
-  if (minAge !== null && maxAge === null) return `${minAge}+`      // 16+
+export function formatAgeRangeForDataTable(
+  minAge: number | null,
+  maxAge: number | null
+) {
+  if (minAge === null && maxAge !== null) return `${maxAge}-` // 12-
+  if (minAge !== null && maxAge === null) return `${minAge}+` // 16+
   if (minAge !== null && maxAge !== null) return `${minAge} a ${maxAge}` // 12 a 16
-  return "-" // fallback (se ambos forem null)
+  return '-' // fallback (se ambos forem null)
+}
+
+export function formatDateBR(iso: string) {
+  const date = new Date(`${iso.split('T')[0]}T00:00:00`)
+  return format(date, 'dd/MM/yyyy', { locale: ptBR })
 }

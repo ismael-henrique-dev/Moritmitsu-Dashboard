@@ -16,6 +16,7 @@ import {
 import { Badge } from '../ui/badge'
 import { AttendanceBy } from '@/lib/definitions'
 import Link from 'next/link'
+import { formatDateBR } from '@/lib/utils'
 
 type AttendanceCardProps = {
   data: AttendanceBy
@@ -39,7 +40,7 @@ export function AttendanceCard({ data }: AttendanceCardProps) {
             <div className='flex items-center gap-2'>
               <IconClock className='size-4 text-muted-foreground' />
               <span className='text-sm text-muted-foreground'>
-                {data.session_date}
+                {formatDateBR(data.session_date)}
               </span>
             </div>
           </div>

@@ -26,6 +26,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
 import { Checkbox } from '@/components/ui/checkbox'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { NotEnrolledStudent } from '@/lib/definitions'
 
 const students = [
   {
@@ -72,15 +73,21 @@ const students = [
 
 const FormSchema = z.object({
   students: z.array(z.string()).refine((value) => value.some((item) => item), {
-    message: 'Selecione pelo menos 1 aluno para realizar a frequência.',
+    message: 'Selecione pelo menos 1 aluno para enturmar.',
   }),
 })
 
-export function AddStudentsSheet() {
+type AddStudentsSheetProps = {
+  notEnrolledStudents: NotEnrolledStudent[]
+}
+
+export function AddStudentsSheet({
+  notEnrolledStudents,
+}: AddStudentsSheetProps) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      students: ['recents', 'home'],
+      students: [],
     },
   })
 
@@ -95,6 +102,8 @@ export function AddStudentsSheet() {
       ),
     })
   }
+
+  const errorMessage = form.formState.errors.students?.message
 
   return (
     <Sheet>
@@ -133,7 +142,7 @@ export function AddStudentsSheet() {
                 name='students'
                 render={() => (
                   <FormItem className='gap-3 flex flex-col pb-4'>
-                    {students.map((item) => (
+                    {notEnrolledStudents.map((item) => (
                       <FormField
                         key={item.id}
                         control={form.control}
@@ -159,7 +168,7 @@ export function AddStudentsSheet() {
                               />
                             </FormControl>
                             <FormLabel className='text-sm font-semibold w-full cursor-pointer py-3'>
-                              {item.label}
+                              {item.full_name}
                             </FormLabel>
                           </FormItem>
                         )}
@@ -169,9 +178,11 @@ export function AddStudentsSheet() {
                 )}
               />
             </ScrollArea>
-            <div className='bg-green-300'>
-              <p>error aqui</p>
-            </div>
+            {errorMessage && (
+              <div>
+                <p className='font-poppins text-red-600 text-sm'>{errorMessage}</p>
+              </div>
+            )}
 
             <SheetFooter className='py-4 px-0'>
               <div className='flex flex-row justify-end gap-3'>

@@ -10,13 +10,25 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
 import { Search } from '@/components/ui/search'
+import { fetchNotEnrolledStudents } from '@/http/students/not-enrolled'
 import { Metadata } from 'next'
+import { Suspense } from 'react'
 
 export const metadata: Metadata = {
   title: 'Detalhes da turma',
 }
 
-export default function ClassDetails() {
+export default async function ClassDetails({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}) {
+  const { id } = await params
+  const notEnrolledStudentsResponse = await fetchNotEnrolledStudents(id)
+  const notEnrolledStudents = notEnrolledStudentsResponse.data ?? []
+
+  console.log(notEnrolledStudents)
+
   return (
     <>
       <SiteHeader>
@@ -39,17 +51,19 @@ export default function ClassDetails() {
             </BreadcrumbList>
           </Breadcrumb>
           <div className='lg:flex hidden'>
-            <AddStudentsSheet />
+            <AddStudentsSheet notEnrolledStudents={notEnrolledStudents} />
           </div>
         </div>
       </SiteHeader>
       <div className='p-5 space-y-6'>
         <div className='lg:hidden'>
-          <AddStudentsSheet />
+          <AddStudentsSheet notEnrolledStudents={notEnrolledStudents} />
         </div>
 
         <Search placeholder='Buscar alunos...' />
-        <EnrolledStudentsList />
+        <Suspense fallback={'Carrgeando...'}>
+          <EnrolledStudentsList classId={id} />
+        </Suspense>
       </div>
     </>
   )

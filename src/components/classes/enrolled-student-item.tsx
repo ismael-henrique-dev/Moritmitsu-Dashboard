@@ -15,20 +15,25 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
+import { getUserInitials } from '@/lib/utils'
 
-export function EnrolledStudentItem() {
+type EnrolledStudentItemProps = {
+  name: string
+}
+
+export function EnrolledStudentItem({ name }: EnrolledStudentItemProps) {
+  const initials = getUserInitials(name)
+
   return (
     <Card className='p-0'>
       <CardContent className='flex justify-between items-center p-3'>
         <div className='flex items-center gap-2'>
           <Avatar className='h-9 w-9 rounded-lg grayscale'>
             <AvatarFallback className='rounded-full bg-zinc-800 text-white text-base font-medium font-poppins'>
-              IH
+              {initials}
             </AvatarFallback>
           </Avatar>
-          <span className='text-base font-medium font-poppins'>
-            Nome do aluno
-          </span>
+          <span className='text-base font-medium font-poppins'>{name}</span>
         </div>
 
         <AlertDialog>

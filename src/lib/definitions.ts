@@ -243,3 +243,16 @@ export type BirthdayAnnouncement = {
 }
 
 export type BirtdaysResponse = BirthdayAnnouncement[]
+
+export type NotEnrolledStudent = {
+  id: string
+  full_name: string
+}
+
+export type NotEnrolledStudentsResponse = NotEnrolledStudent[]
+
+export type EnrolledStudent = {
+  full_name: string
+}
+
+export type EnrolledStudentsResponse = EnrolledStudent[]

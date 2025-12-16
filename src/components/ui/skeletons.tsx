@@ -33,6 +33,7 @@ import {
 } from '@/components/ui/card'
 import { Avatar } from './avatar'
 import { IconAward, IconCake } from '@tabler/icons-react'
+import { ScrollArea } from './scroll-area'
 
 function ClassCardSkeleton() {
   return (
@@ -354,4 +355,31 @@ export function BirthdaysCardSkeleton() {
       </div>
     </Card>
   )
+}
+
+export function EnrolledStudentsListSkeleton() {
+  return (
+    <ul className='grid gap-3'>
+      {Array.from({ length: 5 }).map((_, i) => (
+        <Card key={i} className='p-0'>
+          <CardContent className='flex justify-between items-center p-3'>
+            <div className='flex items-center gap-2'>
+              {/* Avatar */}
+              <Skeleton className='h-9 w-9 rounded-lg' />
+
+              {/* Nome */}
+              <Skeleton className='h-4 w-40 rounded-md' />
+            </div>
+
+            {/* Botão desenturmar */}
+            <Skeleton className='h-9 w-32 rounded-md' />
+          </CardContent>
+        </Card>
+      ))}
+    </ul>
+  )
+}
+
+export function AddStudentsSheetSkeleton() {
+  return <Skeleton className='lg:h-8 lg:w-40 h-10 w-full rounded-md' />
 }

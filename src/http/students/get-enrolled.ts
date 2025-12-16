@@ -5,7 +5,7 @@ import { getAxiosStatusCode } from '@/lib/utils'
 import { EnrolledStudentsResponse } from '@/lib/definitions'
 import { cookies } from 'next/headers'
 
-export async function fetchEnrolledStudents(classId: string) {
+export async function fetchEnrolledStudents(classId: string, query: string) {
   try {
     const cookieStore = await cookies()
     const accessToken = cookieStore.get('accessToken')?.value
@@ -13,6 +13,7 @@ export async function fetchEnrolledStudents(classId: string) {
     const { data: response } = await api.get<EnrolledStudentsResponse>(
       `/students/enrolled/${classId}`,
       {
+        params: { search: query },
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

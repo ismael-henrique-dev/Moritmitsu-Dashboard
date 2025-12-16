@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button'
 import { IconCircleMinus } from '@tabler/icons-react'
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -16,13 +15,38 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { getUserInitials } from '@/lib/utils'
+import { useState, useTransition } from 'react'
+import { unerollStudentById } from '@/http/students/uneroll'
+import { toast } from 'sonner'
 
 type EnrolledStudentItemProps = {
   name: string
+  studentId: string
+  classId: string
 }
 
-export function EnrolledStudentItem({ name }: EnrolledStudentItemProps) {
+export function EnrolledStudentItem({
+  name,
+  studentId,
+  classId,
+}: EnrolledStudentItemProps) {
+  const [isOpen, setIsOpen] = useState(false)
+  const [isPending, startTransition] = useTransition()
+
   const initials = getUserInitials(name)
+
+  const handleDeleteClassById = async () => {
+    startTransition(async () => {
+      const response = await unerollStudentById(studentId, classId)
+
+      if (response.status === 'success') {
+        toast.success(response.message)
+        setIsOpen(false)
+      } else {
+        toast.error(response.message)
+      }
+    })
+  }
 
   return (
     <Card className='p-0'>
@@ -36,7 +60,7 @@ export function EnrolledStudentItem({ name }: EnrolledStudentItemProps) {
           <span className='text-base font-medium font-poppins'>{name}</span>
         </div>
 
-        <AlertDialog>
+        <AlertDialog open={isOpen} onOpenChange={setIsOpen} key={studentId}>
           <AlertDialogTrigger asChild>
             <Button
               asChild
@@ -58,13 +82,20 @@ export function EnrolledStudentItem({ name }: EnrolledStudentItemProps) {
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel className='cursor-pointer'>
+              <AlertDialogCancel
+                disabled={isPending}
+                className='cursor-pointer'
+              >
                 Cancelar
               </AlertDialogCancel>
-              <AlertDialogAction className='bg-red-700 hover:bg-red-700/90 transition-colors cursor-pointer'>
+              <Button
+                disabled={isPending}
+                onClick={handleDeleteClassById}
+                className='bg-red-700 hover:bg-red-700/90 transition-colors cursor-pointer'
+              >
                 <IconCircleMinus className='size-5' />
-                Desenturmar
-              </AlertDialogAction>
+                {isPending ? 'Desenturmando...' : 'Desenturmar'}
+              </Button>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>

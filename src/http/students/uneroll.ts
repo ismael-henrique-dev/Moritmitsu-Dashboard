@@ -2,28 +2,30 @@
 
 import { api } from '@/services/api'
 import { getAxiosStatusCode } from '@/lib/utils'
-import { NotEnrolledStudentsResponse } from '@/lib/definitions'
+import { FetchClassesResponse } from '@/lib/definitions'
 import { cookies } from 'next/headers'
+import { revalidatePath } from 'next/cache'
 
-export async function fetchNotEnrolledStudents(classId: string, query: string) {
+export async function unerollStudentById(studentId: string, classId: string) {
   try {
     const cookieStore = await cookies()
     const accessToken = cookieStore.get('accessToken')?.value
 
-    const { data: response } = await api.get<NotEnrolledStudentsResponse>(
-      `/students/not-enrolled/${classId}`,
+    const { data: response } = await api.delete<FetchClassesResponse>(
+      `/students/unenroll/${studentId}`,
       {
-        params: { search: query },
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       }
     )
 
+    revalidatePath(`/dashboard/classes/${classId}/details`)
+
     return {
-      message: 'Alunos não enturmados carregados com sucesso.',
+      message: 'Aluno deletado com sucesso.',
       status: 'success',
-      data: response,
+      data: response.result,
     }
   } catch (error) {
     const statusCode = getAxiosStatusCode(error)

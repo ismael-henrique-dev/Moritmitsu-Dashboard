@@ -252,6 +252,7 @@ export type NotEnrolledStudent = {
 export type NotEnrolledStudentsResponse = NotEnrolledStudent[]
 
 export type EnrolledStudent = {
+  id: string
   full_name: string
 }
 

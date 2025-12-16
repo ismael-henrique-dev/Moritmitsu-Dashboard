@@ -1,4 +1,4 @@
-import { AddStudentsSheet } from '@/components/classes/class-student-sheet'
+import { AddStudentsSheetWrapper } from '@/components/classes/add-students-sheet-wrapper'
 import { EnrolledStudentsList } from '@/components/classes/enrolled-students-list'
 import { SiteHeader } from '@/components/site-header'
 import {
@@ -10,7 +10,10 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
 import { Search } from '@/components/ui/search'
-import { fetchNotEnrolledStudents } from '@/http/students/not-enrolled'
+import {
+  AddStudentsSheetSkeleton,
+  EnrolledStudentsListSkeleton,
+} from '@/components/ui/skeletons'
 import { Metadata } from 'next'
 import { Suspense } from 'react'
 
@@ -18,16 +21,17 @@ export const metadata: Metadata = {
   title: 'Detalhes da turma',
 }
 
-export default async function ClassDetails({
-  params,
-}: {
+export default async function ClassDetails(props: {
   params: Promise<{ id: string }>
+  searchParams?: Promise<{
+    query?: string
+    sheetQuery?: string
+  }>
 }) {
-  const { id } = await params
-  const notEnrolledStudentsResponse = await fetchNotEnrolledStudents(id)
-  const notEnrolledStudents = notEnrolledStudentsResponse.data ?? []
-
-  console.log(notEnrolledStudents)
+  const { id } = await props.params
+  const searchParams = await props.searchParams
+  const query = searchParams?.query || ''
+  const sheetQuery = searchParams?.sheetQuery || ''
 
   return (
     <>
@@ -51,18 +55,30 @@ export default async function ClassDetails({
             </BreadcrumbList>
           </Breadcrumb>
           <div className='lg:flex hidden'>
-            <AddStudentsSheet notEnrolledStudents={notEnrolledStudents} />
+            <Suspense fallback={<AddStudentsSheetSkeleton />}>
+              <AddStudentsSheetWrapper
+                key='desktop'
+                classId={id}
+                sheetQuery={sheetQuery}
+              />
+            </Suspense>
           </div>
         </div>
       </SiteHeader>
       <div className='p-5 space-y-6'>
         <div className='lg:hidden'>
-          <AddStudentsSheet notEnrolledStudents={notEnrolledStudents} />
+          <Suspense fallback={<AddStudentsSheetSkeleton />}>
+            <AddStudentsSheetWrapper
+              key='mobile'
+              classId={id}
+              sheetQuery={sheetQuery}
+            />
+          </Suspense>
         </div>
 
         <Search placeholder='Buscar alunos...' />
-        <Suspense fallback={'Carrgeando...'}>
-          <EnrolledStudentsList classId={id} />
+        <Suspense fallback={<EnrolledStudentsListSkeleton />}>
+          <EnrolledStudentsList classId={id} query={query} />
         </Suspense>
       </div>
     </>

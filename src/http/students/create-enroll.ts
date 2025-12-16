@@ -2,32 +2,37 @@
 
 import { api } from '@/services/api'
 import { getAxiosStatusCode } from '@/lib/utils'
-import { NotEnrolledStudentsResponse } from '@/lib/definitions'
+import { CreateClassResponse } from '@/lib/definitions'
 import { cookies } from 'next/headers'
+import { revalidatePath } from 'next/cache'
 
-export async function fetchNotEnrolledStudents(classId: string, query: string) {
+export async function createEnroll(classId: string, studentIds: string[]) {
   try {
     const cookieStore = await cookies()
     const accessToken = cookieStore.get('accessToken')?.value
 
-    const { data: response } = await api.get<NotEnrolledStudentsResponse>(
-      `/students/not-enrolled/${classId}`,
+    const newStudent = {
+      studentIds: studentIds,
+    }
+
+    console.log(newStudent)
+
+    await api.post<CreateClassResponse>(
+      `/students/enroll/${classId}`,
+      newStudent,
       {
-        params: { search: query },
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       }
     )
 
-    return {
-      message: 'Alunos não enturmados carregados com sucesso.',
-      status: 'success',
-      data: response,
-    }
+    revalidatePath(`/dashboard/classes/${classId}/details`)
+
+    return { message: 'Aluno enturmado com sucesso.', status: 'success' }
   } catch (error) {
     const statusCode = getAxiosStatusCode(error)
-    console.log(error)
+    // console.log(error.response.data)
 
     switch (statusCode) {
       case 401:

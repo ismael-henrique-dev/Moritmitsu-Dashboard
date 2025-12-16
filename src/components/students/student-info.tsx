@@ -56,7 +56,7 @@ export function StudentInfoGrid({
         belt={`Faixa ${belt}`}
         degree={basicInfo.grade}
         currentClasses={basicInfo.current_frequency}
-        requiredClasses={5}
+        requiredClasses={basicInfo.total_trainings}
       />
     </CardContent>
   )

@@ -86,6 +86,7 @@ export type StudentResult = {
   class_id: string | null
   ifce_enrollment: string
   personal_info: PersonalInfo
+  total_trainings: number
 }
 
 export type FetchStudentByIdResponse = {

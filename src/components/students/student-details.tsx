@@ -31,6 +31,8 @@ export async function StudentDetails({ id }: StudentDetailsProps) {
     studentInfo.belt === 'brown' ||
     studentInfo.belt === 'black'
 
+  console.log(studentData)
+
   return (
     <Card className='@container/card'>
       <StudentHeader

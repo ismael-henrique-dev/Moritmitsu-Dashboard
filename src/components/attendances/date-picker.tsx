@@ -23,10 +23,14 @@ export function DatePicker() {
   today.setHours(0, 0, 0, 0)
 
   const [date, setDate] = useState<Date | undefined>(
-    defaultValue ? new Date(defaultValue) : today
+    defaultValue ? new Date(defaultValue) : undefined
   )
 
   const handleSelectDate = (selected?: Date) => {
+    // if (!selected) return
+
+    if (selected! > today) return
+
     setDate(selected)
 
     const params = new URLSearchParams(searchParams)

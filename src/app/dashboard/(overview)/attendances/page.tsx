@@ -99,7 +99,7 @@ export default async function Attandances(props: {
         </Button>
 
         <AttendancesList attendances={attendances} />
-        {attendances.length > 1 && <AttendancesTable data={attendances} />}
+        {attendances.length >= 1 && <AttendancesTable data={attendances} />}
         <div className='flex w-full justify-center my-6'>
           {totalPages > 1 && <Pagination totalPages={totalPages} />}
         </div>

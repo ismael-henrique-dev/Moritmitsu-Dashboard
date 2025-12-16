@@ -90,13 +90,11 @@ const columns: ColumnDef<z.infer<typeof attendanceSchema>>[] = [
 
 export function AttendancesTable({
   data: initialData,
-
 }: {
   data: Attendance[]
 }) {
   const [data, setData] = React.useState(() => initialData)
   const [rowSelection, setRowSelection] = React.useState({})
-
   const [isLoading, setIsLoading] = React.useState(true)
 
   React.useEffect(() => {
@@ -116,10 +114,6 @@ export function AttendancesTable({
     []
   )
   const [sorting, setSorting] = React.useState<SortingState>([])
-  const [pagination, setPagination] = React.useState({
-    pageIndex: 0,
-    pageSize: 10,
-  })
 
   const dataIds = React.useMemo<UniqueIdentifier[]>(
     () => data?.map(({ id }) => id) || [],
@@ -134,7 +128,6 @@ export function AttendancesTable({
       columnVisibility,
       rowSelection,
       columnFilters,
-      pagination,
     },
     getRowId: (row) => row.id,
     enableRowSelection: true,
@@ -142,7 +135,6 @@ export function AttendancesTable({
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
-    onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),

@@ -24,7 +24,15 @@ export function NavUserSkeleton() {
   )
 }
 
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Avatar } from './avatar'
+import { IconAward, IconCake } from '@tabler/icons-react'
 
 function ClassCardSkeleton() {
   return (
@@ -268,5 +276,82 @@ export function AttendancesTableSkeleton() {
         ))}
       </div>
     </div>
+  )
+}
+
+export function GraduationsCardSkeleton() {
+  return (
+    <Card className='@container/card'>
+      <CardHeader>
+        <div className='flex items-center gap-2'>
+          <Avatar className='lg:size-10 size-8 flex justify-center items-center rounded-full bg-neutral-200'>
+            <IconAward className='lg:size-6 size-4 text-neutral-400' />
+          </Avatar>
+
+          <CardTitle className='lg:text-base text-sm font-poppins font-medium'>
+            Alunos aptos à graduação
+          </CardTitle>
+        </div>
+      </CardHeader>
+
+      <CardContent>
+        <ul className='space-y-3 lg:pl-6 pl-5'>
+          {Array.from({ length: 3 }).map((_, index) => (
+            <li key={index} className='h-9 flex items-center'>
+              <div className='flex justify-between items-center w-full'>
+                {/* Nome do aluno */}
+                <Skeleton className='h-4 w-[45%]' />
+
+                {/* Progressão (faixa/grau → faixa/grau) */}
+                <div className='flex items-center gap-2'>
+                  <Skeleton className='h-4 w-14' />
+                  <Skeleton className='h-4 w-4 rounded-full' />
+                  <Skeleton className='h-4 w-14' />
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </CardContent>
+    </Card>
+  )
+}
+
+export function BirthdaysCardSkeleton() {
+  return (
+    <Card className='@container/card lg:gap-6 gap-4'>
+      <CardHeader>
+        <div className='flex items-center gap-2'>
+          <Avatar className='lg:size-10 size-8 flex justify-center items-center rounded-full bg-neutral-200'>
+            <IconCake className='lg:size-6 size-4 text-neutral-400' />
+          </Avatar>
+
+          <CardTitle className='lg:text-base text-sm font-poppins font-medium'>
+            Aniversariantes do mês
+          </CardTitle>
+        </div>
+      </CardHeader>
+
+      <CardContent>
+        <ul className='space-y-3 list-disc marker:text-xl lg:pl-6 pl-5'>
+          {Array.from({ length: 3 }).map((_, index) => (
+            <li key={index} className='h-9 flex items-center'>
+              <div className='flex justify-between items-center w-full'>
+                {/* Nome */}
+                <Skeleton className='h-4 w-[55%]' />
+
+                {/* Data + idade */}
+                <Skeleton className='h-4 w-24' />
+              </div>
+            </li>
+          ))}
+        </ul>
+      </CardContent>
+
+      {/* Footer (Ver todos) */}
+      <div className='px-6 pb-6'>
+        <Skeleton className='h-4 w-20' />
+      </div>
+    </Card>
   )
 }

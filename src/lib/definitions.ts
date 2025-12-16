@@ -214,3 +214,32 @@ export type FetchClassDetailsResponse = {
   message: string
   result: ClassDetails
 }
+
+export type GraduationAnnouncement = {
+  id: string
+  name: string
+  graduationType: 'grade' | 'belt'
+  graduation: {
+    currentGraduation: {
+      belt?: string
+      grade?: number
+    }
+    newGraduation: {
+      belt?: string
+      grade?: number
+    }
+  }
+}
+
+export type GraduationResponse = GraduationAnnouncement[]
+
+export type BirthdayAnnouncement = {
+  type: string
+  student_id: string
+  student_name: string
+  age: number
+  birthday: string
+  message: string
+}
+
+export type BirtdaysResponse = BirthdayAnnouncement[]

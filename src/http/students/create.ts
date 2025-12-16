@@ -41,7 +41,7 @@ export async function createStudent(formData: CreateStudentFormData) {
     return { message: 'Aluno cadastrado com sucesso.', status: 'success' }
   } catch (error) {
     const statusCode = getAxiosStatusCode(error)
-    console.log(error)
+    // console.log(error.response.data)
 
     switch (statusCode) {
       case 401:

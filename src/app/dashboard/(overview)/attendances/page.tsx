@@ -18,7 +18,12 @@ import { fetchClasses } from '@/http/classes/get'
 import { fetchAttendances } from '@/http/attendances/get-attendances'
 import { AttendancesTable } from '@/components/attendances/data-table'
 import { fetchInstructructos } from '@/http/user/get'
-import { AttendancesTableSkeleton } from '@/components/ui/skeletons'
+import {
+  AttendancesListSkeleton,
+  AttendancesTableSkeleton,
+} from '@/components/ui/skeletons'
+import { AttendancesDataTableWrapper } from '@/components/attendances/table-wrapper'
+import { Suspense } from 'react'
 
 export const metadata: Metadata = {
   title: 'Frequências',
@@ -97,9 +102,25 @@ export default async function Attandances(props: {
             <span className='font-poppins font-medium'>Nova frêquencia</span>
           </Link>
         </Button>
+        <Suspense fallback={<AttendancesListSkeleton />}>
+          <AttendancesList
+            currentPage={currentPage}
+            classId={classId}
+            date={date}
+            instructorId={instructorId}
+          />
+        </Suspense>
 
-        <AttendancesList attendances={attendances} />
-        {attendances.length >= 1 && <AttendancesTable data={attendances} />}
+        {attendances.length >= 1 && (
+          <Suspense fallback={<AttendancesTableSkeleton />}>
+            <AttendancesDataTableWrapper
+              currentPage={currentPage}
+              classId={classId}
+              date={date}
+              instructorId={instructorId}
+            />
+          </Suspense>
+        )}
         <div className='flex w-full justify-center my-6'>
           {totalPages > 1 && <Pagination totalPages={totalPages} />}
         </div>

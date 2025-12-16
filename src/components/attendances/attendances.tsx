@@ -1,12 +1,23 @@
 import { AttendanceCard } from './card'
-import { AttendanceBy } from '@/lib/definitions'
 import { EmptyAttendances } from './empty-attendances'
+import { fetchAttendances } from '@/http/attendances/get-attendances'
 
 type AttendancesListProps = {
-  attendances: AttendanceBy[]
+  currentPage: number
+  classId: string
+  instructorId: string
+  date: string
 }
 
-export function AttendancesList({ attendances }: AttendancesListProps) {
+export async function AttendancesList(props: AttendancesListProps) {
+  const attendancesResponse = await fetchAttendances(
+    props.currentPage,
+    props.classId,
+    props.instructorId,
+    props.date
+  )
+  const attendances = attendancesResponse.data?.data ?? []
+
   const hasAttendances = attendances.length > 0
 
   if (!hasAttendances) {

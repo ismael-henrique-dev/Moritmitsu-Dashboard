@@ -95,18 +95,18 @@ export function AttendancesTable({
 }) {
   const [data, setData] = React.useState(() => initialData)
   const [rowSelection, setRowSelection] = React.useState({})
-  const [isLoading, setIsLoading] = React.useState(true)
+  // const [isLoading, setIsLoading] = React.useState(true)
 
-  React.useEffect(() => {
-    setIsLoading(true)
+  // React.useEffect(() => {
+  //   // setIsLoading(true)
 
-    const id = setTimeout(() => {
-      setData(initialData)
-      setIsLoading(false)
-    }, 0)
+  //   const id = setTimeout(() => {
+  //     setData(initialData)
+  //     // setIsLoading(false)
+  //   }, 0)
 
-    return () => clearTimeout(id)
-  }, [initialData])
+  //   return () => clearTimeout(id)
+  // }, [initialData])
 
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
@@ -142,10 +142,6 @@ export function AttendancesTable({
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
   })
-
-  if (isLoading) {
-    return <AttendancesTableSkeleton />
-  }
 
   return (
     <div className='overflow-hidden rounded-lg border lg:block hidden'>

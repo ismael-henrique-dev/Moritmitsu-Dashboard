@@ -383,3 +383,30 @@ export function EnrolledStudentsListSkeleton() {
 export function AddStudentsSheetSkeleton() {
   return <Skeleton className='lg:h-8 lg:w-40 h-10 w-full rounded-md' />
 }
+
+export function AttendancesListSkeleton() {
+  return (
+    <div className='grid lg:hidden gap-4'>
+      {Array.from({ length: 4 }).map((_, i) => (
+        <Card key={i} className='p-0'>
+          <CardContent className='flex flex-col gap-3 p-4'>
+            {/* Linha superior (nome / status) */}
+            <div className='flex items-center justify-between'>
+              <Skeleton className='h-4 w-40' />
+              <Skeleton className='h-4 w-20' />
+            </div>
+
+            {/* Linha secundária (data / horário) */}
+            <Skeleton className='h-3 w-32' />
+
+            {/* Bloco inferior (ações ou info extra) */}
+            <div className='flex gap-2 pt-2'>
+              <Skeleton className='h-8 w-24 rounded-md' />
+              <Skeleton className='h-8 w-24 rounded-md' />
+            </div>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  )
+}

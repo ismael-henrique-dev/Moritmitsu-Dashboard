@@ -15,8 +15,11 @@ export async function updateStudent(
     const cookieStore = await cookies()
     const accessToken = cookieStore.get('accessToken')?.value
 
-    const newStudent: StudentData = {
+    const newStudent = {
       full_name: formData.name,
+      current_frequency: formData.currentAttendance,
+      total_frequency: formData.totalTrainings,
+      alias: formData.alias,
       address: formData.address,
       email: formData.email,
       belt: formData.belt,

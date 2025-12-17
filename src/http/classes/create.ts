@@ -6,6 +6,7 @@ import { CreateClassFormData } from '@/validators/create-class'
 import { CreateClassResponse } from '@/lib/definitions'
 import { cookies } from 'next/headers'
 import { revalidatePath } from 'next/cache'
+import { AxiosError } from 'axios'
 
 export async function createClass(formData: CreateClassFormData) {
   try {
@@ -18,16 +19,21 @@ export async function createClass(formData: CreateClassFormData) {
       name: formData.name,
       maxAge: formData.maxAge,
       minAge: formData.minAge,
+      instructor_id: formData.instructor,
       schedule,
     }
 
     console.log(newClass)
 
-    await api.post<CreateClassResponse>('/classes/create', newClass, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
+    const response = await api.post<CreateClassResponse>(
+      '/classes/create',
+      newClass,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
 
     revalidatePath('/dashboard/classes')
 
@@ -37,8 +43,12 @@ export async function createClass(formData: CreateClassFormData) {
     console.log(error)
 
     switch (statusCode) {
-      case 401:
-        return { message: 'Email ou senha incorretos.', status: 'error' }
+      case 409:
+        if (error instanceof AxiosError) {
+          const message = error.response?.data.message
+          return { message: message, status: 'error' }
+        }
+
       case 500:
         return { message: 'Erro interno no servidor.', status: 'error' }
       default:

@@ -22,16 +22,20 @@ export const metadata: Metadata = {
 }
 
 export default async function ClassDetails(props: {
-  params: Promise<{ id: string }>
+  params: Promise<{ id: string; name: string }>
   searchParams?: Promise<{
     query?: string
     sheetQuery?: string
   }>
 }) {
-  const { id } = await props.params
+  const { id, name } = await props.params
   const searchParams = await props.searchParams
   const query = searchParams?.query || ''
   const sheetQuery = searchParams?.sheetQuery || ''
+
+  console.log(name)
+
+  const className = decodeURIComponent(name)
 
   return (
     <>
@@ -50,7 +54,7 @@ export default async function ClassDetails(props: {
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbPage>Turma Baby</BreadcrumbPage>
+                <BreadcrumbPage>{className}</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>

@@ -47,7 +47,9 @@ export async function StudentDetails({ id }: StudentDetailsProps) {
           {isAdmin && (
             <>
               <CreateGraduationDialog data={studentInfo} />
-              {canPromote && <PromoteStudentToInstructorDialog />}
+              {canPromote && (
+                <PromoteStudentToInstructorDialog isPromoted={true} studentId={id} />
+              )}
             </>
           )}
         </CardAction>

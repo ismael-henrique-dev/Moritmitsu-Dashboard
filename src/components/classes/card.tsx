@@ -69,7 +69,7 @@ export function ClassCard(props: ClassCardProps) {
   return (
     <Card className='@container/card cursor-pointer hover:shadow-lg transition-shadow mb-4'>
       <CardHeader className='flex justify-between items-start'>
-        <Link href={`/dashboard/classes/${classId}/details`} className='w-full'>
+        <Link href={`/dashboard/classes/${classId}/${props.title}/details`} className='w-full'>
           <div className='space-y-1'>
             <CardTitle className='text-xl font-semibold'>
               {props.title}

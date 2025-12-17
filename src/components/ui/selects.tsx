@@ -12,14 +12,30 @@ import { useState } from 'react'
 
 const belts = [
   { id: 'white', name: 'Branca' },
+
+  { id: 'gray_white', name: 'Cinza com branca' },
   { id: 'gray', name: 'Cinza' },
+  { id: 'gray_black', name: 'Cinza com preta' },
+
+  { id: 'yellow_white', name: 'Amarela com branca' },
   { id: 'yellow', name: 'Amarela' },
+  { id: 'yellow_black', name: 'Amarela com preta' },
+
+  { id: 'orange_white', name: 'Laranja com branca' },
   { id: 'orange', name: 'Laranja' },
+  { id: 'orange_black', name: 'Laranja com preta' },
+
+  { id: 'green_white', name: 'Verde com branca' },
   { id: 'green', name: 'Verde' },
+  { id: 'green_black', name: 'Verde com preta' },
+
   { id: 'blue', name: 'Azul' },
   { id: 'purple', name: 'Roxa' },
   { id: 'brown', name: 'Marrom' },
   { id: 'black', name: 'Preta' },
+
+  { id: 'red/black', name: 'Coral' },
+  { id: 'red', name: 'Vermelha' },
 ]
 
 const degrees = [

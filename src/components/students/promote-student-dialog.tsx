@@ -1,6 +1,7 @@
+'use client'
+
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -10,20 +11,50 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
-import { IconUserUp } from '@tabler/icons-react'
+import { promoteStudentToInstructor } from '@/http/students/promote'
+import { IconUserCheck, IconUserUp } from '@tabler/icons-react'
+import { useState, useTransition } from 'react'
+import { toast } from 'sonner'
 
-export function PromoteStudentToInstructorDialog() {
+export function PromoteStudentToInstructorDialog({
+  studentId,
+  isPromoted,
+}: {
+  studentId: string
+  isPromoted: boolean
+}) {
+  const [isOpen, setIsOpen] = useState(false)
+  const [isPending, startTransition] = useTransition()
+
+  const handlePromoteStudentToInstructor = async () => {
+    startTransition(async () => {
+      const response = await promoteStudentToInstructor(studentId)
+
+      if (response.status === 'success') {
+        toast.success(response.message)
+        setIsOpen(false)
+      } else {
+        toast.error(response.message)
+      }
+    })
+  }
+
   return (
-    <AlertDialog>
+    <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogTrigger asChild>
         <Button
           asChild
           className='bg-morimitsu-red text-white  hover:bg-morimitsu-red/90 py-2 px-3 gap-2 cursor-pointer'
         >
           <div>
-            <IconUserUp className='size-5' />
+            {isPromoted ? (
+              <IconUserCheck className='size-5' />
+            ) : (
+              <IconUserUp className='size-5' />
+            )}
+
             <span className='font-poppins font-medium'>
-              Promover à professor
+              {isPromoted ? 'Instrutor' : 'Promovido à instrutor'}
             </span>
           </div>
         </Button>
@@ -38,13 +69,16 @@ export function PromoteStudentToInstructorDialog() {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel className='cursor-pointer'>
+          <AlertDialogCancel disabled={isPending} className='cursor-pointer'>
             Cancelar
           </AlertDialogCancel>
-          <AlertDialogAction className='bg-black hover:bg-black/90 transition-colors cursor-pointer'>
+          <Button
+            onClick={handlePromoteStudentToInstructor}
+            className='bg-black hover:bg-black/90 transition-colors cursor-pointer'
+          >
             <IconUserUp className='size-5' />
-            Promover à professor
-          </AlertDialogAction>
+            {isPending ? 'Promovendo...' : 'Promover à professor'}
+          </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

@@ -6,14 +6,18 @@ import { CreateClassResponse, StudentData } from '@/lib/definitions'
 import { cookies } from 'next/headers'
 import { revalidatePath } from 'next/cache'
 import { CreateStudentFormData } from '@/validators/create-student'
+import { AxiosError } from 'axios'
 
 export async function createStudent(formData: CreateStudentFormData) {
   try {
     const cookieStore = await cookies()
     const accessToken = cookieStore.get('accessToken')?.value
 
-    const newStudent: StudentData = {
+    const newStudent = {
+      current_frequency: formData.currentAttendance,
+      total_frequency: formData.totalTrainings,
       full_name: formData.name,
+      alias: formData.alias,
       address: formData.address,
       email: formData.email,
       belt: formData.belt,
@@ -28,7 +32,7 @@ export async function createStudent(formData: CreateStudentFormData) {
       student_phone: formData.phone?.replace(/\D/g, '') ?? '',
     }
 
-    console.log(newStudent)
+    // console.log(newStudent)
 
     await api.post<CreateClassResponse>('/students/create', newStudent, {
       headers: {
@@ -41,11 +45,15 @@ export async function createStudent(formData: CreateStudentFormData) {
     return { message: 'Aluno cadastrado com sucesso.', status: 'success' }
   } catch (error) {
     const statusCode = getAxiosStatusCode(error)
-    // console.log(error.response.data)
 
     switch (statusCode) {
-      case 401:
-        return { message: 'Email ou senha incorretos.', status: 'error' }
+      case 400:
+        if (error instanceof AxiosError) {
+          const response = error.response?.data.message
+          console.log(response)
+          return { message: response, status: 'error' }
+        }
+        return { message: 'BAD.', status: 'error' }
       case 500:
         return { message: 'Erro interno no servidor.', status: 'error' }
       default:

@@ -22,7 +22,11 @@ export const updateAccountSchema = z.object({
 
 export type UpdateAccountFormData = z.infer<typeof updateAccountSchema>
 
-export function UpdateAccountForm() {
+type UpdateAccountFormProps = {
+  isAdmin: boolean
+}
+
+export function UpdateAccountForm({ isAdmin }: UpdateAccountFormProps) {
   const [isPending, startTransition] = useTransition()
   const { user: userData, loading } = useUserData()
   const [userId, setUserId] = useState('')
@@ -80,6 +84,7 @@ export function UpdateAccountForm() {
               </Label>
               <Input
                 id='name'
+                disabled={!isAdmin}
                 placeholder='Nome de usuário'
                 {...register('username')}
               />
@@ -96,6 +101,7 @@ export function UpdateAccountForm() {
               <Input
                 id='email'
                 type='email'
+                disabled={!isAdmin}
                 placeholder='m@example.com'
                 {...register('email')}
               />
@@ -105,10 +111,14 @@ export function UpdateAccountForm() {
             </div>
           </div>
           <div className='flex justify-start gap-3'>
-            <Button type='button' variant='outline' disabled={isPending}>
+            <Button
+              type='button'
+              variant='outline'
+              disabled={isPending || !isAdmin}
+            >
               Cancelar
             </Button>
-            <Button type='submit' disabled={isPending}>
+            <Button type='submit' disabled={isPending || !isAdmin}>
               {isPending && <Spinner />}
               {isPending ? 'Salvando...' : 'Salvar'}
             </Button>

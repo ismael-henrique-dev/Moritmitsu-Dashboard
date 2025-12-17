@@ -50,7 +50,7 @@ export default async function Preferences() {
               <h2 className='text-xl font-poppins font-semibold'>
                 Detalhes da conta
               </h2>
-              <UpdateAccountForm />
+              <UpdateAccountForm isAdmin={isAdmin} />
 
               {isAdmin && (
                 <>

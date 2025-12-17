@@ -22,7 +22,7 @@ export async function fetchStudents(
         params: {
           search: query,
           belt,
-          classId,
+          classId: classId,
           currentPage,
           ...(grade !== undefined && { grade }),
         },
@@ -46,7 +46,7 @@ export async function fetchStudents(
     return {
       message: 'Alunos carregados com sucesso.',
       status: 'success',
-      data: response.result,
+      data: response,
     }
   } catch (error) {
     const statusCode = getAxiosStatusCode(error)

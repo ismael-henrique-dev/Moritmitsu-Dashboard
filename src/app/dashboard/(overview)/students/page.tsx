@@ -18,6 +18,7 @@ import { StudentListSkeleton } from '@/components/ui/skeletons'
 import { StudentsFilters } from '@/components/students/students-filters'
 import Link from 'next/link'
 import { fetchClasses } from '@/http/classes/get'
+import { fetchStudents } from '@/http/students/get'
 
 export const metadata: Metadata = {
   title: 'Alunos',
@@ -39,10 +40,12 @@ export default async function Students(props: {
   const page = searchParams?.page || 1
   const rawGrade = searchParams?.degree
   const grade = rawGrade ? Number(rawGrade) : undefined
-  const totalPages = 10
 
   const { data } = await fetchClasses('')
   const classes = data || []
+
+  const response = await fetchStudents(query, belt, classId, page, grade)
+  const totalPages = response.data?.pagination.totalPages ?? 1
 
   return (
     <>

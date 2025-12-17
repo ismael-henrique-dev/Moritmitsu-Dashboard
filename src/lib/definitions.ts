@@ -36,6 +36,11 @@ export type FetchStudentData = {
 export type FetchStudentsResponse = {
   message: string
   result: FetchStudentData[]
+  pagination: {
+    totalPages: number
+    currentPage: number
+    perPage: number
+  }
 }
 
 export type AttendenceStudent = {
